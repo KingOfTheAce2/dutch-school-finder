@@ -1,0 +1,49 @@
+.language-switcher {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.lang-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid transparent;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+  backdrop-filter: blur(10px);
+}
+
+.lang-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.lang-button.active {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #2563eb;
+  border-color: white;
+}
+
+.lang-button .flag {
+  font-size: 16px;
+}
+
+.lang-button .lang-name {
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .lang-button .lang-name {
+    display: none;
+  }
+
+  .lang-button {
+    padding: 6px 10px;
+  }
+}

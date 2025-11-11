@@ -1,20 +1,24 @@
+import { useTranslation } from 'react-i18next';
 import './Header.css';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Header = () => {
+  const { t } = useTranslation();
+
   return (
     <header className="header">
       <div className="header-content">
         <div className="logo">
           <span className="logo-icon">🏫</span>
-          <h1>Dutch School Finder</h1>
+          <h1>{t('header.title')}</h1>
         </div>
         <p className="tagline">
-          Find the perfect school for your family in the Netherlands
+          {t('header.tagline')}
         </p>
       </div>
       <div className="header-info">
-        <span className="info-badge">🌍 English</span>
-        <span className="info-badge">👨‍👩‍👧‍👦 Expat-Friendly</span>
+        <LanguageSwitcher />
+        <span className="info-badge">👨‍👩‍👧‍👦 {t('header.expatFriendly')}</span>
       </div>
     </header>
   );
