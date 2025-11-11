@@ -64,6 +64,11 @@ const SchoolList = ({ schools, onSelectSchool }: SchoolListProps) => {
               <p className="school-location">
                 📍 {school.city}
                 {school.address && `, ${school.address}`}
+                {school.distance_formatted && (
+                  <span style={{ marginLeft: '8px', fontWeight: 'bold', color: '#2563eb' }}>
+                    ({school.distance_formatted} away)
+                  </span>
+                )}
               </p>
 
               {school.school_type && (

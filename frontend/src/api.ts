@@ -66,6 +66,38 @@ export const schoolAPI = {
   },
 
   /**
+   * Search schools near an address
+   */
+  searchNearbySchools: async (
+    address: string,
+    radius_km: number = 5.0,
+    filters: SearchFilters = {}
+  ): Promise<School[]> => {
+    const params: Record<string, any> = {
+      address,
+      radius_km,
+    };
+
+    if (filters.school_type) params.school_type = filters.school_type;
+    if (filters.min_rating !== undefined) params.min_rating = filters.min_rating;
+    if (filters.bilingual !== undefined) params.bilingual = filters.bilingual;
+    if (filters.international !== undefined) params.international = filters.international;
+
+    const response = await api.get('/schools/nearby', { params });
+    return response.data;
+  },
+
+  /**
+   * Geocode an address
+   */
+  geocodeAddress: async (address: string): Promise<{ latitude: number; longitude: number }> => {
+    const response = await api.get('/geocode', {
+      params: { address },
+    });
+    return response.data;
+  },
+
+  /**
    * Refresh school data (admin function)
    */
   refreshData: async (): Promise<any> => {

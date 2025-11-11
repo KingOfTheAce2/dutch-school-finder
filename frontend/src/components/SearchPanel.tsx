@@ -11,6 +11,12 @@ interface SearchPanelProps {
 }
 
 const SearchPanel = ({ onSearch, loading, viewMode, onViewModeChange }: SearchPanelProps) => {
+  // Proximity search
+  const [address, setAddress] = useState('');
+  const [radiusKm, setRadiusKm] = useState(5);
+  const [useProximity, setUseProximity] = useState(false);
+
+  // Regular search filters
   const [city, setCity] = useState('');
   const [schoolType, setSchoolType] = useState('');
   const [name, setName] = useState('');
@@ -41,9 +47,18 @@ const SearchPanel = ({ onSearch, loading, viewMode, onViewModeChange }: SearchPa
   const handleSearch = () => {
     const filters: SearchFilters = {};
 
-    if (city) filters.city = city;
+    // Proximity search takes priority
+    if (useProximity && address) {
+      filters.address = address;
+      filters.radius_km = radiusKm;
+    } else {
+      // Regular filters
+      if (city) filters.city = city;
+      if (name) filters.name = name;
+    }
+
+    // Common filters (work with both modes)
     if (schoolType) filters.school_type = schoolType;
-    if (name) filters.name = name;
     if (minRating) filters.min_rating = parseFloat(minRating);
     if (bilingual) filters.bilingual = true;
     if (international) filters.international = true;
@@ -52,6 +67,9 @@ const SearchPanel = ({ onSearch, loading, viewMode, onViewModeChange }: SearchPa
   };
 
   const handleReset = () => {
+    setAddress('');
+    setRadiusKm(5);
+    setUseProximity(false);
     setCity('');
     setSchoolType('');
     setName('');
@@ -84,34 +102,89 @@ const SearchPanel = ({ onSearch, loading, viewMode, onViewModeChange }: SearchPa
       </div>
 
       <div className="search-form">
-        {/* School Name */}
+        {/* Search Mode Toggle */}
         <div className="form-group">
-          <label htmlFor="name">School Name</label>
-          <input
-            id="name"
-            type="text"
-            placeholder="Search by name..."
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={useProximity}
+              onChange={(e) => setUseProximity(e.target.checked)}
+            />
+            <span>📍 Search by Address (Proximity)</span>
+          </label>
         </div>
 
-        {/* City Selection */}
-        <div className="form-group">
-          <label htmlFor="city">City</label>
-          <select
-            id="city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          >
-            <option value="">All Cities</option>
-            {cities.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Proximity Search */}
+        {useProximity ? (
+          <>
+            <div className="form-group">
+              <label htmlFor="address">Your Address</label>
+              <input
+                id="address"
+                type="text"
+                placeholder="e.g., Dam 1, Amsterdam"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+              <small style={{ color: '#6b7280', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                Enter address as: "Street, City" or just "City"
+              </small>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="radius">
+                Search Radius: {radiusKm} km
+              </label>
+              <input
+                id="radius"
+                type="range"
+                min="1"
+                max="25"
+                step="1"
+                value={radiusKm}
+                onChange={(e) => setRadiusKm(parseInt(e.target.value))}
+                style={{ width: '100%' }}
+              />
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#9ca3af' }}>
+                <span>1 km</span>
+                <span>25 km</span>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* School Name */}
+            <div className="form-group">
+              <label htmlFor="name">School Name</label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Search by name..."
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            {/* City Selection */}
+            <div className="form-group">
+              <label htmlFor="city">City</label>
+              <select
+                id="city"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              >
+                <option value="">All Cities</option>
+                {cities.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </>
+        )}
+
+        {/* Common filters for both modes */}
 
         {/* School Type */}
         <div className="form-group">
@@ -174,7 +247,7 @@ const SearchPanel = ({ onSearch, loading, viewMode, onViewModeChange }: SearchPa
           <button
             className="btn-primary"
             onClick={handleSearch}
-            disabled={loading}
+            disabled={loading || (useProximity && !address)}
           >
             {loading ? 'Searching...' : '🔍 Search'}
           </button>
@@ -190,15 +263,24 @@ const SearchPanel = ({ onSearch, loading, viewMode, onViewModeChange }: SearchPa
 
       {/* Info Box */}
       <div className="info-box">
-        <h3>💡 Tip for Expat Families</h3>
-        <p>
-          Looking for English-language education? Use the "International" or "Bilingual" filters
-          to find schools that offer instruction in English.
-        </p>
-        <ul>
-          <li><strong>International:</strong> Full English curriculum</li>
-          <li><strong>Bilingual:</strong> Dutch + English programs</li>
-        </ul>
+        <h3>💡 {useProximity ? 'Proximity Search' : 'Tip for Expat Families'}</h3>
+        {useProximity ? (
+          <p>
+            Find schools near your home or work address. Schools are sorted by distance,
+            showing the closest schools first. This helps you find convenient options for your family.
+          </p>
+        ) : (
+          <>
+            <p>
+              Looking for English-language education? Use the "International" or "Bilingual" filters
+              to find schools that offer instruction in English.
+            </p>
+            <ul>
+              <li><strong>International:</strong> Full English curriculum</li>
+              <li><strong>Bilingual:</strong> Dutch + English programs</li>
+            </ul>
+          </>
+        )}
       </div>
     </div>
   );

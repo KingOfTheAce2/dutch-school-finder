@@ -44,15 +44,28 @@ function App() {
       // If no filters, load all schools
       const hasFilters = Object.values(newFilters).some(v => v !== undefined && v !== '');
 
-      if (hasFilters) {
-        const data = await schoolAPI.searchSchools(newFilters);
+      if (!hasFilters) {
+        await loadSchools();
+        return;
+      }
+
+      // Check if this is a proximity search
+      if (newFilters.address && newFilters.radius_km) {
+        const data = await schoolAPI.searchNearbySchools(
+          newFilters.address,
+          newFilters.radius_km,
+          newFilters
+        );
         setSchools(data);
       } else {
-        await loadSchools();
+        // Regular search
+        const data = await schoolAPI.searchSchools(newFilters);
+        setSchools(data);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error searching schools:', err);
-      setError('Failed to search schools. Please try again.');
+      const errorMessage = err.response?.data?.detail || 'Failed to search schools. Please try again.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

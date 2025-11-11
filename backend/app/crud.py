@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func, or_
 from typing import List, Optional
 from .database import School
-from .models import SchoolSearchParams
+from .models import SchoolSearchParams, SchoolWithDistance
+from .distance import haversine_distance, calculate_bounding_box, format_distance
 
 
 def get_school_count(db: Session) -> int:
@@ -108,6 +109,107 @@ def update_school(db: Session, school_id: int, school_data: dict) -> Optional[Sc
         db.commit()
         db.refresh(school)
     return school
+
+
+def search_schools_by_proximity(
+    db: Session,
+    params: SchoolSearchParams,
+    latitude: float,
+    longitude: float,
+    radius_km: float
+) -> List[SchoolWithDistance]:
+    """
+    Search for schools within a radius of given coordinates
+
+    Args:
+        db: Database session
+        params: Search parameters (filters)
+        latitude: Center point latitude
+        longitude: Center point longitude
+        radius_km: Search radius in kilometers
+
+    Returns:
+        List of schools with distance information, sorted by distance
+    """
+    # Start with base query
+    query = db.query(School)
+
+    # Apply filters from params
+    if params.school_type:
+        query = query.filter(func.lower(School.school_type) == func.lower(params.school_type))
+
+    if params.min_rating:
+        query = query.filter(School.inspection_score >= params.min_rating)
+
+    if params.bilingual:
+        query = query.filter(School.is_bilingual == True)
+
+    if params.international:
+        query = query.filter(School.is_international == True)
+
+    # Filter by bounding box for efficiency
+    min_lat, max_lat, min_lon, max_lon = calculate_bounding_box(latitude, longitude, radius_km)
+    query = query.filter(
+        School.latitude >= min_lat,
+        School.latitude <= max_lat,
+        School.longitude >= min_lon,
+        School.longitude <= max_lon
+    )
+
+    # Filter out schools without coordinates
+    query = query.filter(
+        School.latitude.isnot(None),
+        School.longitude.isnot(None)
+    )
+
+    # Get all matching schools
+    schools = query.all()
+
+    # Calculate exact distances and filter by radius
+    schools_with_distance = []
+    for school in schools:
+        distance = haversine_distance(
+            latitude, longitude,
+            school.latitude, school.longitude
+        )
+
+        # Only include schools within radius
+        if distance <= radius_km:
+            # Convert SQLAlchemy model to dict and add distance
+            school_dict = {
+                "id": school.id,
+                "name": school.name,
+                "brin_code": school.brin_code,
+                "city": school.city,
+                "postal_code": school.postal_code,
+                "address": school.address,
+                "school_type": school.school_type,
+                "education_structure": school.education_structure,
+                "latitude": school.latitude,
+                "longitude": school.longitude,
+                "inspection_rating": school.inspection_rating,
+                "inspection_score": school.inspection_score,
+                "cito_score": school.cito_score,
+                "is_bilingual": school.is_bilingual,
+                "is_international": school.is_international,
+                "offers_english": school.offers_english,
+                "phone": school.phone,
+                "email": school.email,
+                "website": school.website,
+                "denomination": school.denomination,
+                "student_count": school.student_count,
+                "description": school.description,
+                "distance_km": round(distance, 2),
+                "distance_formatted": format_distance(distance)
+            }
+
+            schools_with_distance.append(SchoolWithDistance(**school_dict))
+
+    # Sort by distance
+    schools_with_distance.sort(key=lambda s: s.distance_km)
+
+    # Apply limit
+    return schools_with_distance[:params.limit]
 
 
 def delete_school(db: Session, school_id: int) -> bool:

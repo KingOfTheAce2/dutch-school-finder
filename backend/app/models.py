@@ -38,6 +38,15 @@ class SchoolResponse(SchoolBase):
         from_attributes = True
 
 
+class SchoolWithDistance(SchoolResponse):
+    """School response with distance from search location"""
+    distance_km: float = Field(description="Distance in kilometers from search location")
+    distance_formatted: str = Field(description="Formatted distance (e.g., '1.5 km' or '250 m')")
+
+    class Config:
+        from_attributes = True
+
+
 class SchoolSearchParams(BaseModel):
     """Parameters for school search"""
     city: Optional[str] = None

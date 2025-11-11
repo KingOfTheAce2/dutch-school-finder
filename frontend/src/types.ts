@@ -25,6 +25,9 @@ export interface School {
   denomination?: string;
   student_count?: number;
   description?: string;
+  // Distance fields (for proximity search)
+  distance_km?: number;
+  distance_formatted?: string;
 }
 
 export interface SearchFilters {
@@ -34,6 +37,9 @@ export interface SearchFilters {
   name?: string;
   bilingual?: boolean;
   international?: boolean;
+  // Proximity search
+  address?: string;
+  radius_km?: number;
 }
 
 export interface MapBounds {
