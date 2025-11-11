@@ -22,6 +22,7 @@ from .crud import (
     get_all_cities,
     get_school_types
 )
+from .extended_routes import router as extended_router
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -41,6 +42,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include extended feature routes
+app.include_router(extended_router, prefix="/api", tags=["Extended Features"])
 
 
 @app.on_event("startup")
