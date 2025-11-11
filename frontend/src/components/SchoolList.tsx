@@ -1,12 +1,17 @@
 import './SchoolList.css';
 import { School } from '../types';
+import { useTranslation } from 'react-i18next';
 
 interface SchoolListProps {
   schools: School[];
   onSelectSchool: (school: School) => void;
+  selectedForComparison?: number[];
+  onToggleComparison?: (schoolId: number) => void;
 }
 
-const SchoolList = ({ schools, onSelectSchool }: SchoolListProps) => {
+const SchoolList = ({ schools, onSelectSchool, selectedForComparison = [], onToggleComparison }: SchoolListProps) => {
+  const { t } = useTranslation();
+
   const getRatingColor = (score?: number) => {
     if (!score) return '#gray';
     if (score >= 9) return '#10b981';
@@ -110,9 +115,33 @@ const SchoolList = ({ schools, onSelectSchool }: SchoolListProps) => {
               <p className="school-description">{school.description}</p>
             )}
 
-            <button className="view-details-btn">
-              View Full Details →
-            </button>
+            <div className="school-card-actions">
+              <button className="view-details-btn">
+                View Full Details →
+              </button>
+              {onToggleComparison && (
+                <button
+                  className={`compare-btn ${
+                    selectedForComparison.includes(school.id) ? 'selected' : ''
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleComparison(school.id);
+                  }}
+                  title={
+                    selectedForComparison.includes(school.id)
+                      ? t('compare.remove')
+                      : t('compare.add')
+                  }
+                >
+                  {selectedForComparison.includes(school.id) ? (
+                    <>✓ {t('compare.remove')}</>
+                  ) : (
+                    <>+ {t('compare.add')}</>
+                  )}
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>

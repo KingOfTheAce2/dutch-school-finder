@@ -88,6 +88,20 @@ export const schoolAPI = {
   },
 
   /**
+   * Compare multiple schools (2-5 schools)
+   */
+  compareSchools: async (schoolIds: number[]): Promise<School[]> => {
+    if (schoolIds.length < 2 || schoolIds.length > 5) {
+      throw new Error('Please select 2-5 schools to compare');
+    }
+    const idsString = schoolIds.join(',');
+    const response = await api.get('/compare', {
+      params: { ids: idsString },
+    });
+    return response.data;
+  },
+
+  /**
    * Geocode an address
    */
   geocodeAddress: async (address: string): Promise<{ latitude: number; longitude: number }> => {

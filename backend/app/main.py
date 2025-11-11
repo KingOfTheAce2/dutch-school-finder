@@ -110,6 +110,66 @@ def get_school(school_id: int, db: Session = Depends(get_db)):
     return school
 
 
+@app.get("/compare", response_model=List[SchoolResponse])
+def compare_schools(
+    ids: str = Query(..., description="Comma-separated school IDs (e.g., '1,5,12')"),
+    db: Session = Depends(get_db)
+):
+    """
+    Compare multiple schools side by side
+
+    Accepts 2-5 school IDs separated by commas and returns complete information
+    for each school to enable side-by-side comparison.
+
+    Example: /compare?ids=1,5,12
+    """
+    try:
+        # Parse and validate school IDs
+        school_ids = [int(id.strip()) for id in ids.split(',')]
+
+        if len(school_ids) < 2:
+            raise HTTPException(
+                status_code=400,
+                detail="Please select at least 2 schools to compare"
+            )
+
+        if len(school_ids) > 5:
+            raise HTTPException(
+                status_code=400,
+                detail="Please select no more than 5 schools to compare"
+            )
+
+        # Fetch schools
+        schools = []
+        missing_ids = []
+
+        for school_id in school_ids:
+            school = get_school_by_id(db, school_id)
+            if school:
+                schools.append(school)
+            else:
+                missing_ids.append(school_id)
+
+        if missing_ids:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Schools not found: {', '.join(map(str, missing_ids))}"
+            )
+
+        return schools
+
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid ID format. Please provide comma-separated numbers (e.g., '1,5,12')"
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error comparing schools: {e}")
+        raise HTTPException(status_code=500, detail="Error comparing schools")
+
+
 @app.get("/schools/search", response_model=List[SchoolResponse])
 def search_schools_endpoint(
     city: Optional[str] = Query(None, description="Filter by city name"),

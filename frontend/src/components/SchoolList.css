@@ -126,8 +126,14 @@
   overflow: hidden;
 }
 
-.view-details-btn {
+.school-card-actions {
   margin-top: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.view-details-btn {
+  flex: 1;
   padding: 10px;
   background-color: #f3f4f6;
   color: #374151;
@@ -136,11 +142,41 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .view-details-btn:hover {
   background-color: #e5e7eb;
+}
+
+.compare-btn {
+  padding: 10px 16px;
+  background-color: #fff;
+  color: #667eea;
+  border: 2px solid #667eea;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.compare-btn:hover {
+  background-color: #667eea;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.compare-btn.selected {
+  background-color: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.compare-btn.selected:hover {
+  background-color: #5568d3;
+  border-color: #5568d3;
 }
 
 /* Empty State */

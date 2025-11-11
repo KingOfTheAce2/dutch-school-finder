@@ -5,6 +5,8 @@ import SearchPanel from './components/SearchPanel';
 import SchoolMap from './components/SchoolMap';
 import SchoolList from './components/SchoolList';
 import SchoolDetail from './components/SchoolDetail';
+import ComparisonBar from './components/ComparisonBar';
+import ComparisonTable from './components/ComparisonTable';
 import { School, SearchFilters } from './types';
 import { schoolAPI } from './api';
 
@@ -15,6 +17,10 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'map' | 'list'>('map');
   const [filters, setFilters] = useState<SearchFilters>({});
+
+  // Comparison state
+  const [selectedForComparison, setSelectedForComparison] = useState<number[]>([]);
+  const [showComparison, setShowComparison] = useState(false);
 
   // Load initial schools
   useEffect(() => {
@@ -79,6 +85,67 @@ function App() {
     setSelectedSchool(null);
   };
 
+  // Comparison handlers
+  const handleToggleComparison = (schoolId: number) => {
+    setSelectedForComparison((prev) => {
+      if (prev.includes(schoolId)) {
+        // Remove from comparison
+        return prev.filter((id) => id !== schoolId);
+      } else {
+        // Add to comparison (max 5)
+        if (prev.length >= 5) {
+          alert('You can compare a maximum of 5 schools');
+          return prev;
+        }
+        return [...prev, schoolId];
+      }
+    });
+  };
+
+  const handleRemoveFromComparison = (schoolId: number) => {
+    setSelectedForComparison((prev) => prev.filter((id) => id !== schoolId));
+  };
+
+  const handleClearComparison = () => {
+    setSelectedForComparison([]);
+    setShowComparison(false);
+  };
+
+  const handleShowComparison = () => {
+    if (selectedForComparison.length >= 2) {
+      setShowComparison(true);
+    }
+  };
+
+  const handleCloseComparison = () => {
+    setShowComparison(false);
+  };
+
+  // Get selected schools for comparison bar
+  const getSelectedSchools = (): School[] => {
+    return schools.filter((school) => selectedForComparison.includes(school.id));
+  };
+
+  // Load selected schools from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('comparison');
+    if (saved) {
+      try {
+        const ids = JSON.parse(saved);
+        if (Array.isArray(ids)) {
+          setSelectedForComparison(ids);
+        }
+      } catch (e) {
+        console.error('Failed to load comparison from localStorage', e);
+      }
+    }
+  }, []);
+
+  // Save selected schools to localStorage
+  useEffect(() => {
+    localStorage.setItem('comparison', JSON.stringify(selectedForComparison));
+  }, [selectedForComparison]);
+
   return (
     <div className="app">
       <Header />
@@ -118,6 +185,8 @@ function App() {
                 <SchoolList
                   schools={schools}
                   onSelectSchool={handleSelectSchool}
+                  selectedForComparison={selectedForComparison}
+                  onToggleComparison={handleToggleComparison}
                 />
               )}
             </>
@@ -125,10 +194,27 @@ function App() {
         </div>
       </div>
 
+      {/* School Detail Modal */}
       {selectedSchool && (
         <SchoolDetail
           school={selectedSchool}
           onClose={handleCloseDetail}
+        />
+      )}
+
+      {/* Comparison Bar */}
+      <ComparisonBar
+        selectedSchools={getSelectedSchools()}
+        onRemove={handleRemoveFromComparison}
+        onCompare={handleShowComparison}
+        onClear={handleClearComparison}
+      />
+
+      {/* Comparison Table Modal */}
+      {showComparison && (
+        <ComparisonTable
+          schoolIds={selectedForComparison}
+          onClose={handleCloseComparison}
         />
       )}
     </div>
