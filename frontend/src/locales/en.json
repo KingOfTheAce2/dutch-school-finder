@@ -1,0 +1,111 @@
+{
+  "app": {
+    "title": "Dutch Education Navigator",
+    "subtitle": "Find schools, childcare, and universities in the Netherlands"
+  },
+  "header": {
+    "title": "Dutch Education Navigator",
+    "tagline": "Find the perfect education for your family in the Netherlands",
+    "englishBadge": "English",
+    "expatFriendly": "Expat-Friendly"
+  },
+  "search": {
+    "title": "Search",
+    "viewMap": "Map",
+    "viewList": "List",
+    "proximity": "Search by Address (Proximity)",
+    "yourAddress": "Your Address",
+    "addressPlaceholder": "e.g., Dam 1, Amsterdam",
+    "addressHint": "Enter address as: \"Street, City\" or just \"City\"",
+    "radius": "Search Radius: {{radius}} km",
+    "schoolName": "Institution Name",
+    "namePlaceholder": "Search by name...",
+    "city": "City",
+    "allCities": "All Cities",
+    "type": "Type",
+    "allTypes": "All Types",
+    "educationLevel": "Education Level",
+    "minRating": "Minimum Rating",
+    "anyRating": "Any Rating",
+    "excellent": "Excellent (9.0+)",
+    "good": "Good (7.5+)",
+    "satisfactory": "Satisfactory (6.0+)",
+    "adequate": "Adequate (5.0+)",
+    "bilingual": "Bilingual Only",
+    "international": "International Only",
+    "searchButton": "Search",
+    "searching": "Searching...",
+    "reset": "Reset"
+  },
+  "educationLevels": {
+    "all": "All Levels",
+    "childcare": "Childcare (0-4 years)",
+    "primary": "Primary School (4-12 years)",
+    "secondary": "Secondary School (12-18 years)",
+    "mbo": "MBO - Vocational Education",
+    "hbo": "HBO - University of Applied Sciences",
+    "university": "University - Research University"
+  },
+  "schoolTypes": {
+    "Primary": "Primary School",
+    "Secondary": "Secondary School",
+    "Special Education": "Special Education"
+  },
+  "infoBox": {
+    "proximityTitle": "Proximity Search",
+    "proximityText": "Find institutions near your home or work address. Results are sorted by distance, showing the closest options first.",
+    "expatTitle": "Tip for Expat Families",
+    "expatText": "Looking for English-language education? Use the \"International\" or \"Bilingual\" filters to find institutions that offer instruction in English.",
+    "internationalDesc": "Full English curriculum",
+    "bilingualDesc": "Dutch + English programs"
+  },
+  "results": {
+    "found": "Found {{count}} institution",
+    "found_plural": "Found {{count}} institutions",
+    "noResults": "No institutions found",
+    "noResultsHint": "Try adjusting your search filters to find more options.",
+    "away": "away"
+  },
+  "details": {
+    "close": "Close",
+    "quality": "Quality",
+    "location": "Location",
+    "address": "Address",
+    "postalCode": "Postal Code",
+    "schoolInfo": "Institution Information",
+    "type": "Type",
+    "educationLevel": "Education Level",
+    "denomination": "Denomination",
+    "students": "Number of Students",
+    "brinCode": "BRIN Code",
+    "qualityIndicators": "Quality Indicators",
+    "inspectionRating": "Inspection Rating",
+    "inspectionScore": "Inspection Score",
+    "citoScore": "CITO Score",
+    "citoInfo": "The CITO test is taken by Dutch primary school students in their final year. Average score is around 535. Higher scores indicate better academic performance.",
+    "contact": "Contact Information",
+    "phone": "Phone",
+    "email": "Email",
+    "website": "Website",
+    "visitWebsite": "Visit Website",
+    "viewOnMaps": "View on Google Maps",
+    "programs": "Programs Offered",
+    "facilities": "Facilities"
+  },
+  "compare": {
+    "title": "Compare Institutions",
+    "selectToCompare": "Select 2-5 institutions to compare",
+    "add": "Add to Compare",
+    "remove": "Remove from Compare",
+    "comparing": "Comparing {{count}} institutions",
+    "clear": "Clear All",
+    "viewComparison": "View Comparison"
+  },
+  "languages": {
+    "en": "English",
+    "nl": "Nederlands",
+    "es": "Español",
+    "de": "Deutsch",
+    "fr": "Français"
+  }
+}
