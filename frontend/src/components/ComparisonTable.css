@@ -1,0 +1,376 @@
+.comparison-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+  overflow-y: auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.comparison-container {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1400px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.comparison-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  border-bottom: 2px solid #e2e8f0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px 16px 0 0;
+}
+
+.comparison-header-bar h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.close-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.comparison-table-wrapper {
+  flex: 1;
+  overflow: auto;
+  padding: 24px 32px;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.comparison-table thead {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+.row-label-header {
+  background: #f8fafc;
+  width: 200px;
+  min-width: 200px;
+  position: sticky;
+  left: 0;
+  z-index: 11;
+}
+
+.school-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 16px;
+  text-align: center;
+  min-width: 220px;
+}
+
+.school-header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.school-header-name {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.school-header-location {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.comparison-table tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.comparison-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.comparison-table tbody tr.highlight-row {
+  background: #fef3c7;
+}
+
+.comparison-table tbody tr.highlight-row:hover {
+  background: #fde68a;
+}
+
+.row-label {
+  background: #f8fafc;
+  font-weight: 600;
+  padding: 16px;
+  border-right: 2px solid #e2e8f0;
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.row-icon {
+  font-size: 16px;
+}
+
+.comparison-table td {
+  padding: 16px;
+  text-align: center;
+  vertical-align: middle;
+  border-right: 1px solid #e2e8f0;
+}
+
+.comparison-table td:last-child {
+  border-right: none;
+}
+
+.school-name-cell {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 15px;
+}
+
+.rating-cell {
+  font-size: 18px;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.positive {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.neutral {
+  color: #64748b;
+}
+
+.website-link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.website-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.comparison-footer {
+  padding: 20px 32px;
+  border-top: 2px solid #e2e8f0;
+  display: flex;
+  justify-content: center;
+}
+
+.primary-button,
+.secondary-button {
+  padding: 12px 32px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.primary-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.secondary-button {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.secondary-button:hover {
+  background: #cbd5e1;
+}
+
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-state h2 {
+  color: #ef4444;
+  margin-bottom: 12px;
+}
+
+.error-state p {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1024px) {
+  .comparison-container {
+    max-height: 95vh;
+  }
+
+  .comparison-header-bar {
+    padding: 20px 24px;
+  }
+
+  .comparison-header-bar h2 {
+    font-size: 20px;
+  }
+
+  .comparison-table-wrapper {
+    padding: 20px;
+  }
+
+  .row-label {
+    width: 150px;
+    min-width: 150px;
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  .school-header {
+    min-width: 180px;
+    padding: 12px;
+  }
+
+  .school-header-name {
+    font-size: 14px;
+  }
+
+  .school-header-location {
+    font-size: 12px;
+  }
+
+  .comparison-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .comparison-overlay {
+    padding: 10px;
+  }
+
+  .comparison-container {
+    max-height: 100vh;
+    border-radius: 12px;
+  }
+
+  .comparison-header-bar {
+    padding: 16px;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .comparison-header-bar h2 {
+    font-size: 18px;
+  }
+
+  .comparison-table-wrapper {
+    padding: 12px;
+  }
+
+  .row-label {
+    width: 120px;
+    min-width: 120px;
+    font-size: 12px;
+    padding: 10px 8px;
+  }
+
+  .school-header {
+    min-width: 150px;
+    padding: 10px;
+  }
+
+  .comparison-table td {
+    padding: 10px 6px;
+    font-size: 12px;
+  }
+
+  .comparison-footer {
+    padding: 16px;
+  }
+}

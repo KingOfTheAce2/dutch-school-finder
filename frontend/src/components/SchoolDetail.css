@@ -1,0 +1,237 @@
+.school-detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.school-detail-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 500px;
+  max-width: 100%;
+  height: 100%;
+  background-color: white;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+  z-index: 2001;
+  overflow-y: auto;
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: #f3f4f6;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  z-index: 10;
+}
+
+.close-button:hover {
+  background-color: #e5e7eb;
+}
+
+.school-detail-content {
+  padding: 80px 24px 24px;
+}
+
+/* Header */
+.detail-header {
+  margin-bottom: 20px;
+}
+
+.detail-header h2 {
+  margin: 0 0 16px 0;
+  font-size: 28px;
+  color: #1f2937;
+  line-height: 1.3;
+}
+
+.detail-rating {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: white;
+}
+
+.rating-score {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.rating-label {
+  font-size: 13px;
+  margin-top: 4px;
+  opacity: 0.9;
+}
+
+/* Badges */
+.detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.detail-badges .badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Sections */
+.detail-section {
+  margin-bottom: 32px;
+}
+
+.detail-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: #1f2937;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 8px;
+}
+
+.description-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* Info Grid */
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px;
+  background-color: #f9fafb;
+  border-radius: 6px;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.info-value {
+  color: #1f2937;
+  font-size: 14px;
+  text-align: right;
+}
+
+.info-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.info-link:hover {
+  text-decoration: underline;
+}
+
+.info-note {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #eff6ff;
+  border-left: 3px solid #2563eb;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1e40af;
+}
+
+/* Action Buttons */
+.detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.action-button {
+  display: block;
+  padding: 14px 20px;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.action-button.primary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.action-button.primary:hover {
+  background-color: #1d4ed8;
+}
+
+.action-button.secondary {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.action-button.secondary:hover {
+  background-color: #e5e7eb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .school-detail-panel {
+    width: 100%;
+  }
+
+  .school-detail-content {
+    padding: 70px 20px 20px;
+  }
+
+  .detail-header h2 {
+    font-size: 24px;
+  }
+}

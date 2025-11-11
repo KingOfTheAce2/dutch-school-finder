@@ -1,0 +1,107 @@
+{
+  "app": {
+    "title": "Навигатор образования Нидерландов",
+    "subtitle": "Найдите школы, детские сады и университеты в Нидерландах"
+  },
+  "header": {
+    "title": "Навигатор образования Нидерландов",
+    "tagline": "Найдите идеальное образование для вашей семьи в Нидерландах",
+    "englishBadge": "Английский",
+    "expatFriendly": "Для экспатов"
+  },
+  "search": {
+    "title": "Поиск",
+    "viewMap": "Карта",
+    "viewList": "Список",
+    "proximity": "Поиск по адресу (близость)",
+    "yourAddress": "Ваш адрес",
+    "addressPlaceholder": "например, Dam 1, Amsterdam",
+    "addressHint": "Введите адрес как: \"Улица, Город\" или просто \"Город\"",
+    "radius": "Радиус поиска: {{radius}} км",
+    "schoolName": "Название учреждения",
+    "namePlaceholder": "Поиск по названию...",
+    "city": "Город",
+    "allCities": "Все города",
+    "type": "Тип",
+    "allTypes": "Все типы",
+    "educationLevel": "Уровень образования",
+    "minRating": "Минимальный рейтинг",
+    "anyRating": "Любой рейтинг",
+    "excellent": "Отлично (9.0+)",
+    "good": "Хорошо (7.5+)",
+    "satisfactory": "Удовлетворительно (6.0+)",
+    "adequate": "Приемлемо (5.0+)",
+    "bilingual": "Только двуязычные",
+    "international": "Только международные",
+    "searchButton": "Поиск",
+    "searching": "Поиск...",
+    "reset": "Сбросить"
+  },
+  "educationLevels": {
+    "all": "Все уровни",
+    "childcare": "Детский сад (0-4 года)",
+    "primary": "Начальная школа (4-12 лет)",
+    "secondary": "Средняя школа (12-18 лет)",
+    "mbo": "MBO - Профессиональное образование",
+    "hbo": "HBO - Прикладной университет",
+    "university": "Университет - Исследовательский университет"
+  },
+  "schoolTypes": {
+    "Primary": "Начальная школа",
+    "Secondary": "Средняя школа",
+    "Special Education": "Специальное образование"
+  },
+  "results": {
+    "found": "Найдено {{count}} учреждение",
+    "found_plural": "Найдено {{count}} учреждений",
+    "noResults": "Учреждения не найдены",
+    "noResultsHint": "Попробуйте изменить фильтры поиска.",
+    "away": "расстояние"
+  },
+  "compare": {
+    "title": "Сравнить учреждения",
+    "add": "Добавить к сравнению",
+    "remove": "Удалить из сравнения",
+    "clear": "Очистить все",
+    "viewComparison": "Просмотреть сравнение"
+  },
+  "comparison": {
+    "selected": "{{count}} выбрано",
+    "clearAll": "Очистить все",
+    "remove": "Удалить",
+    "selectAtLeast": "Выберите еще {{count}}",
+    "readyToCompare": "Готово к сравнению",
+    "compareButton": "Сравнить",
+    "loading": "Загрузка сравнения...",
+    "error": "Ошибка загрузки",
+    "goBack": "Назад",
+    "close": "Закрыть",
+    "schoolName": "Название школы",
+    "city": "Город",
+    "schoolType": "Тип школы",
+    "rating": "Рейтинг качества",
+    "students": "Студенты",
+    "denomination": "Вероисповедание",
+    "structure": "Образовательная структура",
+    "bilingual": "Двуязычное",
+    "international": "Международное",
+    "englishProgram": "Английская программа",
+    "address": "Адрес",
+    "phone": "Телефон",
+    "email": "Email",
+    "website": "Веб-сайт",
+    "visitWebsite": "Посетить сайт",
+    "notAvailable": "Н/Д"
+  },
+  "languages": {
+    "en": "English",
+    "nl": "Nederlands",
+    "ru": "Русский",
+    "uk": "Українська",
+    "tr": "Türkçe",
+    "ar": "العربية",
+    "es": "Español",
+    "de": "Deutsch",
+    "fr": "Français"
+  }
+}
