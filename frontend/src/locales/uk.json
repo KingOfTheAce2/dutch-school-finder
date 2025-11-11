@@ -1,0 +1,107 @@
+{
+  "app": {
+    "title": "Навігатор освіти Нідерландів",
+    "subtitle": "Знайдіть школи, дитячі садки та університети в Нідерландах"
+  },
+  "header": {
+    "title": "Навігатор освіти Нідерландів",
+    "tagline": "Знайдіть ідеальну освіту для вашої родини в Нідерландах",
+    "englishBadge": "Англійська",
+    "expatFriendly": "Для експатів"
+  },
+  "search": {
+    "title": "Пошук",
+    "viewMap": "Карта",
+    "viewList": "Список",
+    "proximity": "Пошук за адресою (близькість)",
+    "yourAddress": "Ваша адреса",
+    "addressPlaceholder": "наприклад, Dam 1, Amsterdam",
+    "addressHint": "Введіть адресу як: \"Вулиця, Місто\" або просто \"Місто\"",
+    "radius": "Радіус пошуку: {{radius}} км",
+    "schoolName": "Назва закладу",
+    "namePlaceholder": "Пошук за назвою...",
+    "city": "Місто",
+    "allCities": "Всі міста",
+    "type": "Тип",
+    "allTypes": "Всі типи",
+    "educationLevel": "Рівень освіти",
+    "minRating": "Мінімальний рейтинг",
+    "anyRating": "Будь-який рейтинг",
+    "excellent": "Відмінно (9.0+)",
+    "good": "Добре (7.5+)",
+    "satisfactory": "Задовільно (6.0+)",
+    "adequate": "Прийнятно (5.0+)",
+    "bilingual": "Тільки двомовні",
+    "international": "Тільки міжнародні",
+    "searchButton": "Пошук",
+    "searching": "Пошук...",
+    "reset": "Скинути"
+  },
+  "educationLevels": {
+    "all": "Всі рівні",
+    "childcare": "Дитячий садок (0-4 роки)",
+    "primary": "Початкова школа (4-12 років)",
+    "secondary": "Середня школа (12-18 років)",
+    "mbo": "MBO - Професійна освіта",
+    "hbo": "HBO - Прикладний університет",
+    "university": "Університет - Дослідницький університет"
+  },
+  "schoolTypes": {
+    "Primary": "Початкова школа",
+    "Secondary": "Середня школа",
+    "Special Education": "Спеціальна освіта"
+  },
+  "results": {
+    "found": "Знайдено {{count}} заклад",
+    "found_plural": "Знайдено {{count}} закладів",
+    "noResults": "Заклади не знайдені",
+    "noResultsHint": "Спробуйте змінити фільтри пошуку.",
+    "away": "відстань"
+  },
+  "compare": {
+    "title": "Порівняти заклади",
+    "add": "Додати до порівняння",
+    "remove": "Видалити з порівняння",
+    "clear": "Очистити все",
+    "viewComparison": "Переглянути порівняння"
+  },
+  "comparison": {
+    "selected": "{{count}} вибрано",
+    "clearAll": "Очистити все",
+    "remove": "Видалити",
+    "selectAtLeast": "Виберіть ще {{count}}",
+    "readyToCompare": "Готово до порівняння",
+    "compareButton": "Порівняти",
+    "loading": "Завантаження порівняння...",
+    "error": "Помилка завантаження",
+    "goBack": "Назад",
+    "close": "Закрити",
+    "schoolName": "Назва школи",
+    "city": "Місто",
+    "schoolType": "Тип школи",
+    "rating": "Рейтинг якості",
+    "students": "Студенти",
+    "denomination": "Віросповідання",
+    "structure": "Освітня структура",
+    "bilingual": "Двомовне",
+    "international": "Міжнародне",
+    "englishProgram": "Англійська програма",
+    "address": "Адреса",
+    "phone": "Телефон",
+    "email": "Email",
+    "website": "Веб-сайт",
+    "visitWebsite": "Відвідати сайт",
+    "notAvailable": "Н/Д"
+  },
+  "languages": {
+    "en": "English",
+    "nl": "Nederlands",
+    "ru": "Русский",
+    "uk": "Українська",
+    "tr": "Türkçe",
+    "ar": "العربية",
+    "es": "Español",
+    "de": "Deutsch",
+    "fr": "Français"
+  }
+}

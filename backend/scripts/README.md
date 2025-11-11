@@ -59,24 +59,78 @@ python -m scripts.ingest_hbo_university_data
 python -m scripts.ingest_hbo_university_data --no-geocode
 ```
 
-### 4. Childcare (Kinderopvang)
-**Script**: `ingest_childcare_lrk.py`
-**Data Source**: LRK (Landelijk Register Kinderopvang)
-**Coverage**: ~10,000 childcare centers
-**Status**: ⚠️ Template - requires website analysis
+### 4. Childcare (Kinderopvang) - OFFICIAL DATA
+**Script**: `ingest_childcare_official.py` ✅ **NEW - Uses Official CSV Export**
+**Data Source**:
+- LRK: https://www.landelijkregisterkinderopvang.nl/opendata/export_opendata_lrk.csv
+- RBK: https://www.landelijkregisterkinderopvang.nl/opendata/export_opendata_rbk.csv
+**License**: CC-0 (1.0) - Public Domain
+**Update**: Twice per week (Monday & Friday)
+**Coverage**: ~10,000+ childcare centers
+**Status**: ✅ Ready to use - Direct CSV download (NO web scraping!)
 
 ```bash
-# IMPORTANT: Read the script comments first!
-# This is a template that needs to be customized
+# Dry run (preview data)
+python -m scripts.ingest_childcare_official --source lrk --dry-run
 
-python -m scripts.ingest_childcare_lrk --city Amsterdam --max-results 100 --dry-run
+# Ingest domestic childcare (LRK)
+python -m scripts.ingest_childcare_official --source lrk
+
+# Ingest foreign childcare (RBK)
+python -m scripts.ingest_childcare_official --source rbk
+
+# Ingest both
+python -m scripts.ingest_childcare_official --source all
+
+# Without geocoding (faster)
+python -m scripts.ingest_childcare_official --source lrk --no-geocode
+
+# Limit records for testing
+python -m scripts.ingest_childcare_official --source lrk --limit 100
 ```
 
-**Note**: The LRK registry requires web scraping. Before running:
-1. Visit https://www.landelijkregisterkinderopvang.nl/
-2. Analyze the search interface and HTML structure
-3. Update the parsing logic in the script
-4. Check robots.txt and respect rate limits
+**Note**: Uses official CSV exports from DUO - no web scraping required!
+
+#### Old Template Script (Deprecated)
+**Script**: `ingest_childcare_lrk.py` (⚠️ Deprecated - use ingest_childcare_official.py instead)
+This was a web scraping template. The official CSV download is preferred.
+
+### 5. CBS Statistics Enrichment
+**Script**: `ingest_cbs_statistics.py` ✅ **NEW**
+**Data Source**: CBS StatLine Open Data API
+**API**: https://opendata.cbs.nl/ODataCatalog/
+**License**: CC-BY 4.0
+**Purpose**: Enrich institutions with student counts, graduation rates, demographics
+**Status**: ✅ Ready to use
+
+**Prerequisites**:
+```bash
+pip install cbsodata
+```
+
+**Usage**:
+```bash
+# Enrich all institution types
+python -m scripts.ingest_cbs_statistics --type all
+
+# Enrich specific types
+python -m scripts.ingest_cbs_statistics --type mbo
+python -m scripts.ingest_cbs_statistics --type hbo
+python -m scripts.ingest_cbs_statistics --type university
+
+# Dry run
+python -m scripts.ingest_cbs_statistics --type all --dry-run
+
+# List available CBS tables
+python -m scripts.ingest_cbs_statistics --list-tables
+```
+
+**Statistics Added**:
+- Student enrollment numbers (national totals)
+- Estimated per-institution distributions
+- Graduation rates
+- Study programs
+- Labor market outcomes (MBO)
 
 ## 🔄 Database Migration
 
