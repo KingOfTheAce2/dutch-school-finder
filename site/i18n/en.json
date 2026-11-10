@@ -1,0 +1,861 @@
+{
+  "brand": {
+    "name": "Schoolpath NL",
+    "tagline": "An unofficial guide for parents new to Dutch schools"
+  },
+  "meta": {
+    "description": "Dutch schools explained in English for expat families: your child's route through the system and the real schools near your postcode."
+  },
+  "title": {
+    "route": "{brand}",
+    "find": "Find a school | {brand}",
+    "map": "Map of schools | {brand}",
+    "compare": "Compare schools | {brand}",
+    "system": "The whole Dutch school system | {brand}",
+    "faq": "Questions parents ask | {brand}",
+    "sources": "Data and sources | {brand}",
+    "school": "{name} | {brand}",
+    "schoolNotFound": "School not found | {brand}"
+  },
+  "a11y": { "skip": "Skip to the content" },
+  "lang": { "label": "Language" },
+  "nav": {
+    "aria": "Views",
+    "route": "Your route",
+    "find": "Find a school",
+    "map": "Map",
+    "system": "Whole system",
+    "faq": "Questions",
+    "sources": "Data & sources"
+  },
+  "hero": {
+    "title": "Your child's route through Dutch school, and the actual schools near you that fit each step.",
+    "v1": "Only the steps still ahead of your child, with dates and what you have to do.",
+    "v2": "Real schools near your postcode, with pupil numbers, where their pupils go next and exam results.",
+    "v3": "Every municipality. Your answers stay in this browser and are never sent to us."
+  },
+  "form": {
+    "ageLabel": "Child's age",
+    "agePlaceholder": "Choose age",
+    "ageU4": "Under 4, or expecting",
+    "ageN": "{age} years",
+    "age18": "18 or older",
+    "pcLabel": "Postcode",
+    "pcHint": "e.g. 1234 AB (the 4 digits are enough)",
+    "pcPlaceholder": "1234 AB",
+    "go": "Show my route",
+    "tryExample": "Try an example:",
+    "privacy": "Your answers stay in this browser and are never sent to us. The map view loads map tiles from OpenStreetMap."
+  },
+  "ex": {
+    "amsterdam": "Amsterdam-Zuid (1077)",
+    "hague": "The Hague (2517)",
+    "eindhoven": "Eindhoven (5611)"
+  },
+  "err": {
+    "age": "Choose your child's age.",
+    "pc": "Enter a postcode like 1234 AB. The 4 digits are enough.",
+    "unknownPc": "We do not know postcode area {pc}. Check the digits. You can still see the route.",
+    "data": "School data could not load. The route still works."
+  },
+  "empty": {
+    "title": "Your route will appear here",
+    "text": "Enter your child's age and postcode above, or try one of the examples. You will get:",
+    "i1": "Only the steps still ahead of your child, with dates and what you have to do.",
+    "i2": "Real schools near your postcode, with pupil numbers, where their pupils go next and exam results.",
+    "i3": "Plain-English explanations of the Dutch terms you will meet, such as groep, havo and vwo.",
+    "findLink": "Browse all schools",
+    "systemLink": "See the whole system"
+  },
+  "gloss": { "title": "You will hear these words (glossary)" },
+  "glossary": [
+    ["groep", "year group (1 to 8 in primary school)"],
+    ["schooladvies", "school advice, the level your child's school recommends"],
+    ["doorstroomtoets", "the end-of-primary test"],
+    ["vmbo, havo, vwo", "the three main secondary levels, 4, 5 and 6 years"],
+    ["mbo", "vocational college, levels 1 to 4"],
+    ["hbo", "university of applied sciences"],
+    ["wo", "research university"],
+    ["brugklas", "the first year of secondary school"],
+    ["ISK", "newcomer class for Dutch learners aged 12 and up"],
+    ["tto", "bilingual Dutch-English secondary education: a large part of the lessons is taught in English"],
+    ["IB", "International Baccalaureate, an international programme and diploma"],
+    ["technasium", "a secondary school stream where pupils work on real design and research assignments for outside clients"],
+    ["Montessori, Dalton, Jenaplan, vrije school", "school concepts with their own teaching method. A vrije school follows Steiner (Waldorf) education"],
+    ["sbo", "special primary school"]
+  ],
+  "route": {
+    "title": "Your route",
+    "exampleTag": "EXAMPLE",
+    "aria": "Your route, stop by stop",
+    "age": { "u4": "under 4 or expecting", "18": "18 or older", "n": "age {age}" },
+    "place": ", {place}",
+    "meta": "{age}, postcode {pc}{place}. Only the steps still ahead are shown.",
+    "metaExample": "Example: {age}, postcode {pc}{place}. Enter your own details above to replace it.",
+    "muni": {
+      "in": "You are in {place}.",
+      "text": "Secondary sign-up is organised by schools in your region; check with your child's primary school.",
+      "unknown": "We do not know postcode area {pc}. Check the digits. The route below still applies."
+    },
+    "note": "Ages and school years are typical. Children can start, repeat or switch at different times, and the school decides. Check every date and rule with the school and your municipality."
+  },
+  "age": {
+    "typical": "Typical age",
+    "note": "These are average ages. Children can skip or repeat a year, also in primary school, and the school decides."
+  },
+  "tag": { "here": "You are here", "nextAction": "Next action", "nextDeadline": "Next deadline", "side": "Side step" },
+  "stop": { "todo": "What you do" },
+  "when": { "now": "Now, school year {sy}", "year": "School year {sy}" },
+  "stops": {
+    "pre": {
+      "title": "Before school: choose and register",
+      "age": "0 to 4",
+      "unit": "before groep 1",
+      "what": [
+        "A child may start primary school at age 4, and you can register from age 3. Many schools let a child come for a few settling-in days from age 3 years 10 months, up to 5 in total, but not every school offers them. Compulsory attendance starts on the first day of the month after the fifth birthday.",
+        "Public schools are open to every child. A denominational or other \"special\" school works from a religion or belief. Both kinds can follow methods such as Montessori or Dalton."
+      ],
+      "todo": ["Visit two or three schools and read their school guide.", "Ask each school how sign-up and any waiting list work."]
+    },
+    "g12": {
+      "title": "Year groups 1 and 2",
+      "age": "4 to 6",
+      "unit": "groep 1 and 2",
+      "what": ["The first two years of primary school, which has eight year groups. Most children start on their fourth birthday."],
+      "todo": ["Nothing to sign up for.", "Ask how the school decides when a child moves on to year group 3. The school decides, together with you."]
+    },
+    "g35": {
+      "title": "Year groups 3 to 5",
+      "age": "6 to 9",
+      "unit": "groep 3 to 5",
+      "what": ["The school keeps a record of your child's progress. The school advice in year group 8 is the school's judgement of that whole record."],
+      "todo": ["Ask for a talk once a year, and ask early if you are worried.", "If the school suggests repeating a year, ask for the reasons in writing (see Questions)."]
+    },
+    "g67": {
+      "title": "Year groups 6 and 7",
+      "age": "9 to 11",
+      "unit": "groep 6 and 7",
+      "what": ["Many schools start talking with parents about a likely secondary level around now. The formal advice is only given in year group 8."],
+      "todo": ["Ask the teacher when your school starts the conversation.", "Look at secondary schools and their open days. Dates differ per school."]
+    },
+    "g8": {
+      "title": "Year group 8: advice, test and sign-up",
+      "age": "11 to 12",
+      "unit": "groep 8",
+      "what": ["In year group 8 the school gives a school advice (schooladvies) and your child takes an end-of-primary test. The advice can name one level or two, for example havo and vwo. You sign up at a secondary school with the final advice."],
+      "whatDated": "Dates for school year 2026-27. They are set again every year.",
+      "whatUsual": "The usual pattern: provisional advice in January, the test from late January into February, final advice in March, and sign-up at the end of March. The exact dates are set each year. For your child this is {label}.",
+      "todo": ["Visit open days and make a short list of schools that offer the advised level.", "Ask how your region organises sign-up, and sign up within the sign-up week.", "Remember a school may refuse a child only on limited grounds, such as having no places left."]
+    },
+    "vo1": {
+      "title": "First year of secondary school (brugklas)",
+      "age": "12 to 13",
+      "unit": "year 1",
+      "what": ["Year 1 usually lasts one year, sometimes two. Many schools combine at least two levels in one class, for example vmbo-t with havo, or havo with vwo. Some schools are single-level and start in one level directly."],
+      "todo": ["Ask how and when a child can move up or down a level. The school decides.", "Ask what extra support the school gives."]
+    },
+    "vo23": {
+      "title": "Years 2 and 3: choosing a pathway or profile",
+      "age": "13 to 15",
+      "unit": "years 2 and 3",
+      "what": [
+        "In vmbo, pupils choose a learning pathway (basis, kader, mixed or theoretical) and a sector by the end of year 2. In havo and vwo, pupils choose one of four profiles before the upper years: nature and technology, nature and health, economics and society, or culture and society. Schools usually ask at the end of year 3.",
+        "After year 3 of havo or vwo, a recognised pass certificate also gives access to mbo level 2, 3 or 4."
+      ],
+      "todo": ["Ask which profiles the school offers and which studies each one opens.", "Moving between levels in these years is sometimes possible. The school decides."]
+    },
+    "fin": {
+      "title": "Exam year and what comes next",
+      "age": "15 to 18",
+      "unit": "exam year",
+      "what": ["The final exam year is year 4 in vmbo (age 15 to 16), year 5 in havo (age 16 to 17) and year 6 in vwo (age 17 to 18). Practical education runs to about age 18."],
+      "todo": ["For mbo, apply to the programme by 1 April of the exam year. You can apply later, but then you have no right to admission.", "For hbo or wo, check the subjects and application dates of each programme early."]
+    },
+    "he": {
+      "title": "After secondary school: mbo, hbo or wo",
+      "age": "from about 16 to 18",
+      "unit": "after the exam year",
+      "what": [
+        "<b>mbo</b> (vocational college) has four levels: level 1 takes 1 year, level 2 takes 1 to 2, level 3 takes 2 to 3 and level 4 takes 3 to 4 years. A level 4 diploma gives the right to enter hbo.",
+        "<b>hbo</b> (university of applied sciences): a bachelor takes 4 years, and the first year is the first-year certificate (propedeuse). An associate degree takes 2 years. A master takes 1 to 2 years.",
+        "<b>wo</b> (research university): a bachelor takes 3 years and a master 1 to 3 years. A PhD takes about 4 years. With a havo diploma, the usual route to wo is an hbo first year, and in most cases the university then decides. An hbo bachelor usually needs a bridging programme (pre-master) before a wo master.",
+        "Without the usual diploma, people from age 21 can ask for an admission test (21+ test). Each institution runs its own."
+      ],
+      "todo": ["Check the entry rules, dates and any selection of each programme."]
+    },
+    "newc": {
+      "when": "First, usually for up to about two years",
+      "age": "any age from 4",
+      "unit": "usually up to about two years",
+      "young": {
+        "title": "Newcomer class in primary school",
+        "what": "Parents usually choose between a special language class (schakelklas) for children who just arrived, and a regular class with extra Dutch lessons. A temporary newcomer provision can enrol a child for at most 2 years in total."
+      },
+      "old": {
+        "title": "Newcomer class in secondary school (ISK)",
+        "what": "A special class at a regular secondary school for recently arrived pupils who speak little or no Dutch. Lessons cover Dutch, maths and citizenship, and prepare pupils for regular secondary or mbo education. Most pupils stay up to about two years, then move to a regular class."
+      },
+      "todo": ["Ask your municipality, a reception location or the nearest school where places exist.", "Places can be limited in some cities, so ask early."]
+    }
+  },
+  "path": {
+    "pro": "<b>Practical education (praktijkonderwijs):</b> pupils can usually stay until the end of the school year in which they turn 18, on average about five years. Next: the mbo entry programme (level 1, one year, no earlier diploma needed, from age 16) or a work route that the school arranges with the mbo college.",
+    "vbk": "<b>vmbo basis or kader:</b> a diploma after 4 years. Basis leads to mbo level 2 (1 to 2 years). Kader leads to mbo level 3 (2 to 3 years) or level 4 (3 to 4 years), as the official entry requirements for 3 and 4 are the same. Programmes can add their own conditions, so ask the mbo college. A lower level is usually possible, and moving up later within mbo is possible.",
+    "vgt": "<b>vmbo gl/tl:</b> a diploma after 4 years. Leads to mbo level 3 or 4. Moving to havo year 4 is possible with an extra exam subject or other conditions, and the school decides.",
+    "havo": "<b>havo:</b> a diploma after 5 years. Leads to an hbo bachelor (4 years), an associate degree (2 years), mbo at any level, or vwo (the school decides the year, many use year 5). A havo diploma alone does not give access to wo.",
+    "vwo": "<b>vwo:</b> a diploma after 6 years. Leads to a wo bachelor (3 years), an hbo bachelor or an associate degree. Some studies ask for particular subjects or select applicants."
+  },
+  "next": {
+    "aria": "Next action",
+    "label": "Next action",
+    "coming": "Coming up",
+    "nothing": "Nothing to book yet",
+    "g8": {
+      "more": "Four dates this school year: 10 to 31 Jan, 25 Jan to 12 Feb, 24 Mar, 25 to 31 Mar 2027 (source: Rijksoverheid, VO-raad).",
+      "text": "Dates are set each year. Start visiting schools and ask your child's school for its calendar."
+    },
+    "g67": { "text": "Start looking at secondary schools now and ask the teacher when the conversation starts." },
+    "pre": { "date": "From age 3", "title": "Choose and register at a primary school", "text": "There is no national deadline. Visit schools and ask each how sign-up and any waiting list work." },
+    "adv": { "title": "School advice and secondary sign-up" },
+    "early": { "title": "First big step: school advice and secondary sign-up", "text": "Until then there is nothing to sign up for. Keep in touch with the teacher and ask early if you are worried about progress." },
+    "vo": { "date": "Ask the school", "title": "No national deadline right now", "text": "Level and profile choices are made by the school. Ask when they are made and what they mean for later studies." },
+    "fin": { "date": "1 April", "title": "Apply to the mbo programme", "text": "For mbo, apply by 1 April of the exam year to keep the right to admission. For hbo or wo, each programme sets its own dates." },
+    "he": { "date": "Ask the programme", "title": "Check dates and entry rules", "text": "Each programme sets its own application dates and entry rules." }
+  },
+  "adv": {
+    "dates": [
+      { "lab": "10 to 31 Jan 2027", "t": "Provisional school advice", "d": "The school gives a provisional advice. Ask for a talk and ask what it is based on." },
+      { "lab": "25 Jan to 12 Feb 2027", "t": "End-of-primary test (doorstroomtoets)", "d": "Your child takes the test at school. If the result is higher than the provisional advice, the school adjusts the advice upward, unless it explains why that is not in your child's interest." },
+      { "lab": "By 24 Mar 2027", "t": "Final school advice", "d": "The school sets the final advice. Secondary schools admit on this final advice." },
+      { "lab": "25 to 31 Mar 2027", "t": "National sign-up week", "d": "Sign up at the secondary school you choose, with the final advice. Many regions allow more than one school, so check how yours works." }
+    ],
+    "yearLabel": "January to March {y} (school year {sy})",
+    "hidden": "Advice figures hidden: too few pupils shown by DUO ({n} visible, {hidden} of 12 groups hidden).",
+    "none": "No advice figures available.",
+    "part": "{label} {pct}%",
+    "aria": "Advice given to leavers: {list}",
+    "line": "Advice of leavers: {list}. n = {n}",
+    "partial": ", partial: small groups are hidden by DUO"
+  },
+  "sep": { "list": ", " },
+  "amsterdam": {
+    "title": "Amsterdam",
+    "text": "Amsterdam runs a central lottery and matching procedure (centrale loting en matching) for secondary school. As we understand it, you rank schools that fit the school advice, each pupil gets a lot number, and places are matched using your ranking and the lot number. Do not assume the rules you know from another city apply here. The exact steps, the schools that take part and the dates change each year. Use the official Amsterdam sources and ask your child's school."
+  },
+  "preview": {
+    "sub": "Your child is under 10, so this step is a few years away. You can still look.",
+    "btn": "Preview secondary schools near me"
+  },
+  "q": {
+    "optional": "Optional. You can skip this.",
+    "grp": {
+      "label": "Which year group is your child in?",
+      "6": "Year group 6",
+      "7": "Year group 7",
+      "8": "Year group 8",
+      "vo": "Already in secondary school",
+      "hint": "We guessed from the age. Change it if it is wrong."
+    },
+    "level": {
+      "notSure": "Not sure",
+      "notYet": "Not yet, or not sure",
+      "labelIn": "Which school type is your child in now?",
+      "label": "Has the school given a school advice (schooladvies) yet?"
+    },
+    "new": {
+      "label": "Has your child been in the Netherlands less than a year, or is still learning Dutch?",
+      "hint": "Optional. Adds newcomer class information."
+    }
+  },
+  "lvl": {
+    "pro": "Praktijkonderwijs (practical education)",
+    "bb": "vmbo basis",
+    "bbkb": "vmbo basis and kader",
+    "kb": "vmbo kader",
+    "kbgt": "vmbo kader and gl/tl",
+    "gt": "vmbo gl/tl",
+    "gthavo": "vmbo gl/tl and havo",
+    "havo": "havo",
+    "havovwo": "havo and vwo",
+    "vwo": "vwo"
+  },
+  "chips": { "pro": "Practical", "bb": "vmbo basis", "kb": "vmbo kader", "gt": "vmbo gl/tl", "havo": "havo", "vwo": "vwo", "gym": "Gymnasium", "ib": "IB" },
+  "seg": { "pro": "Practical", "vbk": "vmbo basis/kader", "vgt": "vmbo gl/tl", "havo": "havo", "vwo": "vwo" },
+  "badge": { "pro": "practical", "bb": "bb", "kb": "kb", "gl": "gl", "tl": "tl", "havo": "havo", "vwo": "vwo", "gym": "gym", "ib": "IB", "ess": "ESS" },
+  "tk": { "pro": "Practical", "bb": "vmbo basis", "kb": "vmbo kader", "gt": "vmbo gl/tl", "havo": "havo", "vwo": "vwo", "bridge": "Bridge year" },
+  "broad": { "one": "{n} level under one roof", "other": "{n} levels under one roof" },
+  "den": {
+    "Openbaar": "Public",
+    "Rooms-Katholiek": "Catholic",
+    "Protestants-Christelijk": "Protestant",
+    "Islamitisch": "Islamic",
+    "Joods": "Jewish",
+    "Hindoeïstisch": "Hindu",
+    "Antroposofisch": "Anthroposophic (Steiner)",
+    "Evangelisch": "Evangelical",
+    "Evangelische broedergemeenschap": "Moravian (Evangelical Brethren)",
+    "Gereformeerd": "Reformed",
+    "Gereformeerd vrijgemaakt": "Reformed (liberated)",
+    "Gereformeerd vrijgemaakt / Evangelisch": "Reformed (liberated) and Evangelical",
+    "Reformatorisch": "Orthodox Reformed",
+    "Interconfessioneel": "Interdenominational",
+    "Algemeen bijzonder": "Non-religious private (special)",
+    "Bijzonder": "Other special",
+    "Overige": "Other",
+    "Samenwerking Opb., PC": "Public and Protestant (joint)",
+    "Samenwerking Opb., RK": "Public and Catholic (joint)",
+    "Samenwerking PC, RK": "Protestant and Catholic (joint)",
+    "Samenwerking PC, RK, Alg. bijzonder": "Protestant, Catholic and non-religious (joint)",
+    "Samenwerking Opb., Alg. Bijz.": "Public and non-religious (joint)",
+    "Samenwerking PC, Alg. Bijz.": "Protestant and non-religious (joint)",
+    "other": "Other"
+  },
+  "ft": {
+    "tto": "Bilingual Dutch-English (tto)",
+    "ib": "IB",
+    "technasium": "Technasium",
+    "international": "International",
+    "montessori": "Montessori",
+    "dalton": "Dalton",
+    "jenaplan": "Jenaplan",
+    "vrije_school": "Steiner (vrije school)",
+    "newcomer": "Newcomer class"
+  },
+  "ftShort": { "vrije_school": "Steiner" },
+  "ff": { "showOnly": "Show only schools with:" },
+  "feat": {
+    "tip": "{label}. Source: {src}{checked}.{less}",
+    "checked": ", checked {date}",
+    "less": " Less certain: the school group or the school's site names it. Check with the school.",
+    "src": {
+      "site": "school website",
+      "nuffic": "Nuffic tto list",
+      "technasium": "Stichting Technasium school list",
+      "montessori": "Nederlandse Montessori Vereniging list",
+      "dalton": "Nederlandse Dalton Vereniging list",
+      "jenaplan": "Nederlandse Jenaplan Vereniging list",
+      "vrije": "Vereniging van vrijescholen list",
+      "dis": "Dutch International Schools list",
+      "sio": "SIO list",
+      "duo": "DUO data",
+      "other": "official list"
+    }
+  },
+  "od": {
+    "labels": {
+      "Open dag": "Open day",
+      "Informatieavond/-dag": "Information evening or day",
+      "Open huis": "Open house",
+      "Open avond": "Open evening",
+      "Kennismaking": "Introduction visit",
+      "Open middag": "Open afternoon"
+    },
+    "labelsLower": {
+      "Open dag": "open day",
+      "Informatieavond/-dag": "information evening or day",
+      "Open huis": "open house",
+      "Open avond": "open evening",
+      "Kennismaking": "introduction visit",
+      "Open middag": "open afternoon"
+    },
+    "default": "Open day",
+    "defaultLower": "open day",
+    "inferred": "Date from school site, year assumed",
+    "shared": "Listed on the site of the school group",
+    "check": "Check the school's site, dates change",
+    "next": "Next {label}:",
+    "source": "source",
+    "nearTitle": "Next open days near you",
+    "nearMeta": "({label}, {km})",
+    "nearNote": "Check the school's site, dates change. Not every school is listed."
+  },
+  "unit": {
+    "km": "{n} km",
+    "lessThanOne": "<1",
+    "pupils": { "one": "{n} pupil", "other": "{n} pupils" },
+    "pupilsAtLeast": { "one": "at least {n} pupil", "other": "at least {n} pupils" }
+  },
+  "pupils": {
+    "about": { "one": "about {n} pupil", "other": "about {n} pupils" },
+    "atLeast": { "one": "at least {n} pupil", "other": "at least {n} pupils" }
+  },
+  "val": { "fewer5": "fewer than 5", "atLeast": "at least {n}" },
+  "row": { "about": "about", "approx": "about, location approximate" },
+  "exam": {
+    "none": "No exam results in the data.",
+    "hidden": "hidden by DUO",
+    "few": "{n} candidates, too few for a pass rate",
+    "pass": "{pct}% passed, n = {n}",
+    "rowPass": "{pct}% passed, {n} candidates",
+    "partial": " (partial)"
+  },
+  "link": { "sodk": "Scholen op de kaart", "site": "School website" },
+  "load": { "data": "Loading school data..." },
+  "btn": {
+    "retry": "Try again",
+    "more": "Show {n} more ({left} left)",
+    "showMore": "Show more"
+  },
+  "panel": {
+    "noPc": "Enter a valid postcode above to see schools near you.",
+    "po": {
+      "title": "Primary schools near {pc}",
+      "sub": "Nearest first, straight-line distance from the middle of the postcode area.",
+      "note": "Pupil counts: {date}. The coloured bar shows the school advice given to last year's leavers ({range}). Mixed advice such as havo and vwo is counted at the higher level. Where DUO hides small groups the figures cover the visible pupils only. A school advice mix says little about whether the school fits your child.",
+      "ffCount": { "one": "{n} school with any selected feature. The labels come from association lists and school websites and can be incomplete.", "other": "{n} schools with any selected feature. The labels come from association lists and school websites and can be incomplete." },
+      "empty": "No primary school with these features in the data. Try fewer features."
+    },
+    "sbo": {
+      "title": "Special primary schools (sbo) near you",
+      "note": "Special primary schools are for children who need more support than a regular school can give. Admission needs a formal decision first. Ask your child's school."
+    },
+    "vo": {
+      "title": "Secondary schools near {pc}",
+      "sub": "Schools that offer the levels you pick, nearest first.",
+      "levels": "Levels",
+      "reset": "Reset to the advice",
+      "within": "Within",
+      "sumLevels": "Schools that offer any selected level. ",
+      "sumAll": "No level selected, so all schools with pupils are shown. ",
+      "sumFeat": "Only schools with any selected feature. ",
+      "count": "{n} within {km} km",
+      "showing": ", showing the nearest {n}.",
+      "empty": "No school with these levels within {km} km. Try a larger distance or fewer levels.",
+      "note": "Exam pass rate: share of final-year candidates who passed in {range}. It is shown when at least 30 candidates took the exam. \"Partial\" means DUO hides some small groups, so the rate covers the visible candidates only. Pupil counts are from {date} (provisional). A high pass rate is not the same as a good fit: it also depends on which pupils the school admits. \"Levels under one roof\" counts vmbo, havo and vwo; schools that offer several make switching levels easier, as parents often say. Features such as bilingual Dutch-English (tto), IB or Montessori come from association lists and school websites. They can be incomplete or out of date, so a school without a label may still offer it. Check open days and the school's own information."
+    },
+    "isk": {
+      "title": "Newcomer classes (ISK) near {pc}",
+      "sub": "Locations with ISK or a newcomer class in their name.",
+      "empty": "None found within {km} km. Ask your municipality.",
+      "note": "This is a name search, so some schools that run a newcomer class are missing. Your municipality or a nearby school can tell you where places exist."
+    }
+  },
+  "sec": {
+    "short": { "po": "Primary", "sbo": "Special primary", "vo": "Secondary" },
+    "long": { "po": "Primary school", "sbo": "Special primary school (sbo)", "vo": "Secondary school" },
+    "opt": { "all": "All schools", "po": "Primary", "sbo": "Special primary (sbo)", "vo": "Secondary" }
+  },
+  "filters": {
+    "aria": "School filters",
+    "qPlaceholder": "For example Montessori, Utrecht or 1077",
+    "qLabel": "Name, town, municipality or postcode",
+    "typeAria": "School type",
+    "type": "Type",
+    "levelsAria": "Secondary levels",
+    "levels": "Secondary levels (shows secondary schools that offer any selected level)",
+    "ftAria": "Concept and international",
+    "ft": "Concept, bilingual and international (any selected)",
+    "ftNote": "Labels come from association lists and school websites, so they can be incomplete.",
+    "anyDen": "Any denomination",
+    "den": "Denomination",
+    "anyDistance": "Any distance",
+    "within": "Within",
+    "mine": "Use my route postcode",
+    "clear": "Clear filters",
+    "unknownPc": "We do not know postcode area {pc}. Check the digits.",
+    "sortedPc": "Sorted nearest first, straight-line distance from the middle of the postcode area ({place}).",
+    "sortedName": "Sorted by name. Add a postcode to sort by distance.",
+    "summary": "Filters and search",
+    "active": "({n} active)"
+  },
+  "find": {
+    "title": "Find a school",
+    "intro": "Every primary, special primary and secondary school in the open data. Type a name, a town, a municipality or a postcode.",
+    "none": "No schools match.",
+    "count": { "one": "{n} school", "other": "{n} schools" },
+    "onMap": "Show these on the map",
+    "empty": "Try fewer filters, another spelling, or the first letters of a word. Search matches the start of words in the name, town, municipality and postcode.",
+    "note": "Pupil counts are from the DUO file of 1 October 2025. Numbers are context, not a ranking, and the list is never sorted by \"best\"."
+  },
+  "map": {
+    "title": "Map",
+    "intro": "The schools that match your filters. Colour shows the type, not a quality.",
+    "prefer": "Prefer a list?",
+    "listLink": "Open the same filters as a list",
+    "legendAria": "Colour key",
+    "leg": {
+      "po": "Primary",
+      "sbo": "Special primary (sbo)",
+      "pro": "Secondary, practical",
+      "vbk": "Secondary, vmbo basis/kader",
+      "vgt": "Secondary, vmbo gl/tl",
+      "havo": "Secondary, havo",
+      "vwo": "Secondary, vwo",
+      "unk": "Secondary, levels not in data"
+    },
+    "aria": "Map of schools. Use the list view for a keyboard friendly version.",
+    "note": "Colour shows which levels a school offers, not its quality. Secondary schools take the colour of the highest level they offer. Tap a dot for the name, type and pupils.",
+    "credit": "Map: OpenStreetMap contributors, via Leaflet. School locations: DUO addresses matched with the Kadaster BAG through PDOK. Some locations are approximate.",
+    "loading": "Loading the map...",
+    "failed": "The map could not load. The list view works without it.",
+    "attrName": "OpenStreetMap",
+    "attrTail": "contributors",
+    "shown": { "one": "{n} school shown", "other": "{n} schools shown" },
+    "noloc": { "one": "{n} without a known location is not shown.", "other": "{n} without a known location are not shown." },
+    "openProfile": "Open profile"
+  },
+  "cmp": {
+    "title": "Compare schools",
+    "removed": "Removed {name} from the compare list.",
+    "added": "Added {name} to the compare list.",
+    "max": "You can compare up to 4 schools. Remove one first.",
+    "mixedVo": "Compare works within one type. Your list has secondary schools. Clear it to start a new list.",
+    "mixedPo": "Compare works within one type. Your list has primary schools. Clear it to start a new list.",
+    "in": "In compare list",
+    "add": "Add to compare",
+    "pressRemove": "(press to remove) {name}",
+    "forName": "{name}",
+    "listAria": "Compare list",
+    "count": { "one": "{n} school to compare", "other": "{n} schools to compare" },
+    "addOne": "Add at least one more school.",
+    "go": "Compare",
+    "clear": "Clear",
+    "cleared": "Compare list cleared.",
+    "nothing": "Nothing to compare yet.",
+    "findLink": "Find schools",
+    "nothing2": "and choose \"Add to compare\" on up to 4 of the same type.",
+    "metaVo": "Same-type comparison of up to 4 secondary schools. Numbers are context, not a ranking.",
+    "metaPo": "Same-type comparison of up to 4 primary schools. Numbers are context, not a ranking.",
+    "measure": "Measure",
+    "remove": "Remove",
+    "tableAria": "Comparison table, scrolls sideways on small screens",
+    "noteVo": "Pupil counts and exam results come from DUO Open Onderwijsdata{y}. A blank or \"fewer than 5\" means DUO hides small groups.",
+    "notePo": "Pupil counts and school advice come from DUO Open Onderwijsdata{y}. A blank or \"fewer than 5\" means DUO hides small groups.",
+    "noteYear": " (pupils {y})",
+    "noteTests": "End-of-primary test averages from different tests (IEP, Centrale Eindtoets, Route 8 and others) are on different scales and must not be compared.",
+    "addAnother": "Add another school",
+    "clearList": "Clear compare list",
+    "notShown": "not shown",
+    "noneListed": "none listed",
+    "na": "not applicable",
+    "noData": "no data",
+    "notInData": "not in data",
+    "nIs": "(n = {n})",
+    "avgSuffix": "{v} (average)",
+    "noInsp": "no current published judgement listed (not a rating)",
+    "noOd": "none found in our data",
+    "passOk": "{pct}% passed (n = {n}) {y}",
+    "passPartial": "about {pct}% passed (n = {n}, partial) {y}",
+    "row": {
+      "type": "Type",
+      "place": "Place",
+      "den": "Denomination",
+      "pupils": "Pupils",
+      "pupilsSm": "Count date 1 Oct",
+      "features": "Concept and features",
+      "featuresSm": "Lists and websites",
+      "advice": "School advice of leavers",
+      "adviceSm": "Last full year",
+      "test": "End-of-primary test",
+      "testSm": "Do not compare different tests",
+      "home": "Home to school",
+      "homeSm": "Median, or average if no median",
+      "levels": "Levels",
+      "perLevel": "Pupils per level",
+      "exam": "Exam pass rate",
+      "examSm": "Latest year, with candidates",
+      "insp": "Inspection",
+      "od": "Next open day",
+      "odSm": "Check with the school"
+    }
+  },
+  "school": {
+    "notFound": "School not found",
+    "noCode": "We have no school with the code",
+    "search": "Search for a school",
+    "back": "← Back to search",
+    "municipality": "municipality of {mun}",
+    "denom": "Denomination: {den}",
+    "isk": ". Includes newcomer provision.",
+    "showMap": "Show on map",
+    "approx": "The location of this school is approximate (postcode level).",
+    "note": "Numbers are context for a conversation with the school, not a ranking. Check everything with the school."
+  },
+  "prof": {
+    "whatMeans": "What this means",
+    "duoSrc": "Source: DUO Open Onderwijsdata. {what}",
+    "counted": "(counted {date})",
+    "underKm": "under 1 km",
+    "trend": {
+      "aria": "Pupil numbers by year: {list}",
+      "pt": "{year}: {v} pupils"
+    },
+    "pupils": {
+      "title": "Pupils",
+      "expl": "This is the number of children enrolled on the count date, 1 October. A bigger school is not better or worse than a smaller one. It does tell you how large the building and the year groups are likely to feel.",
+      "srcWhat": "Pupil counts",
+      "notShown": "Not shown",
+      "bigAtLeast": "At least {n}",
+      "noCount": "DUO did not publish a pupil count for this location.",
+      "total": "pupils in total.",
+      "hiddenNote": "DUO hides groups of fewer than 5 pupils, so the real number is a little higher.",
+      "byYear": "Numbers by year"
+    },
+    "advice": {
+      "title": "Where pupils go next: school advice",
+      "expl": "At the end of group 8, the school gives each child a school advice (schooladvies), the secondary level it recommends. The bar shows the advice given to the school's leavers. It describes the pupils the school has, not how good the school is. Schools with a different intake will show a different mix.",
+      "srcWhat": "School advice of leavers",
+      "earlier": "Earlier years",
+      "leavers": "Leavers {y}"
+    },
+    "test": {
+      "title": "End-of-primary test (doorstroomtoets)",
+      "expl": "In group 8 every child takes an end-of-primary test. Schools choose from several approved tests, and each test has its own scale. Never compare the score of one test with another. The average is context for the school advice, not a grade for the school.",
+      "note": "Only compare schools that used the same test.",
+      "noAvg": "average not shown",
+      "avg": "average score {v}",
+      "few": "fewer than 5 pupils",
+      "src": "Source: DUO Open Onderwijsdata, test results"
+    },
+    "dist": {
+      "title": "How far pupils live",
+      "expl": "This is the straight-line distance between pupils' homes and the school. A small number means the school is mostly a neighbourhood school. A large number means pupils travel in from further away, which can matter for cycling and for friendships after school.",
+      "median": "Median distance from home to school",
+      "avg": "Average distance",
+      "counted": "Pupils counted",
+      "src": "Source: DUO Open Onderwijsdata, home-to-school distance"
+    },
+    "levels": {
+      "title": "Levels offered",
+      "expl": "Dutch secondary school has several levels. In vmbo there are four variants: basis and kader (more practical), and gl and tl (more theoretical). Then come havo (5 years) and vwo (6 years). A school can offer one level or several. A school with several levels under one roof makes it easier to move up or down later. The school decides on moving.",
+      "none": "The data does not list the levels of this location.",
+      "st": "DUO structure label: {st}.",
+      "perLevel": "Pupils per level",
+      "atLeastNote": "\"At least\" means DUO hides some small groups, so the real number is a little higher.",
+      "srcWhat": "Levels and pupils per level",
+      "fromPupilFile": "Levels are taken from the pupil file."
+    },
+    "pass": {
+      "title": "Exam results",
+      "explShort": "The national exam happens in the last year of each level. Pass rates depend on who the school admits and on how many candidates there are.",
+      "expl": "In the final year of each level, pupils sit the national exam. The pass rate is the share of candidates who passed. It also depends on which pupils the school admits and, for small groups, on chance. It is not a ranking, and a high rate is not the same as a good fit for your child.",
+      "none": "No exam results in the data for this location.",
+      "srcWhat": "Exam results",
+      "caption": "Exam results {level}",
+      "year": "Exam year {y}",
+      "few": "fewer than 5 candidates",
+      "partial": "(partial: some small groups hidden)",
+      "small": "(small group, the rate can swing a lot)"
+    },
+    "catch": {
+      "title": "Where pupils live",
+      "expl": "These are the postcode areas (the first four digits) most of the school's pupils come from. It shows how far the school draws. Open a postcode to see the route and the schools around it.",
+      "other": "Pupils living in other postcodes: {pct}% of pupils with a known postcode.",
+      "src": "Source: DUO Open Onderwijsdata, pupils by home postcode"
+    },
+    "insp": {
+      "title": "Inspection",
+      "expl": "The Dutch Inspectorate of Education visits schools and judges their quality. It mostly publishes a judgement after a visit, and visits are often triggered by concerns. So having a judgement, or not having one, says little by itself. We do not sort, colour or average schools by it.",
+      "linkText": "Inspectie van het Onderwijs",
+      "dated": "Judgement dated {date}",
+      "lowest": "The main judgement is the lowest of the programme judgements.",
+      "source": "Source:",
+      "asOf": "Data as of {date}",
+      "none": "No current published judgement is listed for this school. That is not a rating. You can search for the school on the website of the"
+    },
+    "od": {
+      "title": "Open days",
+      "expl": "An open day lets you see the building, meet teachers and ask questions. Dates were collected from school websites and change every year, so treat them as a pointer and confirm with the school.",
+      "none": "No upcoming open day found in our data.",
+      "check": "Check the school's own site for current dates:",
+      "siteLink": "school website",
+      "src": "Source: school websites and school group sites",
+      "collected": ", collected {date}"
+    },
+    "nb": {
+      "title": {
+        "po": "Nearest other primary schools",
+        "sbo": "Nearest other special primary schools",
+        "vo": "Nearest other secondary schools"
+      },
+      "expl": "Schools of the same type close by, nearest first. They are not suggestions or rankings: the order is only distance.",
+      "src": "Distances are straight lines between school addresses. Source: DUO addresses and Kadaster BAG via PDOK."
+    },
+    "sbo": {
+      "title": "About special primary schools",
+      "text": "A special primary school (sbo) is for children who need more support than a regular school can give. Admission needs a formal decision first. Ask your child's current school or your municipality."
+    }
+  },
+  "src": {
+    "label": "Sources:",
+    "basis": "Rijksoverheid: choosing a primary school",
+    "wanneer": "Rijksoverheid: when may my child start primary school",
+    "blijven": "Rijksoverheid: who decides whether my child repeats a year",
+    "tijdlijn": "Rijksoverheid: timeline of the school advice 2027",
+    "advies": "Rijksoverheid: admission to secondary school based on the final school advice",
+    "voraad": "VO-raad: dates 2026-27 around the test and sign-up",
+    "inschr": "Rijksoverheid: registering at a secondary school",
+    "weiger": "Rijksoverheid: may a secondary school refuse my child",
+    "vmbo": "Rijksoverheid: how vmbo works",
+    "havo": "Rijksoverheid: how havo works",
+    "vwo": "Rijksoverheid: how vwo works",
+    "pro": "Rijksoverheid: how long pupils may stay in secondary school",
+    "brug": "VO-raad: factsheet on the broad first year",
+    "loket": "Onderwijsloket: how the Dutch education system fits together",
+    "schema": "Nuffic: diagram of the Dutch education system",
+    "nuf": "Nuffic: education system in the Netherlands",
+    "nufMbo": "Nuffic: secondary vocational education",
+    "kiesmbo": "KiesMBO: prior education and admission",
+    "kiesEntree": "KiesMBO: entry programme (mbo 1)",
+    "mboRijks": "Rijksoverheid: which mbo programmes can I choose",
+    "mboToel": "Rijksoverheid: admission requirements for mbo",
+    "mboraad": "MBO Raad: mbo",
+    "gov": "Government.nl: higher education",
+    "sk123": "Studiekeuze123: how higher education is built up",
+    "sk21": "Studiekeuze123: 21+ admission test",
+    "nieuw": "Rijksoverheid: newcomer education",
+    "sio": "SIO: international schools",
+    "oco": "OCO Amsterdam: secondary school advice and sign-up"
+  },
+  "sys": {
+    "heading": "The whole system on one page",
+    "intro": "Read from top to bottom. Each block is one school year. Every track has its own colour, and higher education has colours of its own, because finishing one school does not move a child on automatically: each change needs a diploma, an application and sometimes selection. No track is ranked above another.",
+    "keyAria": "Colour key",
+    "key": { "bo": "Primary", "pro": "Practical education", "vbk": "vmbo", "havo": "havo", "vwo": "vwo", "mbo": "mbo", "hbo": "hbo", "wo": "wo" },
+    "arrowNote": "An arrow means a child can move that way. A solid arrow means the diploma normally gives the right to move. A dashed arrow means conditions, selection or a school decision apply. Letters and numbers match the list.",
+    "title": "The Dutch school system, top to bottom",
+    "desc": "Primary school of eight year groups leads, after school advice, to practical education, vmbo, havo or vwo. After those come mbo, hbo and wo. Arrows show how children can move between tracks.",
+    "primary": "PRIMARY SCHOOL",
+    "yearGroup": "Year group {n}",
+    "age": "age {n}",
+    "adviceLabel": "School advice and sign-up, about age 12",
+    "ageAxis": "age",
+    "lane": { "pro": "praktijk", "vmbo": "vmbo", "havo": "havo", "vwo": "vwo" },
+    "mboLevels": "levels 1 to 4",
+    "legend": "AD = associate degree, M = master",
+    "xfers": [
+      { "k": "1", "text": "After year group 8 (about age 12) the school advice and your sign-up decide the secondary track. The advice can name one level or two, such as havo and vwo." },
+      { "k": "2", "text": "Early years of secondary school: moving up or down a level is sometimes possible, and the school decides. Dashed because it is not a right." },
+      { "k": "3", "text": "vmbo gl/tl to havo year 4: possible with an extra exam subject or other conditions that the school sets." },
+      { "k": "4", "text": "havo diploma to vwo: possible. The school decides which year your child joins, many use year 5." },
+      { "k": "5", "text": "Practical education to the mbo entry programme (level 1) or to work: the school arranges this with the mbo college." },
+      { "k": "6", "text": "vmbo diploma to mbo: basis leads to level 2. Kader, mixed or theoretical lead to level 3 or 4, because the official entry requirements for those are the same. A lower level is usually possible." },
+      { "k": "7", "text": "havo diploma to an hbo bachelor, an associate degree or mbo at any level. It does not give direct access to wo." },
+      { "k": "8", "text": "vwo diploma to a wo bachelor, or to an hbo bachelor or associate degree. Some studies ask for particular subjects or select." },
+      { "k": "a", "text": "An mbo level 4 diploma gives the right to enter hbo." },
+      { "k": "b", "text": "hbo first year (propedeuse) to a wo bachelor: possible in most cases, but the university decides and subject requirements can still apply." },
+      { "k": "d", "text": "hbo bachelor to a wo master: usually through a bridging programme (pre-master). Length and cost differ per programme, and selection is possible." }
+    ],
+    "xfersExtra": "Other arrows without a letter: bachelor to master and master to PhD. Selection is possible at each."
+  },
+  "faq": {
+    "heading": "Questions parents ask",
+    "items": [
+      {
+        "q": "What does \"university\" mean here (wo vs hbo)?",
+        "blocks": [
+          { "p": "Dutch higher education has two kinds. <b>wo</b> is the research university: more theory, and a bachelor takes 3 years. <b>hbo</b> is the university of applied sciences: more practice, and a bachelor takes 4 years. Outside the Netherlands both are often called \"university\", so check which one a document means." },
+          { "ul": [
+            "vwo is the usual route to wo. havo leads to hbo. An mbo level 4 diploma also gives the right to enter hbo.",
+            "A havo diploma alone does not give access to wo. After the first hbo year (the propedeuse), wo is possible in most cases, but the university decides and subject requirements can still apply.",
+            "People from age 21 without the usual diploma can ask for an admission test (the 21+ test). Each institution runs its own."
+          ] }
+        ],
+        "src": ["gov", "sk123", "sk21", "schema"]
+      },
+      {
+        "q": "My child got a vmbo advice, what now?",
+        "blocks": [
+          { "p": "vmbo takes 4 years and is a full route, not a dead end. After it comes mbo. The pathway matters: basis leads to mbo level 2, while kader, mixed or theoretical (gl/tl) lead to level 3 or 4. An mbo level 4 diploma gives the right to enter hbo, and from hbo wo is possible in most cases. That route takes more years than going straight through vwo, but every step exists." },
+          { "ul": [
+            "Ask which pathway the advice means: basis, kader or gl/tl.",
+            "Consider a school with several levels under one roof. A VO-raad factsheet argues that a broad first year keeps more options open. The school list shows this.",
+            "After vmbo gl/tl, moving to havo year 4 is possible with conditions. The school decides.",
+            "The advice is the school's judgement. The end-of-primary test can raise it, and the school must explain if it keeps a lower one."
+          ] }
+        ],
+        "src": ["vmbo", "mboRijks", "brug", "advies", "sk123"]
+      },
+      {
+        "q": "Is repeating a year normal, and who decides?",
+        "blocks": [
+          { "p": "The school decides whether a child moves up or repeats a year. There are no legal rules for it. The school guide describes how each school handles it. The school must tell you if your child repeats a year. If you disagree, you can object through the school's complaints procedure." },
+          { "ul": [
+            "Ask for the reasons in writing: which results and observations, and which support has been tried.",
+            "Ask for a meeting with the teacher and the school's learning-support coordinator (intern begeleider).",
+            "Repeating is not automatically good or bad. Ask the school what it expects to change.",
+            "If language is the issue, ask what support exists. Repeating a year may not fix a speech or pronunciation question, so ask the school and, if needed, a speech therapist."
+          ] },
+          { "p": "We have no official figure for how common it is, so we do not give one." }
+        ],
+        "src": ["blijven"]
+      },
+      {
+        "q": "How do I ask the school about the advice, or ask for a second opinion?",
+        "blocks": [
+          { "p": "The school advice is the school's professional judgement of your child's whole record. The end-of-primary test can raise it, and the school must explain if it does not raise it. Secondary schools admit on the final advice, and they may not ask a primary school to give an advice for one level only." },
+          { "say": "Could we meet to talk about the advice? Which results and observations is it based on? What would change it?" },
+          { "ul": [
+            "Ask for the final advice and the reasons in writing.",
+            "Ask whether the learning-support coordinator can join the meeting.",
+            "Independent assessments exist, for example from a child psychologist or an assessment bureau. Costs and insurance cover vary a lot, so ask before you book.",
+            "The advice is only advice for the child's next school. Ask the secondary schools you like what they need to admit your child."
+          ] }
+        ],
+        "src": ["advies", "tijdlijn", "weiger"]
+      },
+      {
+        "q": "Do I need an international school?",
+        "blocks": [
+          { "p": "Not necessarily. Many families, including expat families, use Dutch schools. Some Dutch schools teach part of the lessons in English, such as international departments in primary school and bilingual Dutch-English (tto) streams in secondary school. A newcomer class helps children who are still learning Dutch." },
+          { "p": "International schools are mostly private, and fees vary widely. Parents report anything from a few thousand to well over twenty thousand euro a year. Those are reports, not checked figures, so ask each school. SIO lists international schools." },
+          { "p": "Think about how long you will stay, your child's age and the language your child will need later." }
+        ],
+        "src": ["nieuw", "nuf", "sio"]
+      },
+      {
+        "q": "Is there a lottery for secondary school places?",
+        "blocks": [
+          { "p": "Where a school has more applicants than places, a lottery can be used. It is not how most of the country works, as far as we know. Amsterdam runs a central lottery and matching procedure for secondary school. Some schools also select, for example on a test or an essay. Check your region and ask your child's school." }
+        ],
+        "src": ["inschr", "weiger", "oco"]
+      }
+    ]
+  },
+  "sources": {
+    "heading": "Data and sources",
+    "intro": "Where the numbers and rules on this site come from, how to read them, and what we are not.",
+    "check": {
+      "title": "Check with the school and your municipality",
+      "text": "Last checked: {date}. This page was written with AI assistance and each fact was compared with the official pages listed here. It has not yet been reviewed by a Dutch teacher or school advisor. Where sources differ, the page says \"usually\" or \"most schools\". Rules and dates change every year."
+    },
+    "read": {
+      "title": "How to read the numbers",
+      "items": [
+        "DUO, the Dutch education agency, hides any count below 5 pupils to protect privacy. When you see \"fewer than 5\", \"at least\" or \"partial\", some small groups are missing, so the real figure is a little higher.",
+        "The numbers are context for a conversation with a school, not a ranking. A high exam pass rate or a particular school advice mix also reflects which pupils the school admits. We never sort or colour schools by quality.",
+        "An Inspectie judgement is only published after a school visit, and visits are often triggered by concerns. Having a judgement, or not having one, says little by itself. The main judgement is the lowest of the programme judgements."
+      ]
+    },
+    "data": { "title": "Data" },
+    "dataline": "School data built on {built}. Pupil counts: {pupils}. Primary school advice: leavers {advice}. Exam results: {exams}.",
+    "sodk": "Links to Scholen op de kaart only open its search. Nothing from that site is copied here.",
+    "list": { "title": "Sources" }
+  },
+  "attr": {
+    "feat": {
+      "lead": "School features and open days (collected 2026-10-16):",
+      "tail": "and the schools' own websites (crawled 2026-10-16). Labels can be incomplete or out of date. Open day dates change, so check the school's site."
+    },
+    "l": {
+      "nuffic": "Nuffic tto list",
+      "technasium": "Stichting Technasium",
+      "nmv": "Nederlandse Montessori Vereniging",
+      "ndv": "Nederlandse Dalton Vereniging",
+      "njpv": "Nederlandse Jenaplan Vereniging",
+      "vrije": "Vereniging van vrijescholen",
+      "dis": "Dutch International Schools",
+      "sio": "SIO"
+    },
+    "licence": "Licence: {licence}.",
+    "licenceLink": "Licence",
+    "sourceLink": "Source",
+    "fallback": "School data: DUO Open Onderwijsdata (CC BY 4.0). Postcode areas: CBS (CC BY 4.0). Addresses and municipalities: Kadaster BAG via PDOK.",
+    "fallbackDisc": "Not affiliated with, or endorsed by, DUO, CBS, Kadaster or PDOK."
+  },
+  "foot": {
+    "notAffiliated": "Not affiliated with DUO, the Inspectie or Scholen op de kaart.",
+    "sourcesLink": "Data & sources",
+    "checked": "Last checked: {date}"
+  }
+}
