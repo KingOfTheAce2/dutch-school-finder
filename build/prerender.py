@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prerender Schoolpath NL into _site/: real paths, static HTML in <main> for every page.
+"""Prerender Dutch School Path into _site/: real paths, static HTML in <main> for every page.
 
 Run from anywhere:  python -I build/prerender.py [--out DIR] [--seo FILE]
 
@@ -424,7 +424,7 @@ class Build:
             s = s.replace(blk, nb)
         # hero title: h1 on the start page, a plain paragraph elsewhere
         hero = e(t("hero.title"))
-        s = s.replace("<!--@h1-->", f'<h1 id="h1" class="h1" data-i18n="hero.title">{hero}</h1>' if view == "route" else '<p id="h1" class="h1" data-i18n="hero.title"></p>')
+        s = s.replace("<!--@h1-->", f'<h1 id="h1" class="h1" data-i18n="hero.title">{hero}</h1>' if view == "route" else f'<p id="h1" class="h1" data-i18n="hero.title">{hero}</p>')
         # text is filled in only where it is visible; hidden sections and the hero (off the start page) are left to app.js
         stash = []
 
@@ -434,6 +434,8 @@ class Build:
 
         s = re.sub(r'<section id="p-\w+" hidden>.*?</section>', keep, s, flags=re.S)
         if view != "route":
+            # hidden off the start page (app.js toggles it); its text is filled by app.js when shown
+            s = s.replace('<section class="hero" aria-labelledby="h1">', '<section class="hero" aria-labelledby="h1" hidden>', 1)
             s = re.sub(r'<section class="hero".*?</section>', keep, s, flags=re.S)
         s = self.fill_i18n(s)
         s = re.sub(r"@@(\d+)@@", lambda m: stash[int(m.group(1))], s)
@@ -556,16 +558,18 @@ class Build:
 
         o.append(f'<svg class="sys-svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="sysT sysD" style="direction:ltr">')
         o.append(f'<title id="sysT">{e(t("sys.title"))}</title><desc id="sysD">{e(t("sys.desc"))}</desc>')
-        o.append('<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="13" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker></defs>')
+        o.append('<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker></defs>')
         LX = [40, 120, 200, 280]
         LW = 60
         C = [70, 150, 230, 310]
+        # ages: one left-hand column for primary and secondary alike, one age per row (same as app.js)
         text(40, 14, t("sys.primary"), "ax")
+        text(34, 14, t("sys.ageAxis"), "ax", "end")
         for g in range(1, 9):
             y = 22 + (g - 1) * 20
             rect(40, y, 308, 20, "f-bo")
             o.append(f'<text class="on" x="48" y="{num(y + 14.5)}">{e(t("sys.yearGroup", n=str(g)))}</text>')
-            o.append(f'<text class="on" x="340" y="{num(y + 14.5)}" text-anchor="end">{e(t("sys.age", n=str(g + 3)))}</text>')
+            text(34, y + 14.5, str(g + 3), "ax", "end")
         for x in C:
             path(f"M{x} 184V230")
         o.append('<rect class="lbl" x="36" y="196" width="288" height="24"/>')
@@ -578,8 +582,8 @@ class Build:
         for i in range(4):
             rect(LX[i], 232, LW, 18, cls[i], t("sys.lane." + names[i]), "hd")
             bar(LX[i], 250, LW, yrs[i], cls[i])
-        for k, a in enumerate([12, 14, 16, 18]):
-            text(34, 250 + k * 40 + 14, str(a), "ax", "end")
+        for k, a in enumerate([12, 13, 14, 15, 16, 17]):
+            text(34, 250 + k * 20 + 14.5, str(a), "ax", "end")
         path("M181 278H199", True, True)
         path("M261 278H279", True, True)
         mk(190, 284, "2")
@@ -649,7 +653,7 @@ class Build:
         for g in groups:
             o.append(f'<section class="faqgrp" aria-labelledby="faqg-{e(g["id"])}"><h2 id="faqg-{e(g["id"])}">{e(g["title"])}</h2>')
             for x in g["items"]:
-                o.append(f'<details id="{e(x["id"])}" open><summary>{e(x["q"])}</summary><div class="ans">')
+                o.append(f'<details id="{e(x["id"])}"><summary>{e(x["q"])}</summary><div class="ans">')
                 for b in x["blocks"]:
                     if "p" in b:
                         o.append(f"<p>{rich(b['p'])}</p>")
@@ -933,7 +937,7 @@ class Build:
             for o, d in near:
                 sub = " · ".join(x for x in [o["city"], self.den_label(o["denNl"])] if x)
                 dist = t("unit.lessThanOne") if d < 1 else (nf1(d) if d < 10 else nf(jr(d)))
-                li.append(f'<li><span><a href="{self.href("school/" + school_slug(o) + "/")}">{e(o["name"])}</a><div class="note" style="margin:0">{e(sub)}</div></span><span class="d">{e(t("unit.km", n=dist))}</span></li>')
+                li.append(f'<li><div class="nbn"><a href="{self.href("school/" + school_slug(o) + "/")}">{e(o["name"])}</a><div class="note" style="margin:0">{e(sub)}</div></div><span class="d">{e(t("unit.km", n=dist))}</span></li>')
             secs.append(psec(t("prof.nb.title." + sec), t("prof.nb.expl"), ['<ul class="nb-list">' + "".join(li) + "</ul>"], t("prof.nb.src")))
         main = "".join(ph) + '<div class="pgrid">' + "".join(secs) + "</div>" + f'<p class="note">{e(t("school.note"))}</p>'
 
@@ -999,18 +1003,21 @@ class Build:
             txt = t("adv.hidden", n=a[0], hidden=a[1]) if a and a[0] > 0 else t("adv.none")
             return f'<div class="adv"><p class="advn">{e(txt)}</p></div>'
         sh = a[2]
-        seg = [("pro", [0, 1]), ("vbk", [2, 3, 4]), ("vgt", [5, 6]), ("havo", [7, 8]), ("vwo", [9, 10])]
+        # Same segments as SEG in app.js. Shares are of the pupils DUO shows, so they add up to 100%.
+        seg = [("vso", [0]), ("pro", [1]), ("vbk", [2, 3, 4]), ("vgt", [5, 6]), ("havo", [7, 8]), ("vwo", [9, 10]), ("nap", [11])]
         parts = []
         bar = []
         for k, idx in seg:
             v = sum((sh[i] or 0) for i in idx)
             if v > 0:
                 bar.append(f'<i class="a-{k}" style="width:{num(round(v, 6))}%"></i>')
-                parts.append((v, t("adv.part", label=t("seg." + k), pct=jr(v))))
-        parts.sort(key=lambda x: -x[0])
+                parts.append((k, t("adv.part", label=t("seg." + k), pct=jr(v))))
         summ = t("sep.list").join(p for _, p in parts)
-        return (f'<div class="adv"><div class="bar" role="img" aria-label="{e(t("adv.aria", list=summ))}">{"".join(bar)}</div>'
-                f'<div class="advn">{e(t("adv.line", list=summ, n=a[0]) + (t("adv.partial") if a[1] > 0 else ""))}</div></div>')
+        leg = "".join(f'<li><i class="sw a-{k}"></i>{e(p)}</li>' for k, p in parts)
+        note = f'<p class="advn">{e(t("adv.smallNote"))}</p>' if a[1] > 0 else ""
+        return (f'<div class="adv"><div class="advh">{e(t("adv.head", n=a[0]))}</div>'
+                f'<div class="bar" role="img" aria-label="{e(t("adv.aria", list=summ))}">{"".join(bar)}</div>'
+                f'<ul class="advleg" aria-hidden="true">{leg}</ul>{note}</div>')
 
     def insp_section(self, s, psec):
         t = self.t
@@ -1208,9 +1215,8 @@ class Build:
                 self.sitemap["pages"].append(rel)
 
         # home
-        how = (f'<h3>{e(t("home.howTitle"))}</h3><ol><li>{e(t("home.how1"))}</li><li>{e(t("home.how2"))}</li><li>{e(t("home.how3"))}</li></ol>')
         ws = {"@context": "https://schema.org", "@type": "WebSite", "name": self.brand, "url": self.canon(""), "inLanguage": self.langs[0], "description": t("meta.description")}
-        simple("", "route", "title.route", t("meta.description"), {"homelinks": how + self.home_links(tops)}, [ws], tab="route")
+        simple("", "route", "title.route", t("meta.description"), {"homelinks": self.home_links(tops)}, [ws], tab="route")
         simple("find/", "find", "title.find", D["find"], {"findout": f'<noscript><p class="note">{e(t("findStatic.noscript"))}</p></noscript><p><a href="{self.href("municipalities/")}">{e(t("home.linksAll"))}</a></p>'}, tab="find")
         simple("map/", "map", "title.map", D["map"], {"mapout": f'<noscript><p class="note">{e(t("mapStatic.noscript"))}</p></noscript><p><a href="{self.href("municipalities/")}">{e(t("home.linksAll"))}</a></p>'}, tab="map")
         simple("system/", "system", "title.system", D["system"], self.system_slots(), tab="system")

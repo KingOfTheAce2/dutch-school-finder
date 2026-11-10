@@ -1,4 +1,4 @@
-# Schoollijn (Dutch School Finder)
+# Dutch School Path (dutch-school-finder)
 
 Dutch schools explained in English, for families new to the Netherlands. Enter your child's age and a
 postcode and you get the steps still ahead (with dates and what to do) and the real schools near you
@@ -63,7 +63,7 @@ host, so on the project URL (`...github.io/dutch-school-finder/`) it has no effe
 
 ## Going live on a custom domain
 
-1. Edit `site/seo.json`: set `site_url` to the new origin (no trailing slash, e.g. `https://schoolpath.example`)
+1. Edit `site/seo.json`: set `site_url` to the new origin (no trailing slash, e.g. `https://dutchschoolpath.example`)
    and `base_path` to `/`. Nothing else in the code refers to the old address.
 2. Add a file named `CNAME` that contains just the domain to `site/` (the build copies it into `_site/`), and set the
    same domain under Settings, Pages, Custom domain. Point the domain's DNS at GitHub Pages and tick "Enforce HTTPS".

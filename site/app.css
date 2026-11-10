@@ -181,6 +181,12 @@ a.ft:hover{border-color:var(--brand);background:var(--soft)}
 .bar i{display:block;height:100%}
 .a-pro{background:var(--c-pro)}.a-vbk{background:var(--c-vbk)}.a-vgt{background:var(--c-vgt)}.a-havo{background:var(--c-havo)}.a-vwo{background:var(--c-vwo)}
 .advn{font-size:.82rem;color:var(--ink2)}
+.a-vso{background:var(--c-so)}
+.a-nap{background:repeating-linear-gradient(135deg,var(--ink2) 0 2px,var(--rule) 2px 5px)}
+.advh{font-size:.82rem;color:var(--ink2);margin-top:4px}
+.advleg{list-style:none;padding:0;margin:2px 0 0;display:flex;flex-wrap:wrap;gap:2px 12px;font-size:.82rem;color:var(--ink2)}
+.advleg li{display:flex;align-items:center;gap:5px}
+.advleg .sw{display:inline-block;width:10px;height:10px;flex:none}
 .exam{display:flex;flex-wrap:wrap;gap:3px 12px;margin-top:4px;font-size:.86rem}
 .exam span{min-width:0;overflow-wrap:anywhere}
 .exam .small{color:var(--ink2)}
@@ -431,8 +437,10 @@ form.q{align-items:start}
 .intro{background:var(--surface);border-top:5px solid var(--brand);padding:16px;margin-bottom:14px}
 .intro h2{font-size:1.4rem;font-weight:900;margin-bottom:6px}
 .intro p{max-width:62ch}
-.intro ul{padding-inline-start:20px;margin:0 0 .7em}
-.intro li{margin-bottom:4px}
+.intro ul,.intro ol{padding-inline-start:22px;margin:0 0 .7em}
+.intro li{margin-bottom:4px;max-width:62ch}
+.intro ol li::marker{font-weight:700;color:var(--brand)}
+.intro h3{font-size:1.05rem;font-weight:800;margin:14px 0 6px}
 /* tab bar: directly under the masthead on every view, sticky, one scrollable strip on small screens */
 .tabbar{position:sticky;top:0;z-index:60;background:var(--bg);border-bottom:4px solid var(--brand)}
 .tabs{display:flex;gap:2px;margin:0;border-bottom:0;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;scrollbar-width:none}
@@ -461,7 +469,7 @@ main{padding-block:20px 40px}
 .hbar{grid-template-columns:minmax(5.5rem,auto) minmax(0,1fr) auto}
 .hbar .tr{overflow-wrap:anywhere;max-width:100%}
 .kv .r span:first-child{min-width:0;overflow-wrap:anywhere}
-.nb-list li>span:first-child{min-width:0;overflow-wrap:anywhere}
+.nb-list .nbn{min-width:0;overflow-wrap:anywhere}
 .chip{max-width:100%;text-align:start;overflow-wrap:anywhere}
 .chip:hover{background:var(--soft)}
 .chip[aria-pressed="true"]:hover{background:var(--brand);filter:brightness(1.1)}

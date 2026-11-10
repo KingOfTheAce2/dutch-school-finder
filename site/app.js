@@ -1,4 +1,4 @@
-/* Schoolpath NL front end. All user-visible text lives in i18n/<lang>.json (see i18n/README.md). */
+/* Dutch School Path front end. All user-visible text lives in i18n/<lang>.json (see i18n/README.md). */
 (function(){
 'use strict';
 
@@ -545,7 +545,7 @@ function pupilsText(s){
   if(s.pupils==null)return null;
   return t(s.pupils_lb?'pupils.atLeast':'pupils.about',{n:s.pupils});
 }
-var SEG=[['pro',[0,1]],['vbk',[2,3,4]],['vgt',[5,6]],['havo',[7,8]],['vwo',[9,10]]];
+var SEG=[['vso',[0]],['pro',[1]],['vbk',[2,3,4]],['vgt',[5,6]],['havo',[7,8]],['vwo',[9,10]],['nap',[11]]];
 function adviceBlock(s){return adviceBar(s.adv)}
 function adviceBar(a){
   var box=h('div',{class:'adv'});
@@ -553,16 +553,19 @@ function adviceBar(a){
     box.appendChild(h('p',{class:'advn',text:a&&a[0]>0?t('adv.hidden',{n:a[0],hidden:a[1]}):t('adv.none')}));
     return box;
   }
+  // Shares are of the pupils DUO shows, so the six segments (incl. "no advice possible") add up to 100%.
   var sh=a[2],parts=[],bar=h('div',{class:'bar',role:'img'});
   SEG.forEach(function(g){
     var v=0;g[1].forEach(function(i){v+=sh[i]||0});
-    if(v>0){bar.appendChild(h('i',{class:'a-'+g[0],style:'width:'+v+'%'}));parts.push({v:v,txt:t('adv.part',{label:t('seg.'+g[0]),pct:Math.round(v)})})}
+    if(v>0){bar.appendChild(h('i',{class:'a-'+g[0],style:'width:'+v+'%'}));parts.push({g:g[0],v:v,txt:t('adv.part',{label:t('seg.'+g[0]),pct:Math.round(v)})})}
   });
-  parts.sort(function(x,y){return y.v-x.v});
-  var sum=parts.map(function(p){return p.txt}).join(t('sep.list'));
-  bar.setAttribute('aria-label',t('adv.aria',{list:sum}));
+  bar.setAttribute('aria-label',t('adv.aria',{list:parts.map(function(p){return p.txt}).join(t('sep.list'))}));
+  box.appendChild(h('div',{class:'advh',text:t('adv.head',{n:a[0]})}));
   box.appendChild(bar);
-  box.appendChild(h('div',{class:'advn',text:t('adv.line',{list:sum,n:a[0]})+(a[1]>0?t('adv.partial'):'')}));
+  var leg=h('ul',{class:'advleg','aria-hidden':'true'});
+  parts.forEach(function(p){leg.appendChild(h('li',null,[h('i',{class:'sw a-'+p.g}),document.createTextNode(p.txt)]))});
+  box.appendChild(leg);
+  if(a[1]>0)box.appendChild(h('p',{class:'advn',text:t('adv.smallNote')}));
   return box;
 }
 function primaryRow(r){
@@ -1067,7 +1070,7 @@ function buildSystem(){
   var W=360,H=700,S=svgEl('svg',{'class':'sys-svg',viewBox:'0 0 '+W+' '+H,role:'img','aria-labelledby':'sysT sysD'});
   S.appendChild(svgEl('title',{id:'sysT'},t('sys.title')));
   S.appendChild(svgEl('desc',{id:'sysD'},t('sys.desc')));
-  var defs=svgEl('defs'),mkr=svgEl('marker',{id:'ah',viewBox:'0 0 10 10',refX:'9',refY:'5',markerWidth:'13',markerHeight:'13',markerUnits:'userSpaceOnUse',orient:'auto-start-reverse'});
+  var defs=svgEl('defs'),mkr=svgEl('marker',{id:'ah',viewBox:'0 0 10 10',refX:'9',refY:'5',markerWidth:'8',markerHeight:'8',markerUnits:'userSpaceOnUse',orient:'auto-start-reverse'});
   mkr.appendChild(svgEl('path',{'class':'ah',d:'M0 0L10 5L0 10z'}));defs.appendChild(mkr);S.appendChild(defs);
   function rect(x,y,w,hh,cls,txt,tcls){
     S.appendChild(svgEl('rect',{'class':'cell '+cls,x:x,y:y,width:w,height:hh}));
@@ -1087,12 +1090,14 @@ function buildSystem(){
   function bar(x,y,w,n,cls,labels){for(var i=0;i<n;i++)rect(x,y+i*20,w,20,cls,labels?labels[i]:String(i+1))}
   var LX=[40,120,200,280],LW=60,C=[70,150,230,310];
   /* primary */
+  /* ages: one left-hand column for primary and secondary alike, one age per row */
   text(40,14,t('sys.primary'),'ax');
+  text(34,14,t('sys.ageAxis'),'ax','end');
   for(var g=1;g<=8;g++){
     var y=22+(g-1)*20;
     rect(40,y,308,20,'f-bo');
     S.appendChild(svgEl('text',{'class':'on',x:48,y:y+14.5},t('sys.yearGroup',{n:String(g)})));
-    S.appendChild(svgEl('text',{'class':'on',x:340,y:y+14.5,'text-anchor':'end'},t('sys.age',{n:String(g+3)})));
+    text(34,y+14.5,String(g+3),'ax','end');
   }
   /* advice arrows */
   C.forEach(function(x){path('M'+x+' 184V230')});
@@ -1105,7 +1110,7 @@ function buildSystem(){
     rect(LX[i],232,LW,18,cls[i],t('sys.lane.'+names[i]),'hd');
     bar(LX[i],250,LW,yrs[i],cls[i]);
   }
-  [12,14,16,18].forEach(function(a,k){text(34,250+k*40+14,String(a),'ax','end')});
+  [12,13,14,15,16,17].forEach(function(a,k){text(34,250+k*20+14.5,String(a),'ax','end')});
   /* early switching and diploma moves between lanes (gaps are 20 wide: 100-120, 180-200, 260-280) */
   path('M181 278H199',true,true);path('M261 278H279',true,true);mk(190,284,'2');mk(270,284,'2');
   path('M181 314H199',true);mk(190,320,'3');
@@ -1178,7 +1183,7 @@ function renderFaq(){
     var sec=h('section',{class:'faqgrp','aria-labelledby':'faqg-'+g.id});
     sec.appendChild(h('h2',{id:'faqg-'+g.id,text:g.title}));
     g.items.forEach(function(x){
-      var d=h('details',{id:x.id,open:true});
+      var d=h('details',{id:x.id,open:null});
       d.appendChild(h('summary',{text:x.q}));
       var a=h('div',{class:'ans'});
       x.blocks.forEach(function(b){
@@ -1630,8 +1635,10 @@ function updateMap(){
     if(VIEW!=='map')return;
     if(!MAP.map){
       MAP.pal=readPal();
-      MAP.map=L.map('mapel',{preferCanvas:true,zoomSnap:0.5,minZoom:6,maxBounds:[[50.4,2.4],[54.0,8.2]],maxBoundsViscosity:.8}).setView([52.15,5.3],7);
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">'+esc(t('map.attrName'))+'</a> '+esc(t('map.attrTail'))}).addTo(MAP.map);
+      // About 8,600 canvas markers: whole zoom levels, debounced wheel and idle tile loading keep
+      // each zoom to one redraw instead of several.
+      MAP.map=L.map('mapel',{renderer:L.canvas({padding:0.2,tolerance:4}),zoomSnap:1,zoomDelta:1,wheelDebounceTime:60,wheelPxPerZoomLevel:90,fadeAnimation:false,minZoom:6,maxBounds:[[50.4,2.4],[54.0,8.2]],maxBoundsViscosity:.8}).setView([52.15,5.3],7);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,updateWhenZooming:false,updateWhenIdle:true,keepBuffer:4,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">'+esc(t('map.attrName'))+'</a> '+esc(t('map.attrTail'))}).addTo(MAP.map);
       restyleMap();
     }
     MAP.map.invalidateSize();
@@ -2136,7 +2143,7 @@ function nearbySection(s){
   if(!found.length)return null;
   var ul=h('ul',{class:'nb-list'});
   found.forEach(function(r){
-    ul.appendChild(h('li',null,[h('span',null,[h('a',{href:U.school(r.s.id),text:r.s.name}),h('div',{class:'note',style:'margin:0',text:[r.s.city,r.s.denT].filter(Boolean).join(' · ')})]),h('span',{class:'d',text:kmStr(r.d)})]));
+    ul.appendChild(h('li',null,[h('div',{class:'nbn'},[h('a',{href:U.school(r.s.id),text:r.s.name}),h('div',{class:'note',style:'margin:0',text:[r.s.city,r.s.denT].filter(Boolean).join(' · ')})]),h('span',{class:'d',text:kmStr(r.d)})]));
   });
   return psec(t('prof.nb.title.'+s.sec),t('prof.nb.expl'),[ul],t('prof.nb.src'));
 }
@@ -2489,6 +2496,7 @@ function router(keep){
   if(v==='static'&&!$('p-static').firstElementChild){location.replace(location.href);return}
   VIEW=v;
   document.body.setAttribute('data-view',v);
+  var hero=document.querySelector('.hero');if(hero)hero.hidden=v!=='route';
   VIEWS.forEach(function(x){$('p-'+x).hidden=(x!==v)});
   syncHeads(v);
   var tabOf=({school:'find'})[v]||v;

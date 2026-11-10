@@ -1,6 +1,6 @@
 {
   "brand": {
-    "name": "Schoolpath NL",
+    "name": "Dutch School Path",
     "tagline": "An unofficial guide for parents new to Dutch schools"
   },
   "meta": {
@@ -393,8 +393,8 @@
     "none": "No advice figures available.",
     "part": "{label} {pct}%",
     "aria": "Advice given to leavers: {list}",
-    "line": "Advice of leavers: {list}. n = {n}",
-    "partial": ", partial: small groups are hidden by DUO"
+    "head": "Advice given to {n} leavers",
+    "smallNote": "DUO leaves out advice types given to fewer than 5 pupils, so a few leavers may be missing from these shares."
   },
   "sep": {
     "list": ", "
@@ -441,7 +441,7 @@
     "vwo": "vwo"
   },
   "chips": {
-    "pro": "Practical",
+    "pro": "practical (pro)",
     "bb": "vmbo basis",
     "kb": "vmbo kader",
     "gt": "vmbo gl/tl",
@@ -451,11 +451,13 @@
     "ib": "IB"
   },
   "seg": {
-    "pro": "Practical",
+    "vso": "special secondary (vso)",
+    "pro": "practical (pro)",
     "vbk": "vmbo basis/kader",
     "vgt": "vmbo gl/tl",
     "havo": "havo",
-    "vwo": "vwo"
+    "vwo": "vwo",
+    "nap": "no advice possible"
   },
   "badge": {
     "pro": "practical",
@@ -470,7 +472,7 @@
     "ess": "ESS"
   },
   "tk": {
-    "pro": "Practical",
+    "pro": "practical (pro)",
     "bb": "vmbo basis",
     "kb": "vmbo kader",
     "gt": "vmbo gl/tl",
@@ -1950,7 +1952,6 @@
     "scaleQ": "What do the judgements mean?",
     "oldFramework": "earlier framework"
   },
-
   "crumb": {
     "home": "Home",
     "aria": "Breadcrumb"
@@ -1971,30 +1972,30 @@
       "sources": "Where the school numbers on this site come from (DUO, Inspectie, CBS, Kadaster), how to read them, what is hidden for privacy, and what this site is not.",
       "municipalities": "Every Dutch municipality with its primary, special and secondary schools, grouped by province. Open a municipality to see its schools and the facts we hold.",
       "compare": "Compare up to four Dutch schools of the same type side by side: pupils, levels, exam results and inspection information from open data. Context, not a ranking.",
-      "notFound": "This page does not exist on Schoolpath NL. You can search for a Dutch school by name, town or postcode, or read our English guide to the Dutch school system.",
+      "notFound": "This page does not exist on Dutch School Path. You can search for a Dutch school by name, town or postcode, or read our English guide to the Dutch school system.",
       "municipality": "{name} ({prov}) has {n} schools in the open data: {parts}.",
       "municipalityPad": "See each school with its pupils, levels, results and inspection information.",
       "school": "{name} is a {type} school in {city} ({prov}).",
       "schoolNoCity": "{name} is a {type} school ({prov}).",
       "addr": "Address: {addr}.",
-   "pupils": "{pupils}.",
+      "pupils": "{pupils}.",
       "den": "Denomination: {den}.",
       "tracks": "Levels: {tracks}.",
       "cluster": "{cluster}.",
       "tail": [
-      "Open data from DUO and the Inspectie.",
-      "Not a ranking.",
-      "Check details with the school.",
-      "See nearby schools.",
-      "Pupils, levels and inspection information.",
-      "Profile with pupils, inspection and nearby schools from open data.",
-      "Facts from DUO and the Inspectie. Not a ranking.",
-      "Sources: DUO, Inspectie, Kadaster.",
-      "Facts from open data.",
-      "Check everything with the school.",
-      "Open data.",
-      "DUO data."
-    ]
+        "Open data from DUO and the Inspectie.",
+        "Not a ranking.",
+        "Check details with the school.",
+        "See nearby schools.",
+        "Pupils, levels and inspection information.",
+        "Profile with pupils, inspection and nearby schools from open data.",
+        "Facts from DUO and the Inspectie. Not a ranking.",
+        "Sources: DUO, Inspectie, Kadaster.",
+        "Facts from open data.",
+        "Check everything with the school.",
+        "Open data.",
+        "DUO data."
+      ]
     }
   },
   "home": {
@@ -2002,11 +2003,7 @@
     "linksIntro": "Start from the biggest municipality in each province, or open the full list.",
     "linksAll": "All municipalities, A to Z",
     "linksFind": "Search every school",
-    "linksQuestions": "Questions parents ask",
-    "howTitle": "How it works",
-    "how1": "Enter your child's age and a postcode. You get the steps still ahead, with dates and what to do.",
-    "how2": "For each step you see the real schools nearby: pupil numbers, where leavers go next and exam results.",
-    "how3": "Everything runs in your browser from open data. Nothing you enter is sent to us."
+    "linksQuestions": "Questions parents ask"
   },
   "muni": {
     "h1": "Schools in {name}",
