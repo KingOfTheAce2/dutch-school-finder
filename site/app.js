@@ -8,6 +8,8 @@ var SUPPORTED=['en'];
 var LANG_META={en:{name:'English',locale:'en-GB'}};
 var RTL_LANGS=['ar','he','fa','ur'];
 var LS_LANG='schoolpath.lang';
+/* base path of the site (from <meta name="sp-base">), always with a leading and trailing slash */
+var BASE=(function(){var m=document.querySelector('meta[name="sp-base"]'),b=m&&m.getAttribute('content');return b&&b.charAt(0)==='/'?b.replace(/\/*$/,'/'):'/'})();
 var LANG='en',LOCALE='en-GB',DICT={},EN={},DICTS={},WARNED={},PRULES=null,NF0=null,NF1=null,DTF=null;
 
 function look(obj,key){
@@ -103,7 +105,7 @@ function pickLang(){
 }
 function loadDict(code){
   if(DICTS[code])return Promise.resolve(DICTS[code]);
-  return fetch('i18n/'+code+'.json').then(function(r){if(!r.ok)throw new Error('i18n '+code);return r.json()}).then(function(j){DICTS[code]=j;return j});
+  return fetch(BASE+'i18n/'+code+'.json').then(function(r){if(!r.ok)throw new Error('i18n '+code);return r.json()}).then(function(j){DICTS[code]=j;return j});
 }
 function setLocaleVars(code){
   LANG=code;
@@ -143,24 +145,82 @@ function ico(name){
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function clear(n){while(n.firstChild)n.removeChild(n.firstChild)}
 
-/* ================= URLs: the only place that builds or changes a route (hash routes today) ================= */
+/* ================= URLs: the only place that builds or changes a route (real paths under BASE, History API) ================= */
+/* Slugs: identical rule in build/prerender.py. Lower case ASCII, runs of other characters become one hyphen. */
+function slugify(s){
+  s=String(s==null?'':s).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  s=s.replace(/ß/g,'ss').replace(/æ/g,'ae').replace(/œ/g,'oe').replace(/ø/g,'o').replace(/đ/g,'d').replace(/ð/g,'d').replace(/ł/g,'l').replace(/ı/g,'i').replace(/þ/g,'th');
+  return s.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+}
+function schoolSlug(s){
+  var n=slugify(s.name).slice(0,60).replace(/-+$/,''),c=slugify(s.city);
+  return String(s.id).toLowerCase()+(n?'-'+n:'')+(c?'-'+c:'');
+}
 var U={
-  route:function(){return '#/'},
-  routePc:function(pc){return '#/?pc='+pc},
-  view:function(v,q){return v==='route'?'#/':'#/'+v+(q||'')},
-  school:function(id){return '#/school/'+id},
-  compare:function(ids){return '#/compare/'+ids.join(',')},
-  mapFocus:function(id){return '#/map?s='+id}
+  route:function(){return BASE},
+  routePc:function(pc){return BASE+'?pc='+pc},
+  view:function(v,q){return v==='route'?BASE:BASE+(v==='faq'?'questions':v)+'/'+(q||'')},
+  school:function(id){var s=BYID[id];return BASE+'school/'+(s?schoolSlug(s):String(id).toLowerCase())+'/'},
+  muni:function(name){return BASE+'municipality/'+slugify(name)+'/'},
+  faqItem:function(slug){return BASE+'questions/#'+slug},
+  compare:function(ids){return BASE+'compare/?ids='+ids.join(',')},
+  mapFocus:function(id){return BASE+'map/?s='+id}
 };
-function navigate(u){location.hash=u}
+function navigate(u){try{history.pushState(null,'',u)}catch(e){location.href=u;return}router()}
 function replaceUrl(u){try{history.replaceState(null,'',u)}catch(e){}}
-/* current location as {view,arg,q}; the matching builders are in U above */
+/* current location as {view,arg,q}; the matching builders are in U above. Views: route find map system faq sources compare school,
+   plus 'static' (prerendered municipality pages) and 'notfound' (404.html). */
+var APP_PATHS=['find','map','system','sources','questions','compare','school'];
 function parseRoute(){
-  var raw=location.hash.replace(/^#/,''),q='',i=raw.indexOf('?');
+  var p=location.pathname;
+  p=p.indexOf(BASE)===0?p.slice(BASE.length):p.replace(/^\/+/,'');
+  var parts=p.split('/').filter(Boolean),v=parts[0]||'',arg=parts[1]||'';
+  try{arg=decodeURIComponent(arg)}catch(e){}
+  var view;
+  if(v===''||v==='index.html')view='route';
+  else if(v==='questions')view='faq';
+  else if(APP_PATHS.indexOf(v)>-1)view=v;
+  else if(v==='municipality'||v==='municipalities')view='static';
+  else view='notfound';
+  if(parts.length>(v==='school'||v==='municipality'?2:1)&&view!=='notfound')view='notfound';
+  if(view==='school')arg=arg.slice(0,6);
+  return {view:view,arg:arg,q:location.search.replace(/^\?/,'')};
+}
+/* old hash links (#/school/ID, #/faq?q=slug, #/compare/A,B ...) become the new paths without a reload */
+function legacyHash(){
+  var hs=location.hash;
+  if(hs.slice(0,2)!=='#/')return false;
+  var raw=hs.slice(1),q='',i=raw.indexOf('?'),u;
   if(i>-1){q=raw.slice(i+1);raw=raw.slice(0,i)}
-  var parts=raw.split('/').filter(Boolean);
-  var arg=parts[1]||'';try{arg=decodeURIComponent(arg)}catch(e){}
-  return {view:parts[0]||'route',arg:arg,q:q};
+  var parts=raw.split('/').filter(Boolean),v=parts[0]||'route',arg=parts[1]||'',qo=parseQ(q);
+  try{arg=decodeURIComponent(arg)}catch(e){}
+  if(v==='school'&&isId(arg))u=BASE+'school/'+arg.toLowerCase()+'/';
+  else if(v==='compare')u=U.compare(String(arg).split(',').filter(isId).map(function(x){return x.toUpperCase()}));
+  else if(v==='faq')u=BASE+'questions/'+(/^[a-z0-9-]{1,60}$/.test(qo.q||'')?'#'+qo.q:'');
+  else if(v==='find'||v==='map'||v==='system'||v==='sources')u=BASE+v+'/'+(q?'?'+q:'');
+  else u=BASE+(q?'?'+q:'');
+  replaceUrl(u);
+  return true;
+}
+/* returns the path+query+hash the app handles itself, or '' when the browser should load the page normally */
+function appLink(a){
+  if(a.target&&a.target!=='_self')return '';
+  if(a.hasAttribute('download')||a.hasAttribute('data-external'))return '';
+  var u;try{u=new URL(a.href,location.href)}catch(e){return ''}
+  if(u.origin!==location.origin||u.pathname.indexOf(BASE)!==0)return '';
+  var first=u.pathname.slice(BASE.length).split('/').filter(Boolean)[0]||'';
+  if(first!==''&&APP_PATHS.indexOf(first)<0)return '';
+  return u.pathname+u.search+u.hash;
+}
+function onLinkClick(e){
+  if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+  var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;if(!a)return;
+  var to=appLink(a);if(!to)return;
+  var here=location.pathname+location.search;
+  if(to.split('#')[0]===here&&to.indexOf('#')>-1)return;   /* same page, only the anchor changes: the browser scrolls */
+  e.preventDefault();
+  if(to===here+location.hash){toContentTop();return}
+  navigate(to);
 }
 /* data-route="find" links get their href from U, so no markup hard-codes a URL */
 function applyRoutes(){qsa('[data-route]').forEach(function(a){a.setAttribute('href',U.view(a.getAttribute('data-route')))})}
@@ -274,7 +334,9 @@ function save(){if(state.example)return;try{localStorage.setItem(KEY,JSON.string
 function hasInput(){return AGE_RE.test(state.age)&&/^[1-9]\d{3}$/.test(state.pc)}
 
 /* ================= data ================= */
-var DB={po:null,vo:null,so:[],pc4:null,meta:null,feat:null,status:'loading'};
+var DB={po:null,vo:null,so:[],pc4:null,meta:null,feat:null,status:'idle'};
+/* the big data files are fetched only when a view needs them (never for prerendered text pages) */
+function ensureData(){if(DB.status==='idle')loadData()}
 function denLabel(nl){var m=tv('den');return (m&&m[nl])||t('den.other')}
 function applyDen(){
   [DB.po,DB.vo,DB.so].forEach(function(l){if(l)l.forEach(function(o){o.denT=denLabel(o.denNl)})});
@@ -292,7 +354,7 @@ function loadData(){
   DB.status='loading';renderStatus();
   var names=['schools_po','schools_vo','pc4','meta','schools_so'];
   return Promise.all(names.map(function(n){
-    return fetch('data/'+n+'.json').then(function(r){if(!r.ok)throw new Error(n);return r.json()}).catch(function(){return null});
+    return fetch(BASE+'data/'+n+'.json').then(function(r){if(!r.ok)throw new Error(n);return r.json()}).catch(function(){return null});
   })).then(function(a){
     DB.meta=a[3];
     if(a[0]&&a[1]&&a[2]){
@@ -304,13 +366,13 @@ function loadData(){
       DB.so=a[4]?mapRows(a[4]):[];
       DB.pc4=a[2];DB.status='ready';
     }else{DB.status='error'}
-  }).then(function(){if(DB.status==='ready')buildIndex();renderStatus();renderSources();render();loadFeatures();refreshView()});
+  }).then(function(){if(DB.status==='ready')buildIndex();renderStatus();refreshSources();render();loadFeatures();refreshView()});
 }
 /* features.json (school concepts, open days) is optional: the page works without it */
 function loadFeatures(){
   if(DB.feat||DB.status!=='ready')return;
-  fetch('data/features.json').then(function(r){if(!r.ok)throw new Error('features');return r.json()}).then(function(j){
-    if(j&&j.schools&&typeof j.schools==='object'){DB.feat=j;renderSources();render();refreshView()}
+  fetch(BASE+'data/features.json').then(function(r){if(!r.ok)throw new Error('features');return r.json()}).then(function(j){
+    if(j&&j.schools&&typeof j.schools==='object'){DB.feat=j;refreshSources();render();refreshView()}
   }).catch(function(){});
 }
 
@@ -875,6 +937,7 @@ function renderRoute(){
     $('resmeta').textContent='';
     return;
   }
+  ensureData();
   var m=model();
   var stops=buildStops(m);
   var pt=DB.pc4&&DB.pc4[state.pc];
@@ -931,7 +994,7 @@ function renderFooter(){
 function aLink(text,url){return h('a',{href:url,target:'_blank',rel:'noopener',text:text})}
 /* which open dataset feeds which part of a profile, with the counts from meta.json and inspection.json */
 function sourcesBlocks(){
-  var box=h('div',{class:'psec'},[h('h3',{text:t('sources.blocks.title')}),h('p',{text:t('sources.blocks.intro')})]);
+  var box=h('div',{class:'psec'},[h('h2',{text:t('sources.blocks.title')}),h('p',{text:t('sources.blocks.intro')})]);
   var ul=h('ul',{class:'srclist'});
   (tv('sources.blocks.items')||[]).forEach(function(x){ul.appendChild(h('li',{text:x}))});
   box.appendChild(ul);
@@ -952,18 +1015,20 @@ function sourcesBlocks(){
   }
   return box;
 }
+var SRC_STATIC=false;   /* true while the sources text is the prerendered one (it already holds the counts) */
+function refreshSources(){if(VIEW==='sources'&&!SRC_STATIC)renderSources()}
 function renderSources(){
-  renderFooter();
   var out=$('sources-out');if(!out)return;
+  SRC_STATIC=false;
   clear(out);
   var d=odDate(LAST_CHECKED);
-  var card=h('div',{class:'psec'},[h('h3',{text:t('sources.check.title')}),
+  var card=h('div',{class:'psec'},[h('h2',{text:t('sources.check.title')}),
     h('p',{text:t('sources.check.text',{date:d?fmtDay(d):LAST_CHECKED})})]);
   out.appendChild(card);
-  var rd=h('div',{class:'psec'},[h('h3',{text:t('sources.read.title')})]);
+  var rd=h('div',{class:'psec'},[h('h2',{text:t('sources.read.title')})]);
   (tv('sources.read.items')||[]).forEach(function(x){rd.appendChild(h('p',{text:x}))});
   out.appendChild(rd);
-  var dt=h('div',{class:'psec'},[h('h3',{text:t('sources.data.title')})]);
+  var dt=h('div',{class:'psec'},[h('h2',{text:t('sources.data.title')})]);
   var list=DB.meta&&DB.meta.attribution;
   if(list&&list.length){
     dt.appendChild(h('p',{text:t('sources.dataline',{built:DB.meta.generated||'',pupils:dataYear('po_pupils').date,advice:dataYear('po_advice').range,exams:dataYear('vo_exams').range})}));
@@ -991,7 +1056,7 @@ function renderSources(){
   dt.appendChild(h('p',{text:t('sources.sodk')}));
   out.appendChild(dt);
   out.appendChild(sourcesBlocks());
-  var sl=h('div',{class:'psec'},[h('h3',{text:t('sources.list.title')})]);
+  var sl=h('div',{class:'psec'},[h('h2',{text:t('sources.list.title')})]);
   var u=h('ul',{class:'srclist'});
   SRC_ORDER.forEach(function(k){u.appendChild(h('li',null,aLink(t('src.'+k),SRC_URL[k])))});
   sl.appendChild(u);out.appendChild(sl);
@@ -1090,7 +1155,7 @@ function renderSystem(){
 function faqSetAll(open){qsa('#faq details').forEach(function(d){d.open=open})}
 function faqFocus(slug){
   if(!slug||!/^[a-z0-9-]{1,60}$/.test(slug))return;
-  var d=document.getElementById('faq-'+slug);if(!d)return;
+  var d=document.getElementById(slug);if(!d||d.tagName!=='DETAILS')return;
   d.open=true;
   qsa('#faq details.hit').forEach(function(x){x.classList.remove('hit')});
   d.classList.add('hit');
@@ -1102,8 +1167,7 @@ function renderFaq(){
   var tools=h('div',{class:'faqtools'});
   var nav=h('nav',{class:'faqnav','aria-label':t('faq.navAria')});
   groups.forEach(function(g){
-    nav.appendChild(h('button',{class:'chip',type:'button',text:g.title,onclick:function(){
-      var el=document.getElementById('faqg-'+g.id);if(el)el.scrollIntoView({block:'start',behavior:reducedMotion()?'auto':'smooth'})}}));
+    nav.appendChild(h('a',{class:'chip',href:'#faqg-'+g.id,text:g.title,style:'text-decoration:none'}));
   });
   tools.appendChild(nav);
   tools.appendChild(h('div',{class:'faqall'},[
@@ -1112,9 +1176,9 @@ function renderFaq(){
   f.appendChild(tools);
   groups.forEach(function(g){
     var sec=h('section',{class:'faqgrp','aria-labelledby':'faqg-'+g.id});
-    sec.appendChild(h('h3',{id:'faqg-'+g.id,text:g.title}));
+    sec.appendChild(h('h2',{id:'faqg-'+g.id,text:g.title}));
     g.items.forEach(function(x){
-      var d=h('details',{id:'faq-'+x.id,open:true});
+      var d=h('details',{id:x.id,open:true});
       d.appendChild(h('summary',{text:x.q}));
       var a=h('div',{class:'ans'});
       x.blocks.forEach(function(b){
@@ -1123,7 +1187,7 @@ function renderFaq(){
         else if(b.ul){var ul=h('ul');b.ul.forEach(function(li){ul.appendChild(hr('li','',li))});a.appendChild(ul)}
       });
       a.appendChild(srcLine(x.src));
-      a.appendChild(h('p',{class:'faqlink'},h('a',{href:U.view('faq','?q='+x.id),text:t('faq.link')})));
+      a.appendChild(h('p',{class:'faqlink'},h('a',{href:U.faqItem(x.id),text:t('faq.link')})));
       d.appendChild(a);sec.appendChild(d);
     });
     f.appendChild(sec);
@@ -1131,11 +1195,17 @@ function renderFaq(){
 }
 
 /* ================= v3: routing, search, map, profiles, compare ================= */
-var VIEWS=['route','find','map','school','compare','system','faq','sources'];
+var VIEWS=['route','find','map','school','compare','system','faq','sources','static'];
 var TABS=['route','find','map','system','faq','sources'];
 var VIEW='route',CUR_ID='',FIRST=true,LANG_CHANGE=false;
 function secShort(s){return t('sec.short.'+s.sec)}
 function secLong(s){return t('sec.long.'+s.sec)}
+var TCOUNT={};
+function schoolTitle(s){
+  var k1=[s.name,s.city,s.sec].join('|'),v={name:s.name,type:t('seo.type.'+s.sec),city:s.city||''};
+  if(TCOUNT[k1]>1&&s.addr){v.addr=TCOUNT[k1+'|'+s.addr]>1?s.addr+' ('+s.id+')':s.addr;return t('title.schoolAddr',v)}
+  return t(s.city?'title.school':'title.schoolNoCity',v);
+}
 var SEC_OPTS=['','po','sbo','vo','so'];
 var R_OPTS=[0,2,5,10,20,50];
 var PAGE=25;
@@ -1148,7 +1218,7 @@ function valTxt(v,lb){return v==null?t('val.fewer5'):lb?t('val.atLeast',{n:v}):n
 var ALL=[],BYID={},DENS=[];
 function norm(x){return String(x==null?'':x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
 function buildIndex(){
-  ALL=[];BYID={};var dens={};
+  ALL=[];BYID={};TCOUNT={};var dens={};
   DB.po.forEach(function(s){s.sec=s.sbo?'sbo':'po';ALL.push(s)});
   DB.vo.forEach(function(s){s.sec='vo';ALL.push(s)});
   (DB.so||[]).forEach(function(s){s.sec='so';s.cll=Array.isArray(s.cls)&&s.cls.length?s.cls:(s.cl!=null?[s.cl]:[]);ALL.push(s)});
@@ -1157,6 +1227,7 @@ function buildIndex(){
     s.nk=norm(s.name);
     s.w=(s.nk+' '+norm(s.city)+' '+norm(s.mun)+' '+pc+' '+pc.slice(0,4)).split(/[^a-z0-9]+/).filter(Boolean);
     BYID[s.id]=s;dens[s.denT]=1;
+    var k1=[s.name,s.city,s.sec].join('|');TCOUNT[k1]=(TCOUNT[k1]||0)+1;k1+='|'+s.addr;TCOUNT[k1]=(TCOUNT[k1]||0)+1;
   });
   ALL.sort(function(a,b){return a.nk<b.nk?-1:a.nk>b.nk?1:(a.id<b.id?-1:1)});
   DENS=Object.keys(dens).sort();
@@ -1398,8 +1469,8 @@ function loadJson(key,url){
 /* one promise per file, so a profile can redraw as soon as either file is in */
 function loadDetail(grp){
   var a=[];
-  if(grp==='po'||grp==='vo')a.push(loadJson(grp,'data/detail_'+grp+'.json'));
-  a.push(loadJson('insp','data/inspection.json'));
+  if(grp==='po'||grp==='vo')a.push(loadJson(grp,BASE+'data/detail_'+grp+'.json'));
+  a.push(loadJson('insp',BASE+'data/inspection.json'));
   return a;
 }
 function detSig(grp){return (grp==='so'?'-':DET.st[grp]||'-')+'|'+(DET.st.insp||'-')}
@@ -1439,6 +1510,7 @@ function findRow(r){
   return h('li',{class:'sch',style:'list-style:none'},[left,main]);
 }
 function viewGate(out){
+  ensureData();
   if(DB.status==='loading'){clear(out);out.appendChild(loadingBox());return false}
   if(DB.status==='error'){clear(out);out.appendChild(errorBox());return false}
   return true;
@@ -1592,7 +1664,7 @@ function drawMap(){
 /* ---------- profile helpers ---------- */
 function sortYear(a,b){var x=String(a[0]),y=String(b[0]);return x<y?-1:x>y?1:0}
 function psec(title,expl,kids,src){
-  var sec=h('section',{class:'psec'},[h('h3',{text:title})]);
+  var sec=h('section',{class:'psec'},[h('h2',{text:title})]);
   if(expl)sec.appendChild(h('p',{class:'expl'},[h('b',{text:t('prof.whatMeans')}),expl]));
   kids.forEach(function(k){if(k)sec.appendChild(k)});
   if(src)sec.appendChild(h('p',{class:'dsrc',text:src}));
@@ -2070,28 +2142,49 @@ function nearbySection(s){
 }
 
 /* ---------- School view ---------- */
+function crumbs(items){
+  var ol=h('ol');
+  items.forEach(function(x,i){
+    ol.appendChild(h('li',null,x[1]&&i<items.length-1?h('a',{href:x[1],text:x[0]}):h('span',{'aria-current':i===items.length-1?'page':null,text:x[0]})));
+  });
+  return h('nav',{class:'crumbs','aria-label':t('crumb.aria')},ol);
+}
 function renderSchool(id){
-  var out=$('school-out');
-  if(!viewGate(out))return;
+  var out=$('school-out'),hold=out.getAttribute('data-static')===id;
+  ensureData();
+  /* a prerendered profile stays on screen until the data is in (and for good if the data fails to load) */
+  if(hold){if(DB.status!=='ready')return}
+  else if(!viewGate(out))return;
   var s=BYID[id];
-  clear(out);
+  if(!s||!hold)clear(out);
   if(!s){
-    out.appendChild(h('h2',{class:'vh',id:'h-school',tabindex:'-1',text:t('school.notFound')}));
+    out.removeAttribute('data-static');
+    out.appendChild(h('h1',{class:'vh',id:'h-school',tabindex:'-1',text:t('school.notFound')}));
     out.appendChild(h('p',null,[t('school.noCode')+' ',h('b',{text:id}),'. ',h('a',{href:U.view('find'),text:t('school.search')}),'.']));
     document.title=t('title.schoolNotFound');
     return;
   }
-  document.title=t('title.school',{name:s.name});
+  document.title=schoolTitle(s);
+  var want=U.school(id);
+  if(location.pathname!==want)replaceUrl(want+location.search+location.hash);
   var grp=grpOf(s),ps=loadDetail(grp),last='';
-  build();
-  ps.forEach(function(p){p.then(function(){if(VIEW==='school'&&CUR_ID===id&&detSig(grp)!==last)build()})});
+  if(hold){
+    Promise.all(ps).then(function(){if(VIEW==='school'&&CUR_ID===id&&out.getAttribute('data-static')===id){out.removeAttribute('data-static');build()}});
+  }else{
+    build();
+    ps.forEach(function(p){p.then(function(){if(VIEW==='school'&&CUR_ID===id&&detSig(grp)!==last)build()})});
+  }
   function build(){
     var d=detOf(s),sc=window.pageYOffset;last=detSig(grp);
     clear(out);
     var ph=h('div',{class:'phead'});
+    var cr=[[t('crumb.home'),U.route()]];
+    if(s.mun)cr.push([s.mun,U.muni(s.mun)]);
+    cr.push([s.name,null]);
+    ph.appendChild(crumbs(cr));
     ph.appendChild(h('a',{class:'back',href:U.view('find',fQuery()),text:t('school.back')}));
     ph.appendChild(h('div',{class:'when',text:secLong(s)}));
-    ph.appendChild(h('h2',{id:'h-school',tabindex:'-1',text:s.name}));
+    ph.appendChild(h('h1',{id:'h-school',tabindex:'-1',text:s.name}));
     if(s.sec==='so')ph.appendChild(h('div',{style:'margin:0 0 6px'},soTags(s)));
     ph.appendChild(h('p',{class:'addr',text:[s.addr,[s.pc&&s.pc.length===6?s.pc.slice(0,4)+' '+s.pc.slice(4):s.pc,s.city].filter(Boolean).join(' '),s.mun&&s.mun!==s.city?t('school.municipality',{mun:s.mun}):null].filter(Boolean).join(', ')}));
     ph.appendChild(h('p',{style:'margin:0 0 6px',text:t('school.denom',{den:s.denT})+(s.sec==='vo'&&s.isk?t('school.isk'):'')}));
@@ -2371,17 +2464,38 @@ function keepTabVisible(a){
   }
   updateTabFade();
 }
+/* exactly one h1 per view: the active view's heading is an h1, the others are h2 (inside hidden sections) */
+var HEAD_SEL={route:'#h1',find:'#h-find',map:'#h-map',school:'#h-school',compare:'#h-compare',system:'#p-system .vh',faq:'#p-faq .vh',sources:'#h-sources',static:'#p-static .vh'};
+function retag(el,tag){
+  if(!el||el.tagName.toLowerCase()===tag)return el;
+  var n=document.createElement(tag),i,a;
+  for(i=0;i<el.attributes.length;i++){a=el.attributes[i];n.setAttribute(a.name,a.value)}
+  while(el.firstChild)n.appendChild(el.firstChild);
+  el.parentNode.replaceChild(n,el);
+  return n;
+}
+function syncHeads(v){
+  Object.keys(HEAD_SEL).forEach(function(k){
+    var el=document.querySelector(HEAD_SEL[k]);
+    if(el)retag(el,k===v?'h1':k==='route'?'p':'h2');
+  });
+}
 function router(keep){
   var r=parseHash(),v=r.view;
-  if(VIEWS.indexOf(v)<0){v='route';try{replaceUrl(U.route())}catch(e){}}
+  if(v==='notfound'){
+    if($('p-static').firstElementChild)v='static';
+    else{v='route';replaceUrl(U.route())}
+  }
+  if(v==='static'&&!$('p-static').firstElementChild){location.replace(location.href);return}
   VIEW=v;
   document.body.setAttribute('data-view',v);
   VIEWS.forEach(function(x){$('p-'+x).hidden=(x!==v)});
+  syncHeads(v);
   var tabOf=({school:'find'})[v]||v;
   TABS.forEach(function(tb){
     var a=$('t-'+tb);if(tb===tabOf)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
   });
-  document.title=t(has('title.'+v)&&v!=='school'?'title.'+v:'title.route');
+  if(v!=='static')document.title=t(has('title.'+v)&&v!=='school'?'title.'+v:'title.route');
   CMSG='';
   if(v==='route'){
     var qpc=parsePc(r.q.pc||'');
@@ -2401,7 +2515,7 @@ function router(keep){
     CUR_ID=isId(r.arg)?r.arg.toUpperCase():'';
     renderSchool(CUR_ID);
   }else if(v==='compare'){
-    CUR_IDS=String(r.arg||'').split(',').filter(Boolean);
+    CUR_IDS=String(r.q.ids||'').split(',').filter(Boolean).map(function(x){return x.toUpperCase()});
     renderCompare(CUR_IDS);
   }
   syncNav();
@@ -2414,8 +2528,11 @@ function router(keep){
     try{el.focus({preventScroll:true})}catch(e){}
   }
   FIRST=false;
-  if(v==='faq')faqFocus(r.q.q);
-  if(v==='sources'&&!DET.insp)loadJson('insp','data/inspection.json').then(function(j){if(j&&VIEW==='sources')renderSources()});
+  if(v==='faq')faqFocus(location.hash.slice(1));
+  if(v==='sources'&&!$('sources-out').firstChild){
+    ensureData();renderSources();
+    if(!DET.insp)loadJson('insp',BASE+'data/inspection.json').then(function(j){if(j&&VIEW==='sources')renderSources()});
+  }
 }
 
 /* ================= static text, language, form ================= */
@@ -2426,8 +2543,6 @@ function applyStatic(){
       var i=pair.indexOf(':');if(i>0)e.setAttribute(pair.slice(0,i).trim(),t(pair.slice(i+1).trim()));
     });
   });
-  var md=document.querySelector('meta[name="description"]');
-  if(md)md.setAttribute('content',t('meta.description'));
 }
 function buildAgeOptions(){
   var sel=$('age'),cur=sel.value||state.age||'';
@@ -2446,8 +2561,12 @@ function renderLangSwitch(){
   box.appendChild(h('label',{class:'sr',for:'lang-sel',text:t('lang.label')}));
   box.appendChild(sel);
 }
-function renderAllText(){
-  applyStatic();applyRoutes();buildAgeOptions();renderExamples();renderGlossary();renderSystem();renderFaq();renderSources();renderLangSwitch();
+/* at start only what the prerendered page does not already hold is built; a language change rebuilds everything */
+function renderAllText(force){
+  applyStatic();applyRoutes();buildAgeOptions();renderExamples();renderGlossary();renderFooter();renderLangSwitch();
+  if(force||!$('sysfig').firstChild)renderSystem();
+  if(force||!$('faq').firstChild)renderFaq();
+  if(force){SRC_STATIC=false;if($('sources-out').firstChild)renderSources()}
 }
 function changeLang(code){
   if(SUPPORTED.indexOf(code)<0||code===LANG)return;
@@ -2457,7 +2576,7 @@ function changeLang(code){
     applyDen();
     if(DB.status==='ready')buildIndex();
     FORM=null;F.den='';resetMap();
-    renderAllText();
+    renderAllText(true);
     router(true);
   }).catch(function(){});
 }
@@ -2487,17 +2606,21 @@ function startApp(){
   migrateStorage();
   state=loadState();CMP=loadCmp();
   var sel=$('age');
-  renderAllText();
+  SRC_STATIC=!!$('sources-out').firstChild;
+  renderAllText(false);
   sel.value=state.age;
   $('pc').value=state.pc;
   initForm();
   document.body.classList.remove('booting');
   var b=$('boot');if(b)b.hidden=true;
-  window.addEventListener('hashchange',function(){router()});
+  legacyHash();
+  window.addEventListener('popstate',function(){router()});
+  window.addEventListener('hashchange',function(){if(legacyHash())router();else if(VIEW==='faq')faqFocus(location.hash.slice(1))});
+  document.addEventListener('click',onLinkClick);
   $('nav').addEventListener('scroll',updateTabFade,{passive:true});window.addEventListener('resize',updateTabFade);
   $('skip').addEventListener('click',function(e){e.preventDefault();$('main').focus()});
   var l=document.createElement('div');l.id='live';l.className='sr';l.setAttribute('role','status');l.setAttribute('aria-live','polite');document.body.appendChild(l);
-  loadData();router();
+  router();
 }
 function bootFail(){
   var b=$('boot');if(b){b.textContent=b.getAttribute('data-fail')||'The page text could not be loaded. Please reload.';b.hidden=false}

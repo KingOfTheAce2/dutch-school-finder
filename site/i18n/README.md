@@ -21,6 +21,10 @@ Language is picked from `?lang=xx`, then the saved choice (`localStorage`), then
 - Keep the no-dash house style: no en dashes or em dashes in prose, rewrite the sentence instead.
 - The site name and tagline are `brand.name` and `brand.tagline`. Renaming the site is a one-line change there.
 
+## Static pages
+
+`build/prerender.py` reads `en.json` at deploy time and writes every page as static HTML, so the same strings serve the prerendered page and the app. Keys used only by the build: `seo.*` (page descriptions and the type words in school titles), `title.*`, `crumb.*`, `home.*`, `muni.*`, `munis.*`, `notfound.*`. Keep their placeholders (`{name}`, `{n}`, `{prov}`). Page descriptions are fitted to 150 to 160 characters, so keep the sentences short.
+
 ## What must not be translated
 
 - Data values from the pipeline JSON: school names, places, municipality names, BRIN ids, DUO structure labels, inspection judgements and the attribution and disclaimer text inside `meta.json`.

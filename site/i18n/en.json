@@ -4,18 +4,23 @@
     "tagline": "An unofficial guide for parents new to Dutch schools"
   },
   "meta": {
-    "description": "Dutch schools explained in English for expat families: your child's route through the system and the real schools near your postcode."
+    "description": "Dutch schools explained in English for expat families: your child's route through the school system and the real schools near your postcode, from open data."
   },
   "title": {
-    "route": "{brand}",
+    "route": "{brand}: Dutch schools explained in English for expat parents",
     "find": "Find a school | {brand}",
     "map": "Map of schools | {brand}",
     "compare": "Compare schools | {brand}",
     "system": "The whole Dutch school system | {brand}",
     "faq": "Questions parents ask | {brand}",
     "sources": "Data and sources | {brand}",
-    "school": "{name} | {brand}",
-    "schoolNotFound": "School not found | {brand}"
+    "school": "{name}, {type} school in {city} | {brand}",
+    "schoolNoCity": "{name}, {type} school | {brand}",
+    "schoolAddr": "{name}, {type} school in {city}, {addr} | {brand}",
+    "schoolNotFound": "School not found | {brand}",
+    "municipality": "Schools in {name} | {brand}",
+    "municipalities": "Schools by municipality | {brand}",
+    "notFound": "Page not found | {brand}"
   },
   "a11y": {
     "skip": "Skip to the content"
@@ -493,7 +498,7 @@
     "Reformatorisch": "Orthodox Reformed",
     "Interconfessioneel": "Interdenominational",
     "Algemeen bijzonder": "Non-religious private (special)",
-    "Bijzonder": "Other special",
+    "Bijzonder": "Special (privately run, no denomination stated)",
     "Overige": "Other",
     "Samenwerking Opb., PC": "Public and Protestant (joint)",
     "Samenwerking Opb., RK": "Public and Catholic (joint)",
@@ -1944,5 +1949,132 @@
     },
     "scaleQ": "What do the judgements mean?",
     "oldFramework": "earlier framework"
+  },
+
+  "crumb": {
+    "home": "Home",
+    "aria": "Breadcrumb"
+  },
+  "seo": {
+    "type": {
+      "po": "primary",
+      "sbo": "special primary",
+      "vo": "secondary",
+      "so": "special education"
+    },
+    "typeJoin": ", ",
+    "desc": {
+      "find": "Search every primary, special primary, special education and secondary school in the Netherlands by name, town, municipality or postcode, with open data.",
+      "map": "Map of Dutch primary, special and secondary schools. Filter by level, school concept, bilingual or IB programme, and see which schools are near your postcode.",
+      "system": "The whole Dutch school system on one page, from primary school to university, with the tracks, the diplomas and the ways a child can move between them.",
+      "faq": "Plain English answers to what parents new to the Netherlands ask about Dutch schools: registration, school advice, levels, fees and international options.",
+      "sources": "Where the school numbers on this site come from (DUO, Inspectie, CBS, Kadaster), how to read them, what is hidden for privacy, and what this site is not.",
+      "municipalities": "Every Dutch municipality with its primary, special and secondary schools, grouped by province. Open a municipality to see its schools and the facts we hold.",
+      "compare": "Compare up to four Dutch schools of the same type side by side: pupils, levels, exam results and inspection information from open data. Context, not a ranking.",
+      "notFound": "This page does not exist on Schoolpath NL. You can search for a Dutch school by name, town or postcode, or read our English guide to the Dutch school system.",
+      "municipality": "{name} ({prov}) has {n} schools in the open data: {parts}.",
+      "municipalityPad": "See each school with its pupils, levels, results and inspection information.",
+      "school": "{name} is a {type} school in {city} ({prov}).",
+      "schoolNoCity": "{name} is a {type} school ({prov}).",
+      "addr": "Address: {addr}.",
+   "pupils": "{pupils}.",
+      "den": "Denomination: {den}.",
+      "tracks": "Levels: {tracks}.",
+      "cluster": "{cluster}.",
+      "tail": [
+      "Open data from DUO and the Inspectie.",
+      "Not a ranking.",
+      "Check details with the school.",
+      "See nearby schools.",
+      "Pupils, levels and inspection information.",
+      "Profile with pupils, inspection and nearby schools from open data.",
+      "Facts from DUO and the Inspectie. Not a ranking.",
+      "Sources: DUO, Inspectie, Kadaster.",
+      "Facts from open data.",
+      "Check everything with the school.",
+      "Open data.",
+      "DUO data."
+    ]
+    }
+  },
+  "home": {
+    "linksTitle": "Browse schools by place",
+    "linksIntro": "Start from the biggest municipality in each province, or open the full list.",
+    "linksAll": "All municipalities, A to Z",
+    "linksFind": "Search every school",
+    "linksQuestions": "Questions parents ask",
+    "howTitle": "How it works",
+    "how1": "Enter your child's age and a postcode. You get the steps still ahead, with dates and what to do.",
+    "how2": "For each step you see the real schools nearby: pupil numbers, where leavers go next and exam results.",
+    "how3": "Everything runs in your browser from open data. Nothing you enter is sent to us."
+  },
+  "muni": {
+    "h1": "Schools in {name}",
+    "crumbList": "Municipalities",
+    "intro": "{name} is a municipality in {prov}. The open data lists {n} schools here: {parts}.",
+    "introPupils": "Together they have about {n} pupils (1 October 2025).",
+    "parts": {
+      "po": {
+        "one": "{n} primary school",
+        "other": "{n} primary schools"
+      },
+      "sbo": {
+        "one": "{n} special primary school",
+        "other": "{n} special primary schools"
+      },
+      "vo": {
+        "one": "{n} secondary school",
+        "other": "{n} secondary schools"
+      },
+      "so": {
+        "one": "{n} special education school",
+        "other": "{n} special education schools"
+      }
+    },
+    "group": {
+      "po": "Primary schools in {name}",
+      "sbo": "Special primary schools in {name}",
+      "vo": "Secondary schools in {name}",
+      "so": "Special education schools in {name}"
+    },
+    "groupNote": {
+      "po": "Primary school (basisonderwijs) covers groep 1 to 8, ages 4 to 12.",
+      "sbo": "Special primary schools (sbo) are for children who need more support than a regular primary school can give.",
+      "vo": "Secondary schools (voortgezet onderwijs) offer one or more levels: praktijkonderwijs, vmbo, havo and vwo.",
+      "so": "Special education (SO and VSO) is for children with a disability or serious problems, in four clusters."
+    },
+    "pupilsAbout": "about {n} pupils",
+    "pupilsAtLeast": "at least {n} pupils",
+    "noCount": "pupil count not published",
+    "routeLink": "Plan a route from postcode {pc}",
+    "routeText": "Enter your child's age with this postcode, the most common one among these schools, to see the steps ahead and the schools nearby.",
+    "factsTitle": "Facts about schools in {name}",
+    "src": "Source: DUO Open Onderwijsdata (addresses and pupils on 1 October 2025), municipality names from Kadaster BAG via PDOK. Numbers are context, not a ranking."
+  },
+  "munis": {
+    "h1": "Schools by municipality",
+    "intro": "Every municipality that has a school in the open data, grouped by province. {n} municipalities.",
+    "count": {
+      "one": "{n} school",
+      "other": "{n} schools"
+    }
+  },
+  "notfound": {
+    "h1": "Page not found",
+    "text": "There is no page at this address. It may have moved, or the link may be mistyped.",
+    "tryFind": "Search for a school by name, town or postcode",
+    "tryHome": "Go to the start page",
+    "trySystem": "Read about the whole school system",
+    "lookup": "If you followed a link to a school, we are looking it up."
+  },
+  "compareStatic": {
+    "text": "Compare up to four schools of the same type. Add schools from a school page or from the search, then open the comparison here.",
+    "noscript": "The comparison needs JavaScript. Without it, open each school page to read its numbers."
+  },
+  "findStatic": {
+    "noscript": "The search needs JavaScript. Without it, browse by municipality instead."
+  },
+  "mapStatic": {
+    "noscript": "The map needs JavaScript. Without it, browse by municipality instead."
   }
 }

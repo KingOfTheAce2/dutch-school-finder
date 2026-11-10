@@ -18,12 +18,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Assemble site
-        run: |
-          mkdir -p _site/data _site/i18n
-          cp site/index.html site/app.js _site/
-          cp site/i18n/*.json _site/i18n/
-          cp pipeline/out/*.json _site/data/
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build site (prerendered pages, sitemaps, robots.txt, copied assets and data)
+        run: python -I build/prerender.py
+      - name: Check generated site (sample)
+        run: python -I build/check_site.py --sample 300
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
