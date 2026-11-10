@@ -189,10 +189,42 @@ var SRC_URL={
   sk21:'https://www.studiekeuze123.nl/studiekeuzewoordenboek/21-toelatingsonderzoek',
   nieuw:'https://www.rijksoverheid.nl/onderwerpen/basisonderwijs/onderwijs-voor-nieuwkomers',
   sio:'https://www.sio.nl/',
-  oco:'https://ocoamsterdam.nl/'
+  oco:'https://ocoamsterdam.nl/',
+  vo_raad_moving_from_vmbo_to_havo_and_fro:'https://vo-raad.nl/onderwerpen/overgang-vmbo-havo-havo-vwo/wat-speelt-er',
+  rijksoverheid_what_is_tto:'https://www.rijksoverheid.nl/documenten/vraag-en-antwoord/onderwijs-en-internationalisering/wat-is-tweetalig-onderwijs-tto-in-het-voortgezet-onderwijs',
+  dutch_international_schools:'https://www.dutchinternationalschools.nl/',
+  isa_fees_2026_27:'https://www.isa.nl/fees/',
+  iamexpat_school_fees_third_party_guide:'https://www.iamexpat.nl/education/primary-secondary-education/tuition-fees-netherlands',
+  rijksoverheid_passend_onderwijs:'https://www.rijksoverheid.nl/documenten/vraag-en-antwoord/passend-onderwijs/hoe-krijgt-mijn-kind-passend-onderwijs',
+  rijksoverheid_bsn_in_education:'https://www.rijksoverheid.nl/onderwerpen/privacy-en-persoonsgegevens/burgerservicenummer-bsn/bsn-in-het-onderwijs',
+  rijksoverheid_leerplicht_en_kwalificatie:'https://www.rijksoverheid.nl/onderwerpen/leerplicht/leerplicht-en-kwalificatieplicht',
+  rijksoverheid_compulsory_education_and_a:'https://www.rijksoverheid.nl/onderwerpen/leerplicht/vraag-en-antwoord/leerplicht-buitenlandse-school',
+  rijksoverheid_leerplicht_and_school_holi:'https://www.rijksoverheid.nl/onderwerpen/leerplicht/vraag-en-antwoord/leerplicht-schoolvakanties',
+  rijksoverheid_voluntary_parental_contrib:'https://www.rijksoverheid.nl/documenten/2023/09/01/documenten-vrijwillige-ouderbijdrage-po-en-vo',
+  inspectie_voluntary_parental_contributio:'https://www.onderwijsinspectie.nl/binaries/onderwijsinspectie/documenten/rapporten/2023/04/20/voldoen-scholen-aan-de-wetgeving-omtrent-vrijwillige-ouderbijdrage/Voldoen+scholen+aan+de+wetgeving+omtrent+vrijwillige+ouderbijdrage-Feiten+en+reflectie.pdf',
+  rijksoverheid_lunch_at_primary_school:'https://www.rijksoverheid.nl/onderwerpen/basisonderwijs/vraag-en-antwoord/kan-mijn-kind-tussen-de-middag-overblijven-op-de-basisschool',
+  rijksoverheid_childcare_benefit_amounts_:'https://www.rijksoverheid.nl/themas/belastingen-uitkeringen-en-toeslagen/kinderopvangtoeslag/bedragen-kinderopvangtoeslag-2026',
+  rijksoverheid_when_to_register_at_a_prim:'https://www.rijksoverheid.nl/vraag-en-antwoord/basisonderwijs/wanneer-kind-aanmelden-basisschool',
+  oco_amsterdam_priority_rules_for_primary:'https://ocoamsterdam.nl/vragen/voorrangsregels-voor-plaatsen-van-kinderen-op-basisscholen-in-amsterdam',
+  de_vo_gids_how_lotteries_work:'https://www.devogids.nl/stappenplan-vo-gids/hulp/hoe-werkt-loting-voor-de-middelbare-school/',
+  samen_naar_het_vo_utrecht_2026:'https://www.samennaarhetvo.nl/aktueel/persbericht-2026/',
+  bovo_haaglanden_results_2026:'https://www.bovohaaglanden.nl/uitslag-aanmeldingen-middelbare-school-haaglanden-2026/',
+  rijksoverheid_passend_onderwijs2:'https://www.rijksoverheid.nl/onderwerpen/passend-onderwijs',
+  rijksoverheid_public_and_special_educati:'https://www.rijksoverheid.nl/themas/onderwijs/vrijheid-van-onderwijs/openbaar-en-bijzonder-onderwijs',
+  belastingdienst_content_of_the_expat_sch:'https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/zakelijk/internationaal/personeel/u_bent_niet_in_nederland_gevestigd_loonheffingen_inhouden/als_u_loonheffingen_gaat_inhouden/extraterritoriale_kosten_en_de_30procentregeling/inhoud_van_de_regeling/inhoud_van_de_regeling',
+  business_gov_nl_30_ruling_down_to_27:'https://business.gov.nl/amendments/30-percent-ruling-compensation-down-to-27-percent/',
+  nuffic_applying_for_a_credential_evaluat:'https://www.nuffic.nl/en/study-and-work-in-the-netherlands/applying-for-a-credential-evaluation',
+  study_in_nl_checking_your_diploma:'https://www.studyinnl.org/plan-your-stay/checking-your-diploma',
+  study_in_nl:'https://www.studyinnl.org/',
+  rijksoverheid_which_diplomas_give_access:'https://www.rijksoverheid.nl/documenten/vraag-en-antwoord/hoger-onderwijs/met-welke-diploma-s-kan-ik-naar-de-universiteit-of-hogeschool',
+  duo_open_education_data:'https://duo.nl/open_onderwijsdata/',
+  inspectie_van_het_onderwijs:'https://www.onderwijsinspectie.nl/',
+  nuffic_bilingual_education:'https://www.nuffic.nl/onderwijssectoren/voortgezet-onderwijs/tweetalig-onderwijs',
+  nuffic_all_tto_schools:'https://www.nuffic.nl/onderwijssectoren/voortgezet-onderwijs/tweetalig-onderwijs/alle-tto-scholen-in-nederland',
+  oco_amsterdam_when_to_register:'https://ocoamsterdam.nl/vragen/wanneer-moet-ik-mijn-kind-aanmelden-voor-de-basisschool'
 };
-var SRC_ORDER=['schema','nuf','loket','gov','sk123','sk21','basis','wanneer','blijven','tijdlijn','advies','voraad','inschr','weiger','vmbo','havo','vwo','pro','brug','kiesmbo','kiesEntree','mboRijks','mboToel','nufMbo','mboraad','nieuw','sio','oco'];
-var LAST_CHECKED='2026-10-16';
+var SRC_ORDER=['schema','nuf','loket','gov','sk123','sk21','basis','wanneer','blijven','tijdlijn','advies','voraad','inschr','weiger','vmbo','havo','vwo','pro','brug','kiesmbo','kiesEntree','mboRijks','mboToel','nufMbo','mboraad','nieuw','sio','oco','vo_raad_moving_from_vmbo_to_havo_and_fro','rijksoverheid_what_is_tto','dutch_international_schools','isa_fees_2026_27','iamexpat_school_fees_third_party_guide','rijksoverheid_passend_onderwijs','rijksoverheid_bsn_in_education','rijksoverheid_leerplicht_en_kwalificatie','rijksoverheid_compulsory_education_and_a','rijksoverheid_leerplicht_and_school_holi','rijksoverheid_voluntary_parental_contrib','inspectie_voluntary_parental_contributio','rijksoverheid_lunch_at_primary_school','rijksoverheid_childcare_benefit_amounts_','rijksoverheid_when_to_register_at_a_prim','oco_amsterdam_priority_rules_for_primary','de_vo_gids_how_lotteries_work','samen_naar_het_vo_utrecht_2026','bovo_haaglanden_results_2026','rijksoverheid_passend_onderwijs2','rijksoverheid_public_and_special_educati','belastingdienst_content_of_the_expat_sch','business_gov_nl_30_ruling_down_to_27','nuffic_applying_for_a_credential_evaluat','study_in_nl_checking_your_diploma','study_in_nl','rijksoverheid_which_diplomas_give_access','duo_open_education_data','inspectie_van_het_onderwijs','nuffic_bilingual_education','nuffic_all_tto_schools','oco_amsterdam_when_to_register'];
+var LAST_CHECKED='2026-11-10';
 function srcLine(keys,cls){
   var p=h('p',{class:cls||'src'},[t('src.label')+' ']);
   keys.forEach(function(k,i){var u=SRC_URL[k];if(!u)return;if(i)p.appendChild(document.createTextNode(' · '));
@@ -697,7 +729,7 @@ function pathText(grp){
 }
 
 var STOP_ICON={pre:'clock',g12:'school',g35:'school',g67:'book',g8:'fork',vo1:'school',vo23:'pencil',fin:'pencil',he:'cap'};
-var STOP_SRC={pre:['basis','wanneer'],g12:['wanneer','blijven'],g35:['blijven','loket'],g67:['tijdlijn','loket'],g8:['tijdlijn','voraad','advies','inschr','weiger'],vo1:['brug','weiger','loket'],vo23:['vmbo','havo','vwo','mboRijks'],fin:['mboToel','mboRijks','kiesmbo','vmbo','havo','vwo','pro'],he:['schema','gov','sk123','sk21','mboRijks','nuf']};
+var STOP_SRC={pre:['basis','wanneer','rijksoverheid_when_to_register_at_a_prim','oco_amsterdam_when_to_register','oco_amsterdam_priority_rules_for_primary'],g12:['wanneer','blijven'],g35:['blijven','loket'],g67:['tijdlijn','loket'],g8:['tijdlijn','voraad','advies','inschr','weiger'],vo1:['brug','weiger','loket'],vo23:['vmbo','havo','vwo','vo_raad_moving_from_vmbo_to_havo_and_fro','mboRijks'],fin:['mboToel','mboRijks','kiesmbo','vmbo','havo','vwo','vo_raad_moving_from_vmbo_to_havo_and_fro','pro','advies'],he:['schema','gov','sk123','sk21','rijksoverheid_which_diplomas_give_access','mboRijks','nuf']};
 function stopDef(id,m,grp){
   var s={id:id,icon:STOP_ICON[id],when:whenText(id,m),title:t('stops.'+id+'.title'),schools:null,src:STOP_SRC[id].slice(),todo:tv('stops.'+id+'.todo')||[],what:(tv('stops.'+id+'.what')||[]).slice()};
   var cur=(m.cur===id);
@@ -780,6 +812,10 @@ function renderStop(st,m,idx,firstDeadlineId){
       ul.appendChild(h('li',{class:cl},[h('span',{class:'dd',text:d.lab}),h('span',{class:'dt',text:d.t}),h('span',{class:'dx',text:d.d})]));
     });
     info.appendChild(ul);
+    if(has('stops.'+st.id+'.afterSignup'))info.appendChild(hr('p','',t('stops.'+st.id+'.afterSignup')));
+  }
+  if(has('stops.'+st.id+'.note.text')){
+    info.appendChild(h('div',{class:'callout',role:'note'},[h('b',{text:t('stops.'+st.id+'.note.title')}),hr('p','',t('stops.'+st.id+'.note.text'))]));
   }
   if(st.todo.length){
     var d2=h('div',{class:'do'},[h('b',{text:t('stop.todo')})]);
@@ -1014,23 +1050,50 @@ function renderSystem(){
   });
   ol.appendChild(h('li',null,[h('b',{text:'+'}),h('span',null,[t('sys.xfersExtra')])]));
   var sl=$('syssrc');clear(sl);sl.appendChild(document.createTextNode(t('src.label')+' '));
-  ['schema','nuf','loket','gov','mboRijks','sk123'].forEach(function(key,i){if(i)sl.appendChild(document.createTextNode(' · '));sl.appendChild(h('a',{href:SRC_URL[key],target:'_blank',rel:'noopener',text:t('src.'+key)}))});
+  ['schema','nuf','loket','gov','mboRijks','sk123','vo_raad_moving_from_vmbo_to_havo_and_fro','rijksoverheid_which_diplomas_give_access'].forEach(function(key,i){if(i)sl.appendChild(document.createTextNode(' · '));sl.appendChild(h('a',{href:SRC_URL[key],target:'_blank',rel:'noopener',text:t('src.'+key)}))});
 }
 
 /* ================= FAQ ================= */
+function faqSetAll(open){qsa('#faq details').forEach(function(d){d.open=open})}
+function faqFocus(slug){
+  if(!slug||!/^[a-z0-9-]{1,60}$/.test(slug))return;
+  var d=document.getElementById('faq-'+slug);if(!d)return;
+  d.open=true;
+  qsa('#faq details.hit').forEach(function(x){x.classList.remove('hit')});
+  d.classList.add('hit');
+  setTimeout(function(){try{d.scrollIntoView({block:'start',behavior:reducedMotion()?'auto':'smooth'})}catch(e){d.scrollIntoView()}},60);
+}
 function renderFaq(){
   var f=$('faq');clear(f);
-  (tv('faq.items')||[]).forEach(function(x,i){
-    var d=h('details',{id:'faq-'+i});
-    d.appendChild(h('summary',{text:x.q}));
-    var a=h('div',{class:'ans'});
-    x.blocks.forEach(function(b){
-      if(b.p!==undefined)a.appendChild(hr('p','',b.p));
-      else if(b.say!==undefined)a.appendChild(hr('p','say',b.say));
-      else if(b.ul){var ul=h('ul');b.ul.forEach(function(li){ul.appendChild(hr('li','',li))});a.appendChild(ul)}
+  var groups=tv('faq.groups')||[];
+  var tools=h('div',{class:'faqtools'});
+  var nav=h('nav',{class:'faqnav','aria-label':t('faq.navAria')});
+  groups.forEach(function(g){
+    nav.appendChild(h('button',{class:'chip',type:'button',text:g.title,onclick:function(){
+      var el=document.getElementById('faqg-'+g.id);if(el)el.scrollIntoView({block:'start',behavior:reducedMotion()?'auto':'smooth'})}}));
+  });
+  tools.appendChild(nav);
+  tools.appendChild(h('div',{class:'faqall'},[
+    h('button',{class:'btn sec',type:'button',text:t('faq.expand'),onclick:function(){faqSetAll(true)}}),' ',
+    h('button',{class:'btn sec',type:'button',text:t('faq.collapse'),onclick:function(){faqSetAll(false)}})]));
+  f.appendChild(tools);
+  groups.forEach(function(g){
+    var sec=h('section',{class:'faqgrp','aria-labelledby':'faqg-'+g.id});
+    sec.appendChild(h('h3',{id:'faqg-'+g.id,text:g.title}));
+    g.items.forEach(function(x){
+      var d=h('details',{id:'faq-'+x.id,open:true});
+      d.appendChild(h('summary',{text:x.q}));
+      var a=h('div',{class:'ans'});
+      x.blocks.forEach(function(b){
+        if(b.p!==undefined)a.appendChild(hr('p','',b.p));
+        else if(b.say!==undefined)a.appendChild(hr('p','say',b.say));
+        else if(b.ul){var ul=h('ul');b.ul.forEach(function(li){ul.appendChild(hr('li','',li))});a.appendChild(ul)}
+      });
+      a.appendChild(srcLine(x.src));
+      a.appendChild(h('p',{class:'faqlink'},h('a',{href:U.view('faq','?q='+x.id),text:t('faq.link')})));
+      d.appendChild(a);sec.appendChild(d);
     });
-    a.appendChild(srcLine(x.src));
-    d.appendChild(a);f.appendChild(d);
+    f.appendChild(sec);
   });
 }
 
@@ -1616,11 +1679,10 @@ function inspSection(s){
   var link=h('a',{href:'https://www.onderwijsinspectie.nl/',target:'_blank',rel:'noopener',text:t('prof.insp.linkText')});
   if(r&&typeof r.o==='string'){
     var box=h('div',{class:'insp'},[h('b',{text:r.o})]);
+    var xk=(r.x&&typeof r.x==='object')?Object.keys(r.x).filter(function(k){return typeof r.x[k]==='string'}):[];
+    if(xk.length)box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:t('prof.insp.lowest')}));
     if(r.d)box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:t('prof.insp.dated',{date:r.d})}));
-    if(r.x&&typeof r.x==='object'){
-      Object.keys(r.x).forEach(function(k){if(typeof r.x[k]==='string')box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:k+': '+r.x[k]}))});
-      box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:t('prof.insp.lowest')}));
-    }
+    xk.forEach(function(k){box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:k+': '+r.x[k]}))});
     kids.push(box);
     var srcA=I&&safeUrl(I.source_url)?h('a',{href:I.source_url,target:'_blank',rel:'noopener',text:I.source||t('od.source')}):(I&&I.source?I.source:'');
     kids.push(h('p',{class:'dsrc'},[t('prof.insp.source')+' ',srcA,I&&I.as_of?'. '+t('prof.insp.asOf',{date:I.as_of}):'',I&&I.licence?'. '+t('attr.licence',{licence:I.licence}).replace(/\.$/,''):'','.']));
@@ -1745,7 +1807,15 @@ function compareRows(grp){
     });
     R('exam','examSm',function(s,d){return latestPass(d)||(s.exam&&s.exam.length?examLine(s):t('cmp.noData'))});
   }
-  R('insp','',function(s){var r=inspOf(s);return r&&r.o?r.o+(r.d?' ('+r.d+')':''):t('cmp.noInsp')});
+  R('insp','',function(s){
+    var r=inspOf(s);if(!(r&&r.o))return t('cmp.noInsp');
+    var xk=(r.x&&typeof r.x==='object')?Object.keys(r.x).filter(function(k){return typeof r.x[k]==='string'}):[];
+    var d=r.d?' ('+r.d+')':'';
+    if(!xk.length)return r.o+d;
+    var b=h('div',null,[h('div',{text:t('cmp.inspLowest',{o:r.o})+d})]);
+    xk.forEach(function(k){b.appendChild(h('div',{text:k+': '+r.x[k]}))});
+    return b;
+  });
   R('od','odSm',function(s){return openLine(s)||t('cmp.noOd')});
   return rows;
 }
@@ -1883,6 +1953,7 @@ function router(keep){
     try{el.focus({preventScroll:true})}catch(e){}
   }
   FIRST=false;
+  if(v==='faq')faqFocus(r.q.q);
 }
 
 /* ================= static text, language, form ================= */
