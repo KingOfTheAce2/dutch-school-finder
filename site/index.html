@@ -1,0 +1,1382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Dutch schools explained in English for expat families: your child's route through the system and the real schools near your postcode.">
+</head>
+<body>
+<title>Schoollijn</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800;900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Schoollijn v2. Concept: a vertical route line like the line strip in a Dutch train, with the real schools
+   attached to the stop where you choose them. Strict grid, flat colour, square corners. */
+:root{
+  --bg:#F2F4F9; --surface:#FFFFFF; --ink:#0C1A3D; --ink2:#46526F; --rule:#C8D0E0; --soft:#E6EBF5;
+  --brand:#003082; --on-brand:#FFFFFF; --accent:#FFC917; --on-accent:#0C1A3D;
+  --hero:#003082; --hero-ink:#FFFFFF; --hero-ink2:#CAD7F6; --link:#003082; --focus:#0A58FF;
+  --pic-bg:#003082; --pic-ink:#FFFFFF; --warn-bg:#FFF4CC; --err:#B3261E;
+  --c-bo:#4A5A78; --c-pro:#15857C; --c-vbk:#CF4A1C; --c-vgt:#B36B00; --c-havo:#2D8A45; --c-vwo:#2A62C9;
+  --c-ib:#5B6B86; --c-mbo:#B8286F; --c-hbo:#8A6100; --c-wo:#6A3DB3; --on-c:#FFFFFF;
+  --sans:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --disp:"Schibsted Grotesk","Arial Black","Segoe UI",system-ui,Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#08112A; --surface:#0F1C3D; --ink:#EAF0FF; --ink2:#A7B4D3; --rule:#26375F; --soft:#14244A;
+    --brand:#6C98FF; --on-brand:#08112A; --accent:#FFC917; --on-accent:#0C1A3D;
+    --hero:#0C2A6E; --hero-ink:#FFFFFF; --hero-ink2:#BFD0F5; --link:#9BBCFF; --focus:#9BBCFF;
+    --pic-bg:#6C98FF; --pic-ink:#08112A; --warn-bg:#3A3210; --err:#FF8A80;
+    --c-bo:#93A5C7; --c-pro:#46C4B8; --c-vbk:#FF8A5C; --c-vgt:#FFB347; --c-havo:#6FD08A; --c-vwo:#7FB0FF;
+    --c-ib:#9FB0CC; --c-mbo:#FF86BD; --c-hbo:#F0C04A; --c-wo:#B79CFF; --on-c:#08112A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#08112A; --surface:#0F1C3D; --ink:#EAF0FF; --ink2:#A7B4D3; --rule:#26375F; --soft:#14244A;
+  --brand:#6C98FF; --on-brand:#08112A; --accent:#FFC917; --on-accent:#0C1A3D;
+  --hero:#0C2A6E; --hero-ink:#FFFFFF; --hero-ink2:#BFD0F5; --link:#9BBCFF; --focus:#9BBCFF;
+  --pic-bg:#6C98FF; --pic-ink:#08112A; --warn-bg:#3A3210; --err:#FF8A80;
+  --c-bo:#93A5C7; --c-pro:#46C4B8; --c-vbk:#FF8A5C; --c-vgt:#FFB347; --c-havo:#6FD08A; --c-vwo:#7FB0FF;
+  --c-ib:#9FB0CC; --c-mbo:#FF86BD; --c-hbo:#F0C04A; --c-wo:#B79CFF; --on-c:#08112A;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.5 var(--sans);overflow-x:hidden}
+a{color:var(--link)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--disp);margin:0;line-height:1.12}
+p{margin:0 0 .7em}
+ul,ol{margin:0;padding:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px))}
+.skip{position:absolute;left:-999px;top:0;background:var(--accent);color:var(--on-accent);padding:8px 12px;z-index:9;font-weight:700}
+.skip:focus{left:8px;top:8px}
+.ic{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;flex:none}
+.ic.fill{fill:currentColor;stroke:none}
+
+/* masthead */
+.mast{background:var(--accent);color:var(--on-accent)}
+.mast .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px}
+.logo{display:flex;align-items:center;gap:10px;font:900 1.5rem/1 var(--disp);letter-spacing:-.01em}
+.logo svg{width:28px;height:28px}
+.mast small{font:700 .78rem/1.2 var(--sans);text-align:right;max-width:15em}
+
+/* hero */
+.hero{background:var(--hero);color:var(--hero-ink)}
+.hero .wrap{display:grid;gap:22px;grid-template-areas:'h' 'f' 'v';padding-block:28px 30px}
+.hero h1{grid-area:h;font-weight:900;font-size:clamp(1.85rem,6.4vw,3.3rem);letter-spacing:-.02em;max-width:17em}
+.valsbox{grid-area:v}
+.vals{list-style:none;display:grid;gap:8px;margin:0;color:var(--hero-ink2);font-size:.98rem}
+.vals li{display:grid;grid-template-columns:26px 1fr;gap:8px;align-items:start}
+.vals b{display:grid;place-items:center;width:24px;height:24px;background:var(--accent);color:var(--on-accent);font:800 .85rem var(--disp)}
+form.q{grid-area:f;background:var(--surface);color:var(--ink);padding:16px;border-top:6px solid var(--accent);display:grid;gap:12px}
+form.q label{display:block;font:800 .8rem var(--disp);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.fld{width:100%;height:50px;border:2px solid var(--ink);background:var(--surface);color:var(--ink);font:400 1.1rem var(--sans);padding:0 12px;border-radius:0}
+.fld[aria-invalid="true"]{border-color:var(--err)}
+.btn{height:50px;padding:0 20px;border:0;background:var(--accent);color:var(--on-accent);font:800 1.05rem var(--disp);cursor:pointer;border-radius:0;box-shadow:inset 0 -4px 0 rgba(0,0,0,.18)}
+.btn:hover{filter:brightness(1.05)}
+.btn.sec{background:var(--surface);color:var(--ink);border:2px solid var(--ink);box-shadow:none;height:42px;font-size:.95rem}
+.ferr{color:var(--err);font-weight:700;min-height:1.2em;margin:0;font-size:.95rem}
+.priv{font-size:.85rem;color:var(--ink2);margin:0}
+.extag{display:inline-block;background:var(--accent);color:var(--on-accent);font:900 .72rem var(--disp);letter-spacing:.1em;padding:3px 7px;margin-right:6px}
+
+/* results */
+main{padding-block:22px 40px}
+.resbar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-bottom:6px}
+.resbar h2{font-size:1.5rem;font-weight:900}
+.resmeta{color:var(--ink2);margin:0 0 4px}
+.muni{border-left:6px solid var(--brand);padding:6px 12px;background:var(--surface);margin:10px 0 14px}
+.muni p{margin:0}
+.tabs{display:flex;border-bottom:4px solid var(--brand);margin:18px 0 18px;gap:2px;overflow:hidden}
+.tab{flex:1 1 0;min-width:0;border:0;background:var(--soft);color:var(--ink);font:800 .95rem/1.15 var(--disp);padding:12px 6px;cursor:pointer;border-radius:0}
+.tab[aria-selected="true"]{background:var(--brand);color:var(--on-brand)}
+.gloss{background:var(--surface);border:1px solid var(--rule);padding:10px 14px;margin-bottom:18px;font-size:.88rem}
+.gloss summary{cursor:pointer;font:800 .8rem var(--disp);text-transform:uppercase;letter-spacing:.07em}
+.gloss dl{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin:8px 0 0}
+.gloss dt{font-weight:700}
+.gloss dd{margin:0;color:var(--ink2)}
+
+/* next action */
+.nextcard{display:grid;background:var(--accent);color:var(--on-accent);margin-bottom:26px}
+.nextcard .nd{padding:14px 16px 4px;font:900 clamp(1.6rem,6vw,2.4rem)/1.05 var(--disp);letter-spacing:-.01em}
+.nextcard .nb{padding:4px 16px 16px}
+.nextcard .nl{font:800 .74rem var(--disp);letter-spacing:.1em;text-transform:uppercase;padding:10px 16px 0}
+.nextcard h3{font-size:1.2rem;margin-bottom:4px}
+.nextcard p{margin:0 0 .4em}
+.nextcard a{color:var(--on-accent)}
+
+/* the route line */
+.route{list-style:none;position:relative}
+.stop{position:relative;padding:0 0 30px 54px}
+.stop::before{content:"";position:absolute;left:15px;top:0;bottom:0;width:10px;background:var(--brand)}
+.stop:last-child{padding-bottom:6px}
+.stop:last-child::before{bottom:auto;height:34px}
+.tick{position:absolute;left:5px;top:12px;width:30px;height:16px;background:var(--surface);border:4px solid var(--brand)}
+.stop.now .tick{top:8px;height:34px;background:var(--accent);border-color:var(--brand)}
+.stop.now .tick::after{content:"";position:absolute;left:5px;top:6px;border:7px solid transparent;border-top:11px solid var(--brand)}
+.stop.side::before{background:repeating-linear-gradient(var(--brand) 0 10px,transparent 10px 16px)}
+.stop.side .tick{border-style:dashed}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.tg{font:800 .7rem var(--disp);text-transform:uppercase;letter-spacing:.09em;padding:3px 7px;background:var(--ink);color:var(--bg)}
+.tg.y{background:var(--accent);color:var(--on-accent);box-shadow:0 0 0 2px var(--on-accent)}
+.shead{display:flex;gap:12px;align-items:flex-start;margin-bottom:8px}
+.pic{width:44px;height:44px;background:var(--pic-bg);color:var(--pic-ink);display:grid;place-items:center;flex:none}
+.when{font:800 .76rem var(--disp);text-transform:uppercase;letter-spacing:.07em;color:var(--ink2)}
+.stop h3{font-size:1.38rem;font-weight:800;margin-top:2px}
+.sbody{display:grid;gap:18px;min-width:0}
+.stop.next .sinfo{background:var(--accent);color:var(--on-accent);padding:14px 16px}
+.stop.next .sinfo a{color:var(--on-accent)}
+.sinfo{min-width:0}
+.sinfo p{max-width:62ch}
+.do{margin-top:10px;border-top:2px solid currentColor;padding-top:8px}
+.do b{font:800 .78rem var(--disp);text-transform:uppercase;letter-spacing:.08em}
+.do ul{list-style:none;margin-top:4px}
+.do li{padding-left:18px;position:relative;margin-bottom:4px}
+.do li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;height:8px;background:currentColor}
+.dated{list-style:none;margin:10px 0}
+.dated li{display:grid;grid-template-columns:1fr;gap:1px;padding:8px 10px;border-left:6px solid var(--brand);background:var(--surface);color:var(--ink);margin-bottom:6px}
+.dated li.nx{border-left-color:var(--on-accent);background:var(--surface);box-shadow:inset 0 0 0 3px var(--on-accent)}
+.dated li.past{opacity:.55}
+.dated .dd{font:800 1rem var(--disp)}
+.dated .dt{font-weight:700}
+.dated .dx{font-size:.92rem;color:var(--ink2)}
+.q-inline{margin-top:12px;padding:10px 12px;background:var(--surface);color:var(--ink);border:2px dashed var(--ink2);display:grid;gap:6px}
+.q-inline label{font-weight:700;font-size:.95rem}
+.q-inline .fld{height:44px;font-size:1rem}
+.q-inline .opt{font-size:.8rem;color:var(--ink2)}
+.q-inline.chk label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.q-inline.chk input{width:22px;height:22px;margin:2px 0 0;flex:none;accent-color:var(--brand)}
+.src{font-size:.8rem;color:var(--ink2);margin:8px 0 0}
+.stop.next .src{color:var(--on-accent)}
+.stop.next .q-inline{border-color:var(--on-accent)}
+.stop.next .q-inline .opt{color:var(--ink2)}
+
+/* schools */
+.sp{background:var(--surface);border-top:5px solid var(--brand);padding:12px 14px 14px;min-width:0;margin-bottom:14px}
+.sp:last-child{margin-bottom:0}
+.sp > summary{cursor:pointer;list-style:none}
+.sp > summary::-webkit-details-marker{display:none}
+.sp h4{font-size:1.1rem;font-weight:800}
+.sp .sub{color:var(--ink2);font-size:.88rem;margin:3px 0 8px}
+.ctrl{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{font:700 .84rem var(--sans);padding:5px 9px;border:2px solid var(--brand);background:var(--surface);color:var(--ink);cursor:pointer;border-radius:0}
+.chip[aria-pressed="true"]{background:var(--brand);color:var(--on-brand)}
+.chip[aria-pressed="true"]::before{content:"\2713\00a0"}
+.rad{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:.92rem}
+.rad select{height:36px;border:2px solid var(--ink);background:var(--surface);color:var(--ink);font:inherit;padding:0 8px;border-radius:0}
+.sch{display:grid;grid-template-columns:62px minmax(0,1fr);gap:4px 10px;padding:12px 0;border-top:1px solid var(--rule)}
+.km{font:800 1.12rem/1 var(--disp);font-variant-numeric:tabular-nums}
+.km small{display:block;font:400 .7rem/1.2 var(--sans);color:var(--ink2);margin-top:2px}
+.sch .nm{font:800 1.02rem/1.2 var(--disp);overflow-wrap:anywhere}
+.sch .mt{font-size:.88rem;color:var(--ink2);overflow-wrap:anywhere}
+.sch .ln{margin-top:5px;font-size:.88rem;overflow-wrap:anywhere}
+.sch a{font-size:.88rem;font-weight:700}
+.lk{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:6px}
+.fts{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.ft{display:inline-block;font:700 .76rem/1.2 var(--sans);padding:2px 6px;border:2px solid var(--ink2);background:var(--surface);color:var(--ink);text-decoration:none}
+a.ft:hover{border-color:var(--brand);background:var(--soft)}
+.ft.md{border-style:dashed}
+.od{margin-top:6px;font-size:.86rem}
+.od small{display:block;color:var(--ink2);font-size:.78rem}
+.ffl{margin:8px 0 0;font-size:.84rem;color:var(--ink2)}
+.ods{margin:4px 0 0;padding:0;list-style:none}
+.ods li{padding-left:18px;position:relative;margin-bottom:6px}
+.ods li small{display:block;color:inherit;opacity:.85}
+.tr{display:inline-block;font:800 .7rem/1 var(--disp);padding:3px 5px;margin:0 3px 3px 0;background:var(--c-bo);color:var(--on-c)}
+.t-pro{background:var(--c-pro)}.t-bb,.t-kb,.t-gl,.t-tl{background:var(--c-vbk)}.t-gl,.t-tl{background:var(--c-vgt)}
+.t-havo{background:var(--c-havo)}.t-vwo,.t-gym,.t-ath{background:var(--c-vwo)}.t-ib,.t-ess{background:var(--c-ib)}
+.broad{display:inline-block;font:800 .7rem/1 var(--disp);padding:3px 5px;border:2px solid var(--ink);margin:0 3px 3px 0}
+.bar{display:flex;height:12px;margin:5px 0 3px;background:var(--soft)}
+.bar i{display:block;height:100%}
+.a-pro{background:var(--c-pro)}.a-vbk{background:var(--c-vbk)}.a-vgt{background:var(--c-vgt)}.a-havo{background:var(--c-havo)}.a-vwo{background:var(--c-vwo)}
+.advn{font-size:.82rem;color:var(--ink2)}
+.exam{display:flex;flex-wrap:wrap;gap:3px 12px;margin-top:4px;font-size:.86rem}
+.exam span{min-width:0;overflow-wrap:anywhere}
+.exam .small{color:var(--ink2)}
+.note{font-size:.84rem;color:var(--ink2);margin:8px 0 0}
+.empty{padding:12px;border:2px dashed var(--rule);color:var(--ink2);margin:6px 0}
+.more{margin-top:10px}
+.load{display:flex;gap:6px;margin:10px 0}
+.load i{width:14px;height:14px;background:var(--brand);animation:pulse 1s infinite steps(2,jump-none)}
+.load i:nth-child(2){animation-delay:.15s}.load i:nth-child(3){animation-delay:.3s}.load i:nth-child(4){animation-delay:.45s}.load i:nth-child(5){animation-delay:.6s}
+@keyframes pulse{0%{opacity:.2}50%{opacity:1}100%{opacity:.2}}
+@media (prefers-reduced-motion: reduce){.load i{animation:none}}
+.errbox{border-left:6px solid var(--err);padding:8px 12px;background:var(--surface);margin:8px 0}
+.status{margin:0 0 10px}
+
+/* whole system */
+.sysgrid{display:grid;gap:22px}
+.sysfig{max-width:560px;width:100%;margin:0 auto}
+.sysfig svg{display:block;width:100%;height:auto}
+.sys-svg text{font-family:var(--sans);fill:var(--ink)}
+.sys-svg .cell{stroke:var(--bg);stroke-width:1.5}
+.sys-svg .on{fill:var(--on-c);font-weight:700;font-size:10px}
+.sys-svg .ax{fill:var(--ink2);font-size:9px}
+.sys-svg .hd{fill:var(--on-c);font:800 10px var(--disp)}
+.sys-svg .ar{fill:none;stroke:var(--ink);stroke-width:1.8}
+.sys-svg .ar.d{stroke-dasharray:4 3}
+.sys-svg .mkb{fill:var(--accent);stroke:var(--on-accent);stroke-width:1}
+.sys-svg .mkt{fill:var(--on-accent);font:800 9px var(--disp)}
+.sys-svg .lbl{fill:var(--bg)}
+.sys-svg .ah{fill:var(--ink)}
+.f-bo{fill:var(--c-bo)}.f-pro{fill:var(--c-pro)}.f-vbk{fill:var(--c-vbk)}.f-havo{fill:var(--c-havo)}.f-vwo{fill:var(--c-vwo)}.f-mbo{fill:var(--c-mbo)}.f-hbo{fill:var(--c-hbo)}.f-wo{fill:var(--c-wo)}
+.keys{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 12px;list-style:none;font-size:.88rem}
+.keys li{display:flex;align-items:center;gap:6px}
+.keys i{width:14px;height:14px;display:block}
+.xfers{list-style:none;display:grid;gap:10px}
+.xfers li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.xfers b{display:grid;place-items:center;width:26px;height:26px;background:var(--accent);color:var(--on-accent);border:1px solid var(--on-accent);font:800 .8rem var(--disp)}
+.xfers span{font-size:.95rem}
+.xfers em{font-style:normal;font-weight:700;font-size:.8rem;color:var(--ink2)}
+
+/* faq */
+.faq details{background:var(--surface);border-top:4px solid var(--brand);margin-bottom:10px;padding:0}
+.faq summary{cursor:pointer;padding:14px 16px;font:800 1.08rem/1.25 var(--disp);list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:1.4rem;line-height:1}
+.faq details[open] summary::after{content:"\2212"}
+.faq .ans{padding:0 16px 14px;max-width:70ch}
+.faq .ans ul{padding-left:20px;margin:0 0 .7em}
+.faq .ans li{margin-bottom:4px}
+.faq .say{background:var(--soft);padding:8px 12px;margin:0 0 .7em;font-style:italic}
+
+footer{background:var(--ink);color:var(--bg);padding-block:26px 40px}
+footer a{color:var(--accent)}
+footer h2{font-size:1.1rem;margin-bottom:6px}
+footer ul{list-style:none;display:grid;gap:3px;font-size:.88rem;margin-bottom:14px}
+footer p{font-size:.9rem;max-width:80ch}
+footer .cols{display:grid;gap:10px 28px}
+
+@media (min-width:640px){
+  .hero .wrap{padding-block:40px 44px}
+  form.q{grid-template-columns:1fr 1fr;align-items:end}
+  form.q .full{grid-column:1/-1}
+  .tab{font-size:1.05rem;padding:14px 10px}
+  .nextcard{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+  .nextcard .nl{grid-column:1/-1}
+  .nextcard .nd{padding-bottom:16px}
+  .nextcard .nb{padding-top:4px}
+  footer .cols{grid-template-columns:1fr 1fr}
+  .gloss dl{grid-template-columns:auto 1fr auto 1fr}
+}
+@media (min-width:960px){
+  .hero .wrap{grid-template-columns:minmax(0,7fr) minmax(0,5fr);grid-template-areas:'h f' 'v f';align-items:center;gap:20px 48px}
+  .stop{padding-left:72px}
+  .stop::before{left:22px}
+  .tick{left:10px;width:36px}
+  .sbody.two{grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px;align-items:start}
+  .sysgrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+  .sysfig{margin:0}
+  .stop h3{font-size:1.6rem}
+}
+</style>
+
+<a class="skip" href="#main">Skip to the route</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-school" viewBox="0 0 24 24"><path d="M3 21V10l9-6 9 6v11z"/><path d="M9 21v-6h6v6"/></symbol>
+    <symbol id="i-fork" viewBox="0 0 24 24"><path d="M12 21V12M12 12L5 5M12 12l7-7M5 5v5M5 5h5M19 5v5M19 5h-5"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M3 5h8v15H3zM13 5h8v15h-8z"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l1-5L16 4l4 4L9 19zM14 6l4 4"/></symbol>
+    <symbol id="i-tool" viewBox="0 0 24 24"><path d="M5 21l8-8M11 7l4-4 6 6-4 4z"/></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5zM6 11v5c3 2 9 2 12 0v-5"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l5 5 11-11"/></symbol>
+    <symbol id="i-lines" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></symbol>
+  </defs>
+</svg>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="logo" aria-label="Schoollijn">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><rect x="11" y="0" width="6" height="28" fill="currentColor"/><rect x="5" y="3" width="18" height="6" fill="var(--accent)" stroke="currentColor" stroke-width="3"/><rect x="5" y="11" width="18" height="6" fill="var(--accent)" stroke="currentColor" stroke-width="3"/><rect x="5" y="19" width="18" height="6" fill="var(--accent)" stroke="currentColor" stroke-width="3"/></svg>
+      Schoollijn
+    </div>
+    <small>An unofficial guide for parents new to Dutch schools</small>
+  </div>
+</header>
+
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <h1 id="h1">Your child's route through Dutch school, and the actual schools near you that fit each step.</h1>
+    <div class="valsbox">
+      <ul class="vals">
+        <li><b>1</b><span>Only the steps still ahead of your child, with dates and what you have to do.</span></li>
+        <li><b>2</b><span>Real schools near your postcode, with pupil numbers, where their pupils go next and exam results.</span></li>
+        <li><b>3</b><span>Every municipality. Nothing is sent anywhere: your answers stay in this browser.</span></li>
+      </ul>
+    </div>
+    <form class="q" id="f" novalidate aria-describedby="exline">
+      <div>
+        <label for="age">Child's age</label>
+        <select class="fld" id="age" name="age"></select>
+      </div>
+      <div>
+        <label for="pc">Postcode, 4 digits</label>
+        <input class="fld" id="pc" name="pc" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="7" placeholder="3512">
+      </div>
+      <div class="full"><button class="btn" type="submit" id="go" style="width:100%">Show my route</button></div>
+      <p class="ferr full" id="ferr" role="alert" aria-live="assertive"></p>
+      <p class="priv full" id="exline"></p>
+    </form>
+  </div>
+</section>
+
+<main id="main" class="wrap">
+  <div class="status" id="status" aria-live="polite"></div>
+  <div class="resbar" id="resbar"></div>
+  <p class="resmeta" id="resmeta"></p>
+  <div id="muni"></div>
+
+  <div class="tabs" role="tablist" aria-label="Views">
+    <button class="tab" role="tab" id="t-route" aria-controls="p-route" aria-selected="true" type="button">Your route</button>
+    <button class="tab" role="tab" id="t-system" aria-controls="p-system" aria-selected="false" tabindex="-1" type="button">Whole system</button>
+    <button class="tab" role="tab" id="t-faq" aria-controls="p-faq" aria-selected="false" tabindex="-1" type="button">Questions</button>
+  </div>
+
+  <section id="p-route" role="tabpanel" aria-labelledby="t-route">
+    <details class="gloss">
+      <summary>You will hear these words (glossary)</summary>
+      <dl>
+        <dt>groep</dt><dd>year group (1 to 8 in primary school)</dd>
+        <dt>schooladvies</dt><dd>school advice, the level your child's school recommends</dd>
+        <dt>doorstroomtoets</dt><dd>the end-of-primary test</dd>
+        <dt>vmbo, havo, vwo</dt><dd>the three main secondary levels, 4, 5 and 6 years</dd>
+        <dt>mbo</dt><dd>vocational college, levels 1 to 4</dd>
+        <dt>hbo</dt><dd>university of applied sciences</dd>
+        <dt>wo</dt><dd>research university</dd>
+        <dt>brugklas</dt><dd>the first year of secondary school</dd>
+        <dt>ISK</dt><dd>newcomer class for Dutch learners aged 12 and up</dd>
+        <dt>tto</dt><dd>bilingual secondary education: a large part of the lessons is taught in English</dd>
+        <dt>IB</dt><dd>International Baccalaureate, an international programme and diploma</dd>
+        <dt>technasium</dt><dd>a secondary school stream where pupils work on real design and research assignments for outside clients</dd>
+        <dt>Montessori, Dalton, Jenaplan, vrije school</dt><dd>school concepts with their own teaching method. A vrije school follows Steiner (Waldorf) education</dd>
+        <dt>sbo</dt><dd>special primary school</dd>
+      </dl>
+    </details>
+    <div id="next"></div>
+    <ol class="route" id="route" aria-label="Your route, stop by stop"></ol>
+    <p class="note" id="routenote">Ages and school years are typical. Children can start, repeat or switch at different times, and the school decides. Check every date and rule with the school and your municipality.</p>
+  </section>
+
+  <section id="p-system" role="tabpanel" aria-labelledby="t-system" hidden>
+    <h2 style="font-size:1.5rem;font-weight:900;margin-bottom:6px">The whole system on one page</h2>
+    <p style="max-width:62ch">Read from top to bottom. Each block is one school year. Every track has its own colour, and higher education has colours of its own, because finishing one school does not move a child on automatically: each change needs a diploma, an application and sometimes selection. No track is ranked above another.</p>
+    <div class="sysgrid">
+      <figure class="sysfig" style="margin:0">
+        <div id="sysfig"></div>
+      </figure>
+      <div>
+        <ul class="keys" aria-label="Colour key">
+          <li><i style="background:var(--c-bo)"></i>Primary</li>
+          <li><i style="background:var(--c-pro)"></i>Practical education</li>
+          <li><i style="background:var(--c-vbk)"></i>vmbo</li>
+          <li><i style="background:var(--c-havo)"></i>havo</li>
+          <li><i style="background:var(--c-vwo)"></i>vwo</li>
+          <li><i style="background:var(--c-mbo)"></i>mbo</li>
+          <li><i style="background:var(--c-hbo)"></i>hbo</li>
+          <li><i style="background:var(--c-wo)"></i>wo</li>
+        </ul>
+        <p class="note" style="margin-top:0">An arrow means a child can move that way. A solid arrow means the diploma normally gives the right to move. A dashed arrow means conditions, selection or a school decision apply. Letters and numbers match the list.</p>
+        <ol class="xfers" id="xfers"></ol>
+        <p class="src" id="syssrc"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="p-faq" role="tabpanel" aria-labelledby="t-faq" hidden>
+    <h2 style="font-size:1.5rem;font-weight:900;margin-bottom:10px">Questions parents ask</h2>
+    <div class="faq" id="faq"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h2>Check with the school and your municipality</h2>
+        <p>Last checked: 2026-10-16. This page was written with AI assistance and each fact was compared with the official pages listed here. It has not yet been reviewed by a Dutch teacher or school advisor. Where sources differ, the page says "usually" or "most schools". Rules and dates change every year.</p>
+        <p id="dataline"></p>
+        <h2 style="margin-top:14px">Data</h2>
+        <ul id="attr"></ul>
+        <p id="disc"></p>
+        <p>Links to Scholen op de kaart only open its search. Nothing from that site is copied here.</p>
+      </div>
+      <div>
+        <h2>Sources</h2>
+        <ul id="srcList"></ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- tiny DOM helpers ---------- */
+function $(id){return document.getElementById(id)}
+function h(tag,attrs,kids){
+  var e=document.createElement(tag),k,v;
+  if(attrs)for(k in attrs){v=attrs[k];if(v===null||v===undefined||v===false)continue;
+    if(k==='class')e.className=v;else if(k==='text')e.textContent=v;
+    else if(k.slice(0,2)==='on')e.addEventListener(k.slice(2),v);
+    else e.setAttribute(k,v===true?'':v)}
+  if(kids!==undefined&&kids!==null){(Array.isArray(kids)?kids:[kids]).forEach(function(c){
+    if(c===null||c===undefined||c===false)return;
+    e.appendChild(typeof c==='string'||typeof c==='number'?document.createTextNode(String(c)):c)})}
+  return e;
+}
+function raw(tag,cls,markup){var e=document.createElement(tag);if(cls)e.className=cls;e.innerHTML=markup;return e}
+function ico(name,cls){var s=document.createElement('span');s.innerHTML='<svg class="ic '+(cls||'')+'" aria-hidden="true"><use href="#i-'+name+'"/></svg>';return s.firstChild}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function clear(n){while(n.firstChild)n.removeChild(n.firstChild)}
+
+/* ---------- sources (checked 2026-10-16) ---------- */
+var S={
+  basis:['Rijksoverheid: choosing a primary school','https://www.rijksoverheid.nl/documenten/vraag-en-antwoord/basisonderwijs/basisschool-kiezen-voor-kind'],
+  wanneer:['Rijksoverheid: when may my child start primary school','https://www.rijksoverheid.nl/themas/onderwijs/basisonderwijs/vraag-en-antwoord/basisonderwijs/wanneer-mag-mijn-kind-naar-de-basisschool'],
+  blijven:['Rijksoverheid: who decides whether my child repeats a year','https://www.rijksoverheid.nl/themas/onderwijs/basisonderwijs/vraag-en-antwoord/basisonderwijs/wie-bepaalt-of-mijn-kind-blijft-zitten-of-overgaat-naar-de-volgende-klas'],
+  tijdlijn:['Rijksoverheid: timeline of the school advice 2027','https://www.rijksoverheid.nl/onderwerpen/schooladvies-en-doorstroomtoets-basisschool/tijdlijn-schooladvies-2027'],
+  advies:['Rijksoverheid: admission to secondary school based on the final school advice','https://www.rijksoverheid.nl/themas/onderwijs/schooladvies-en-doorstroomtoets-basisschool/toelating-voortgezet-onderwijs-gebaseerd-op-definitief-schooladvies'],
+  voraad:['VO-raad: dates 2026-27 around the test and sign-up','https://vo-raad.nl/nieuws/data-2026-2027-rondom-doorstroomtoets-en-aanmelding-in-het-vo'],
+  inschr:['Rijksoverheid: registering at a secondary school','https://www.rijksoverheid.nl/themas/onderwijs/voortgezet-onderwijs/vraag-en-antwoord/voortgezet-onderwijs/inschrijven-voortgezet-onderwijs'],
+  weiger:['Rijksoverheid: may a secondary school refuse my child','https://www.rijksoverheid.nl/themas/onderwijs/voortgezet-onderwijs/vraag-en-antwoord/voortgezet-onderwijs/weigeren-kind-voortgezet-onderwijs'],
+  vmbo:['Rijksoverheid: how vmbo works','https://www.rijksoverheid.nl/themas/onderwijs/voortgezet-onderwijs/vraag-en-antwoord/voortgezet-onderwijs/hoe-zit-het-vmbo-in-elkaar'],
+  havo:['Rijksoverheid: how havo works','https://www.rijksoverheid.nl/themas/onderwijs/voortgezet-onderwijs/vraag-en-antwoord/voortgezet-onderwijs/hoe-zit-de-havo-in-elkaar'],
+  vwo:['Rijksoverheid: how vwo works','https://www.rijksoverheid.nl/themas/onderwijs/voortgezet-onderwijs/vraag-en-antwoord/voortgezet-onderwijs/hoe-zit-het-vwo-in-elkaar'],
+  pro:['Rijksoverheid: how long pupils may stay in secondary school','https://www.rijksoverheid.nl/themas/onderwijs/voortgezet-onderwijs/vraag-en-antwoord/voortgezet-onderwijs/hoe-lang-mogen-leerlingen-doen-over-het-voortgezet-onderwijs'],
+  brug:['VO-raad: factsheet on the broad first year','https://www.vo-raad.nl/nieuws/factsheet-brede-brugklas-vergroot-kansen-leerlingen'],
+  loket:['Onderwijsloket: how the Dutch education system fits together','https://onderwijsloket.com/kennisbank/artikelen/hoe-zit-het-nederlandse-onderwijssysteem-in-elkaar'],
+  schema:['Nuffic: diagram of the Dutch education system','https://www.nuffic.nl/onderwijssystemen/nederland/schema-onderwijssysteem-nederland'],
+  nuf:['Nuffic: education system in the Netherlands','https://www.nuffic.nl/en/education-systems/netherlands'],
+  nufMbo:['Nuffic: secondary vocational education','https://www.nuffic.nl/en/education-systems/the-netherlands/secondary-vocational-education'],
+  kiesmbo:['KiesMBO: prior education and admission','https://www.kiesmbo.nl/over-het-mbo/vooropleiding-en-toelating'],
+  kiesEntree:['KiesMBO: entry programme (mbo 1)','https://www.kiesmbo.nl/over-het-mbo/entreeopleiding'],
+  mboRijks:['Rijksoverheid: which mbo programmes can I choose','https://www.rijksoverheid.nl/themas/onderwijs/middelbaar-beroepsonderwijs/vraag-en-antwoord/middelbaar-beroepsonderwijs/uit-welke-mbo-opleidingen-kan-ik-kiezen'],
+  mboToel:['Rijksoverheid: admission requirements for mbo','https://www.rijksoverheid.nl/themas/onderwijs/middelbaar-beroepsonderwijs/vraag-en-antwoord/middelbaar-beroepsonderwijs/wat-zijn-de-toelatingseisen-voor-het-mbo'],
+  mboraad:['MBO Raad: mbo','https://www.mboraad.nl/het-mbo/soorten-onderwijs/middelbaar-beroepsonderwijs-mbo'],
+  gov:['Government.nl: higher education','https://www.government.nl/topics/secondary-vocational-education-mbo-and-tertiary-higher-education/tertiary-higher-education'],
+  sk123:['Studiekeuze123: how higher education is built up','https://www.studiekeuze123.nl/wat-ga-jij-kiezen/artikel/hoe-is-het-hoger-onderwijs-opgebouwd'],
+  sk21:['Studiekeuze123: 21+ admission test','https://www.studiekeuze123.nl/studiekeuzewoordenboek/21-toelatingsonderzoek'],
+  nieuw:['Rijksoverheid: newcomer education','https://www.rijksoverheid.nl/onderwerpen/basisonderwijs/onderwijs-voor-nieuwkomers'],
+  sio:['SIO: international schools','https://www.sio.nl/'],
+  oco:['OCO Amsterdam: secondary school advice and sign-up','https://ocoamsterdam.nl/']
+};
+var SRC_ORDER=['schema','nuf','loket','gov','sk123','sk21','basis','wanneer','blijven','tijdlijn','advies','voraad','inschr','weiger','vmbo','havo','vwo','pro','brug','kiesmbo','kiesEntree','mboRijks','mboToel','nufMbo','mboraad','nieuw','sio','oco'];
+function srcLine(keys,cls){
+  var p=h('p',{class:cls||'src'},['Sources: ']);
+  keys.forEach(function(k,i){var s=S[k];if(!s)return;if(i)p.appendChild(document.createTextNode(' · '));
+    p.appendChild(h('a',{href:s[1],target:'_blank',rel:'noopener',text:s[0]}))});
+  return p;
+}
+
+/* ---------- state ---------- */
+var KEY='schoollijn.v2';
+var DEF={age:'11',pc:'3512',level:'',grp:'',newc:false,radius:10,chips:null,example:true};
+var state=loadState();
+var nPo=15,nVo=15,nIsk=10,preview=false,poSboOpen=false;
+function loadState(){
+  var d={};for(var k in DEF)d[k]=DEF[k];
+  try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&typeof o==='object'){
+    for(var k2 in d){if(o[k2]!==undefined&&o[k2]!==null)d[k2]=o[k2]}
+    if(!/^(u4|[4-9]|1[0-8])$/.test(String(d.age)))d.age=DEF.age;
+    d.age=String(d.age);
+    if(!/^[1-9]\d{3}$/.test(String(d.pc)))d.pc=DEF.pc;
+    d.pc=String(d.pc);d.radius=+d.radius||10;
+    if(!Array.isArray(d.chips))d.chips=null;
+    d.example=!!d.example;d.newc=!!d.newc}}}catch(e){}
+  return d;
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+
+/* ---------- data ---------- */
+var DB={po:null,vo:null,pc4:null,meta:null,feat:null,status:'loading'};
+var DEN_EN={
+  'Openbaar':'Public','Rooms-Katholiek':'Catholic','Protestants-Christelijk':'Protestant','Islamitisch':'Islamic','Joods':'Jewish',
+  'Hindoeïstisch':'Hindu','Antroposofisch':'Anthroposophic (Steiner)','Evangelisch':'Evangelical',
+  'Evangelische broedergemeenschap':'Moravian (Evangelical Brethren)','Gereformeerd':'Reformed','Gereformeerd vrijgemaakt':'Reformed (liberated)',
+  'Gereformeerd vrijgemaakt / Evangelisch':'Reformed (liberated) and Evangelical','Reformatorisch':'Orthodox Reformed','Interconfessioneel':'Interdenominational',
+  'Algemeen bijzonder':'Non-religious private (special)','Bijzonder':'Other special','Overige':'Other',
+  'Samenwerking Opb., PC':'Public and Protestant (joint)','Samenwerking Opb., RK':'Public and Catholic (joint)','Samenwerking PC, RK':'Protestant and Catholic (joint)',
+  'Samenwerking PC, RK, Alg. bijzonder':'Protestant, Catholic and non-religious (joint)','Samenwerking Opb., Alg. Bijz.':'Public and non-religious (joint)',
+  'Samenwerking PC, Alg. Bijz.':'Protestant and non-religious (joint)'
+};
+function mapRows(j,extra){
+  var cols=j.cols,out=new Array(j.rows.length),i,r,o,c;
+  for(i=0;i<j.rows.length;i++){r=j.rows[i];o={};for(c=0;c<cols.length;c++)o[cols[c]]=r[c];
+    o.denT=DEN_EN[j.den[o.den]]||'Other';
+    o.latR=o.lat*Math.PI/180;o.cosL=Math.cos(o.latR);
+    if(extra)extra(o);out[i]=o}
+  return out;
+}
+var ST_BITS={PRO:1,VBO:6,MAVO:24,HAVO:32,VWO:64};
+function loadData(){
+  DB.status='loading';renderStatus();
+  var names=['schools_po','schools_vo','pc4','meta'];
+  return Promise.all(names.map(function(n){
+    return fetch('data/'+n+'.json').then(function(r){if(!r.ok)throw new Error(n);return r.json()}).catch(function(){return null});
+  })).then(function(a){
+    DB.meta=a[3];
+    if(a[0]&&a[1]&&a[2]){
+      DB.po=mapRows(a[0]);
+      DB.vo=mapRows(a[1],function(o){
+        if(!o.tracks&&o.st){o.fb=1;var t=String(o.st).split('/'),m=0;t.forEach(function(x){m|=ST_BITS[x]||0});o.tracks=m}
+        o.isk=/\bISK\b|schakelklas|internationale schakel/i.test(o.name)||o.st==='BRUGJAAR';
+      });
+      DB.pc4=a[2];DB.status='ready';
+    }else{DB.status='error'}
+  }).then(function(){renderStatus();renderFooter();render();loadFeatures()});
+}
+/* features.json (school concepts, open days) is optional: the page works without it */
+function loadFeatures(){
+  if(DB.feat||DB.status!=='ready')return;
+  fetch('data/features.json').then(function(r){if(!r.ok)throw new Error('features');return r.json()}).then(function(j){
+    if(j&&j.schools&&typeof j.schools==='object'){DB.feat=j;renderFooter();render()}
+  }).catch(function(){});
+}
+
+/* ---------- school features and open days (features.json) ---------- */
+var FT_LBL={tto:'Bilingual (tto)',ib:'IB',technasium:'Technasium',montessori:'Montessori',dalton:'Dalton',jenaplan:'Jenaplan',vrije_school:'Steiner (vrije school)',international:'International',newcomer:'Newcomer class'};
+var FT_ORDER=['tto','ib','technasium','international','montessori','dalton','jenaplan','vrije_school','newcomer'];
+var FT_FILTER_VO=[['tto','Bilingual (tto)'],['ib','IB'],['technasium','Technasium'],['montessori','Montessori'],['dalton','Dalton'],['jenaplan','Jenaplan'],['vrije_school','Steiner'],['newcomer','Newcomer class']];
+var FT_FILTER_PO=[['montessori','Montessori'],['dalton','Dalton'],['jenaplan','Jenaplan'],['vrije_school','Steiner'],['ib','IB'],['newcomer','Newcomer class']];
+var ffVo=[],ffPo=[];
+var OD_LBL={'Open dag':'Open day','Informatieavond/-dag':'Information evening or day','Open huis':'Open house','Open avond':'Open evening','Kennismaking':'Introduction visit','Open middag':'Open afternoon'};
+function featSrcName(url,kind){
+  var host='';try{host=new URL(url).hostname.replace(/^www\./,'')}catch(e){}
+  if(kind!=='list')return 'school website';
+  if(/nuffic\.nl$/.test(host))return 'Nuffic tto list';
+  if(/technasium\.nl$/.test(host))return 'Stichting Technasium school list';
+  if(/montessori\.nl$/.test(host))return 'Nederlandse Montessori Vereniging list';
+  if(/dalton\.nl$/.test(host))return 'Nederlandse Dalton Vereniging list';
+  if(/jenaplan\.nl$/.test(host))return 'Nederlandse Jenaplan Vereniging list';
+  if(/vrijescholen\.nl$/.test(host))return 'Vereniging van vrijescholen list';
+  if(/dutchinternationalschools\.nl$/.test(host))return 'Dutch International Schools list';
+  if(/sio\.nl$/.test(host))return 'SIO list';
+  if(/duo\.nl$/.test(host))return 'DUO data';
+  return 'official list';
+}
+/* only high and medium confidence; low is never shown */
+function featList(id){
+  var f=DB.feat&&DB.feat.schools&&DB.feat.schools[id],out=[];
+  if(!f||!Array.isArray(f.flags))return out;
+  FT_ORDER.forEach(function(k){
+    if(f.flags.indexOf(k)<0)return;
+    var c=f.confidence&&f.confidence[k];if(c!=='high'&&c!=='medium')return;
+    out.push({k:k,c:c,ev:f.evidence&&f.evidence[k]||null});
+  });
+  return out;
+}
+function hasFeat(id,sel){
+  if(!sel.length)return true;
+  var l=featList(id),i;
+  for(i=0;i<l.length;i++){if(sel.indexOf(l[i].k)>-1)return true}
+  return false;
+}
+function featChips(s){
+  var l=featList(s.id);if(!l.length)return null;
+  var box=h('div',{class:'fts'});
+  l.forEach(function(x){
+    var ev=x.ev,src=ev?featSrcName(ev[0],ev[2]):'school website';
+    var tip=FT_LBL[x.k]+'. Source: '+src+(ev&&ev[3]?', checked '+ev[3]:'')+'.'+(x.c==='medium'?' Less certain: the school group or the school\'s site names it. Check with the school.':'');
+    var url=ev&&safeUrl(ev[0]);
+    box.appendChild(url?h('a',{class:'ft'+(x.c==='medium'?' md':''),href:url,target:'_blank',rel:'noopener',title:tip,text:FT_LBL[x.k]}):h('span',{class:'ft'+(x.c==='medium'?' md':''),title:tip,text:FT_LBL[x.k]}));
+  });
+  return box;
+}
+function safeUrl(u){return typeof u==='string'&&/^https?:\/\/[^\s"'<>]+$/i.test(u)?u:null}
+function todayStart(){var d=new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+function odDate(iso){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);return m?new Date(+m[1],+m[2]-1,+m[3]):null}
+/* next open day on or after today in the viewer's time zone; past dates are never returned */
+function nextOpen(id){
+  var f=DB.feat&&DB.feat.schools&&DB.feat.schools[id];if(!f||!Array.isArray(f.open_days))return null;
+  var t=todayStart(),best=null,bd=null;
+  f.open_days.forEach(function(o){
+    var d=odDate(o.date);if(!d||d<t)return;
+    if(!bd||d<bd){best=o;bd=d}
+  });
+  return best?{o:best,d:bd}:null;
+}
+function fmtOd(d){return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}
+function odNote(o){
+  var n=[];
+  if(o.inferred)n.push('date from school site, year assumed');
+  if(o.shared_site)n.push('listed on the site of the school group');
+  return n;
+}
+function openLine(s){
+  var n=nextOpen(s.id);if(!n)return null;
+  var o=n.o,lab=OD_LBL[o.label]||'Open day',url=safeUrl(o.url);
+  var box=h('div',{class:'od'});
+  var first=[h('b',{text:'Next '+lab.toLowerCase()+': '}),fmtOd(n.d)];
+  box.appendChild(h('span',null,first));
+  if(url){box.appendChild(document.createTextNode(' · '));box.appendChild(h('a',{href:url,target:'_blank',rel:'noopener',text:'source'}))}
+  var notes=odNote(o);notes.push('check the school\'s site, dates change');
+  box.appendChild(h('small',{text:notes.join(' · ').replace(/^./,function(c){return c.toUpperCase()})}));
+  return box;
+}
+/* soonest upcoming open days among the secondary schools near the postcode (same levels and distance as the list), max 3 */
+function nearbyOpenDays(){
+  var pt=DB.status==='ready'&&DB.feat?pcPoint():null;if(!pt)return null;
+  var chips=activeChips();
+  var found=nearest(DB.vo,pt,function(s){return chipMatch(s,chips)},state.radius),list=[];
+  found.forEach(function(r){var n=nextOpen(r.s.id);if(n)list.push({s:r.s,d:r.d,n:n})});
+  if(!list.length)return null;
+  list.sort(function(a,b){return a.n.d-b.n.d||a.d-b.d});
+  var box=h('div',{class:'do'},[h('b',{text:'Next open days near you'})]);
+  var ul=h('ul',{class:'ods'});
+  list.slice(0,3).forEach(function(x){
+    var o=x.n.o,url=safeUrl(o.url),notes=odNote(o);
+    var li=h('li',null,[h('b',{text:fmtOd(x.n.d)+': '}),url?h('a',{href:url,target:'_blank',rel:'noopener',text:x.s.name}):x.s.name,' ('+(OD_LBL[o.label]||'Open day').toLowerCase()+', '+fmtKm(x.d)+' km)']);
+    if(notes.length)li.appendChild(h('small',{text:notes.join(' · ').replace(/^./,function(c){return c.toUpperCase()})}));
+    ul.appendChild(li);
+  });
+  box.appendChild(ul);
+  box.appendChild(h('p',{class:'note',style:'color:inherit',text:'Check the school\'s site, dates change. Not every school is listed.'}));
+  return box;
+}
+function featFilter(opts,sel,onchange,label,idp){
+  var g=h('div',{class:'ctrl',role:'group','aria-label':label});
+  g.appendChild(h('span',{class:'ffl',style:'align-self:center;margin:0 4px 0 0',text:label+':'}));
+  opts.forEach(function(c){
+    g.appendChild(h('button',{class:'chip',type:'button',id:'ff-'+idp+'-'+c[0],'aria-pressed':sel.indexOf(c[0])>-1?'true':'false',text:c[1],onclick:function(){
+      var i=sel.indexOf(c[0]);if(i>-1)sel.splice(i,1);else sel.push(c[0]);onchange()}}));
+  });
+  return g;
+}
+
+/* ---------- geometry ---------- */
+function km(lat1r,cos1,lon1,lat2r,cos2,lon2){
+  var dl=(lat2r-lat1r)/2,dn=(lon2-lon1)*Math.PI/360;
+  var a=Math.sin(dl)*Math.sin(dl)+cos1*cos2*Math.sin(dn)*Math.sin(dn);
+  return 12742*Math.asin(Math.min(1,Math.sqrt(a)));
+}
+function nearest(list,pt,test,maxKm){
+  var res=[],i,s,d,lr=pt[0]*Math.PI/180,cl=Math.cos(lr);
+  for(i=0;i<list.length;i++){s=list[i];if(s.g===3||s.lat==null)continue;if(test&&!test(s))continue;
+    d=km(lr,cl,pt[1],s.latR,s.cosL,s.lon);if(maxKm&&d>maxKm)continue;res.push({s:s,d:d})}
+  res.sort(function(a,b){return a.d-b.d});
+  return res;
+}
+function fmtKm(d){return d<1?'<1':d<10?d.toFixed(1):String(Math.round(d))}
+
+/* ---------- model: where is the child now ---------- */
+function yl(y){return y+'-'+String((y+1)%100).padStart(2,'0')}
+function schoolYearNow(){var d=new Date();return d.getMonth()>=7?d.getFullYear():d.getFullYear()-1}
+var STOP_START={pre:4,g12:4,g35:6,g67:9,g8:11,vo1:12,vo23:13,fin:15,he:18};
+var ORDER=['pre','g12','g35','g67','g8','vo1','vo23','fin','he'];
+function model(){
+  var a=state.age==='u4'?3:+state.age,cur,ae,g;
+  if(a<4){cur='pre';ae=a}
+  else if(a<=5){cur='g12';ae=a}
+  else if(a<=8){cur='g35';ae=a}
+  else if(a===9){cur='g67';ae=9}
+  else if(a<=12){
+    g=state.grp||(a===10?'7':a===11?'8':'vo');
+    if(g==='6'){cur='g67';ae=9}else if(g==='7'){cur='g67';ae=10}else if(g==='8'){cur='g8';ae=11}else{cur='vo1';ae=12}
+  }
+  else if(a<=14){cur='vo23';ae=a}
+  else if(a<=17){cur='fin';ae=a}
+  else{cur='he';ae=18}
+  return {age:a,cur:cur,ae:ae,sy:schoolYearNow()};
+}
+
+/* advice options as the government lists them */
+var ADV=[
+  ['pro','Praktijkonderwijs (practical education)'],['bb','vmbo basis'],['bbkb','vmbo basis and kader'],['kb','vmbo kader'],
+  ['kbgt','vmbo kader and gl/tl'],['gt','vmbo gl/tl'],['gthavo','vmbo gl/tl and havo'],['havo','havo'],['havovwo','havo and vwo'],['vwo','vwo']
+];
+var TYPE=[['pro','Praktijkonderwijs (practical education)'],['bb','vmbo basis'],['kb','vmbo kader'],['gt','vmbo gl/tl'],['havo','havo'],['vwo','vwo']];
+var CHIP_DEF=[['pro','Practical',1],['bb','vmbo basis',2],['kb','vmbo kader',4],['gt','vmbo gl/tl',24],['havo','havo',32],['vwo','vwo',64],['gym','Gymnasium',128],['ib','IB',512]];
+var LEVEL_CHIPS={pro:['pro'],bb:['bb'],bbkb:['bb','kb'],kb:['kb'],kbgt:['kb','gt'],gt:['gt'],gthavo:['gt','havo'],havo:['havo'],havovwo:['havo','vwo'],vwo:['vwo']};
+var LEVEL_GROUPS={pro:['pro'],bb:['vbk'],bbkb:['vbk'],kb:['vbk'],kbgt:['vbk','vgt'],gt:['vgt'],gthavo:['vgt','havo'],havo:['havo'],havovwo:['havo','vwo'],vwo:['vwo']};
+function activeChips(){
+  if(state.chips)return state.chips;
+  return LEVEL_CHIPS[state.level]||[];
+}
+function groupsNow(){return LEVEL_GROUPS[state.level]||['pro','vbk','vgt','havo','vwo']}
+
+/* ---------- school rows ---------- */
+function scholenLink(s,sector){
+  var q=encodeURIComponent((s.name+' '+(s.city||'')).replace(/\s+/g,' ').trim());
+  return 'https://scholenopdekaart.nl/zoeken/'+(sector==='po'?'basisscholen':'middelbare-scholen')+'?zoektermen='+q+'&weergave=Lijst';
+}
+function safeWeb(w){return w&&/^[a-z0-9][a-z0-9.\-\/_%?=&:~#+@]*$/i.test(w)?'https://'+w:null}
+function links(s,sector){
+  var box=h('div',{class:'lk'});
+  box.appendChild(h('a',{href:scholenLink(s,sector),target:'_blank',rel:'noopener',text:'Scholen op de kaart'}));
+  var w=safeWeb(s.web);if(w)box.appendChild(h('a',{href:w,target:'_blank',rel:'noopener',text:'School website'}));
+  return box;
+}
+function pupilsText(s){
+  if(s.pupils==null)return null;
+  return (s.pupils_lb?'at least ':'about ')+s.pupils+' pupils';
+}
+var SEG=[['pro','Practical',[0,1]],['vbk','vmbo basis/kader',[2,3,4]],['vgt','vmbo gl/tl',[5,6]],['havo','havo',[7,8]],['vwo','vwo',[9,10]]];
+function adviceBlock(s){
+  var a=s.adv,box=h('div',{class:'adv'});
+  if(!a||!a[2]||a[0]<15||a[1]>6){
+    box.appendChild(h('p',{class:'advn',text:a&&a[0]>0?'Advice figures hidden: too few pupils shown by DUO ('+a[0]+' visible, '+a[1]+' of 12 groups hidden).':'No advice figures available.'}));
+    return box;
+  }
+  var sh=a[2],tot=0,parts=[],bar=h('div',{class:'bar',role:'img'}),sum=[];
+  SEG.forEach(function(g){
+    var v=0;g[2].forEach(function(i){v+=sh[i]||0});
+    if(v>0){tot+=v;bar.appendChild(h('i',{class:'a-'+g[0],style:'width:'+v+'%'}));sum.push(g[1]+' '+Math.round(v)+'%')}
+  });
+  sum.sort(function(x,y){return parseInt(y.split(' ').pop(),10)-parseInt(x.split(' ').pop(),10)});
+  bar.setAttribute('aria-label','Advice given to leavers: '+sum.join(', '));
+  box.appendChild(bar);
+  box.appendChild(h('div',{class:'advn',text:'Advice of leavers: '+sum.join(', ')+'. n = '+a[0]+(a[1]>0?', partial: small groups are hidden by DUO':'')}));
+  return box;
+}
+function primaryRow(r){
+  var s=r.s,main=h('div');
+  main.appendChild(h('div',{class:'nm',text:s.name}));
+  var mt=[s.city,s.denT,pupilsText(s)].filter(Boolean).join(' · ');
+  main.appendChild(h('div',{class:'mt',text:mt}));
+  var fc=featChips(s);if(fc)main.appendChild(fc);
+  if(!s.sbo)main.appendChild(adviceBlock(s));
+  var ol=openLine(s);if(ol)main.appendChild(ol);
+  main.appendChild(links(s,'po'));
+  return h('li',{class:'sch',style:'list-style:none'},[distCell(r,s),main]);
+}
+function distCell(r,s){return h('div',{class:'km'},[fmtKm(r.d)+' km',h('small',{text:s.g>0?'about, location approximate':'about'})])}
+function trackBadges(s){
+  var t=s.tracks,wrap=h('div'),n=0,groups=0;
+  var defs=[['pro',1,'practical'],['bb',2,'bb'],['kb',4,'kb'],['gl',8,'gl'],['tl',16,'tl'],['havo',32,'havo'],['vwo',64,'vwo'],['gym',128,'gym'],['ib',512,'IB'],['ess',1024,'ESS']];
+  defs.forEach(function(d){if(t&d[1]){wrap.appendChild(h('span',{class:'tr t-'+d[0],text:d[2]}))}});
+  if(t&30)groups++;if(t&32)groups++;if(t&64)groups++;
+  if(groups>=2)wrap.appendChild(h('span',{class:'broad',text:groups+' levels under one roof'}));
+  return wrap;
+}
+var EX_LBL={bb:'bb',kb:'kb',gl:'gl',tl:'tl',havo:'havo',vwo:'vwo'};
+function examLine(s){
+  if(!s.exam||!s.exam.length)return h('div',{class:'exam'},[h('span',{class:'small',text:'No exam results in the data.'})]);
+  var box=h('div',{class:'exam'});
+  s.exam.forEach(function(e){
+    var lab=EX_LBL[e[0]]||e[0],t;
+    if(e[1]==null)t=lab+' hidden by DUO';
+    else if(e[1]<30)t=lab+' '+e[1]+' candidates, too few for a pass rate'+(e[3]?' (partial)':'');
+    else t=lab+' '+Math.round(e[2])+'% passed, n = '+e[1]+(e[3]?' (partial)':'');
+    var sp=h('span',{class:e[1]!=null&&e[1]>=30?'':'small'},[h('span',{class:'tr t-'+(e[0]==='bb'||e[0]==='kb'?e[0]:e[0]),text:lab,style:'margin-right:4px'}),t.slice(lab.length)]);
+    box.appendChild(sp);
+  });
+  return box;
+}
+function secondaryRow(r,noExam){
+  var s=r.s,main=h('div');
+  main.appendChild(h('div',{class:'nm',text:s.name}));
+  main.appendChild(h('div',{class:'mt',text:[s.city,s.denT,pupilsText(s)].filter(Boolean).join(' · ')}));
+  var tb=trackBadges(s);main.appendChild(h('div',{style:'margin-top:5px'},tb));
+  var fc=featChips(s);if(fc)main.appendChild(fc);
+  if(!noExam)main.appendChild(examLine(s));
+  var ol=openLine(s);if(ol)main.appendChild(ol);
+  main.appendChild(links(s,'vo'));
+  return h('li',{class:'sch',style:'list-style:none'},[distCell(r,s),main]);
+}
+
+/* ---------- panels ---------- */
+function loadingBox(label){
+  return h('div',{role:'status'},[h('div',{class:'load','aria-hidden':'true'},[h('i'),h('i'),h('i'),h('i'),h('i')]),h('p',{class:'note',text:label})]);
+}
+function errorBox(){
+  return h('div',{class:'errbox'},[h('p',{style:'margin:0 0 6px;font-weight:700',text:'School data could not load. The route still works.'}),
+    h('button',{class:'btn sec',type:'button',id:'retry',text:'Try again',onclick:function(){loadData()}})]);
+}
+function dataYear(key){
+  var m=DB.meta&&DB.meta.data_years&&DB.meta.data_years[key];if(!m)return '';
+  var a=/^(\d{4}-\d{4})/.exec(m),d=/(\d{4}-\d{2}-\d{2})/.exec(m);
+  return {range:a?a[1]:'',date:d?d[1]:''};
+}
+function noPc(){
+  return h('div',{class:'empty',text:'Enter a valid postcode above to see schools near you.'});
+}
+function pcPoint(){return DB.pc4&&DB.pc4[state.pc]?DB.pc4[state.pc]:null}
+
+function panelPrimary(openByDefault){
+  var det=h('details',{class:'sp',open:openByDefault?true:null,id:'sp-po'});
+  det.appendChild(h('summary',null,[h('h4',{text:'Primary schools near '+state.pc}),h('div',{class:'sub',text:'Nearest first, straight-line distance from the middle of the postcode area.'})]));
+  var body=h('div');det.appendChild(body);
+  if(DB.status==='loading'){body.appendChild(loadingBox('Loading school data...'));return det}
+  if(DB.status==='error'){body.appendChild(errorBox());return det}
+  var pt=pcPoint();if(!pt){body.appendChild(noPc());return det}
+  var all=nearest(DB.po,pt,function(s){return !s.sbo&&hasFeat(s.id,ffPo)}),sbo=nearest(DB.po,pt,function(s){return s.sbo});
+  var pu=dataYear('po_pupils'),ad=dataYear('po_advice');
+  body.appendChild(h('p',{class:'note',style:'margin-top:0',text:'Pupil counts: '+(pu.date||'')+'. The coloured bar shows the school advice given to last year\'s leavers ('+ad.range+'). Mixed advice such as havo and vwo is counted at the higher level. Where DUO hides small groups the figures cover the visible pupils only. A school advice mix says little about whether the school fits your child.'}));
+  if(DB.feat){
+    body.appendChild(featFilter(FT_FILTER_PO,ffPo,function(){nPo=15;render()},'Show only schools with',"po"));
+    if(ffPo.length)body.appendChild(h('p',{class:'ffl',text:all.length+' schools with any selected feature. The labels come from association lists and school websites and can be incomplete.'}));
+  }
+  var ul=h('ul',{style:'padding:0;margin:0'});
+  if(!all.length)body.appendChild(h('div',{class:'empty',text:'No primary school with these features in the data. Try fewer features.'}));
+  all.slice(0,nPo).forEach(function(r){ul.appendChild(primaryRow(r))});
+  body.appendChild(ul);
+  if(all.length>nPo)body.appendChild(h('button',{class:'btn sec more',type:'button',id:'more-po',text:'Show 15 more ('+(all.length-nPo)+' left)',onclick:function(){nPo+=15;render()}}));
+  if(sbo.length){
+    var d2=h('details',{id:'sbo',style:'margin-top:12px',open:poSboOpen?true:null,ontoggle:function(e){poSboOpen=e.target.open}},[
+      h('summary',{style:'cursor:pointer;font-weight:700',text:'Special primary schools (sbo) near you'}),
+      h('p',{class:'note',text:'Special primary schools are for children who need more support than a regular school can give. Admission needs a formal decision first. Ask your child\'s school.'})]);
+    var u2=h('ul',{style:'padding:0;margin:0'});
+    sbo.slice(0,5).forEach(function(r){u2.appendChild(primaryRow(r))});
+    d2.appendChild(u2);body.appendChild(d2);
+  }
+  return det;
+}
+
+function chipMatch(s,chips){
+  if(!chips.length)return s.tracks>0;
+  var m=0;CHIP_DEF.forEach(function(c){if(chips.indexOf(c[0])>-1)m|=c[2]});
+  return (s.tracks&m)!==0;
+}
+function panelSecondary(){
+  var sec=h('section',{class:'sp',id:'sp-vo'});
+  sec.appendChild(h('h4',{text:'Secondary schools near '+state.pc}));
+  sec.appendChild(h('div',{class:'sub',text:'Schools that offer the levels you pick, nearest first.'}));
+  if(DB.status==='loading'){sec.appendChild(loadingBox('Loading school data...'));return sec}
+  if(DB.status==='error'){sec.appendChild(errorBox());return sec}
+  var pt=pcPoint();if(!pt){sec.appendChild(noPc());return sec}
+  var chips=activeChips();
+  var group=h('div',{class:'ctrl',role:'group','aria-label':'Levels'});
+  CHIP_DEF.forEach(function(c){
+    group.appendChild(h('button',{class:'chip',type:'button',id:'chip-'+c[0],'aria-pressed':chips.indexOf(c[0])>-1?'true':'false',text:c[1],onclick:function(){
+      var cur=activeChips().slice(),i=cur.indexOf(c[0]);if(i>-1)cur.splice(i,1);else cur.push(c[0]);
+      state.chips=cur;nVo=15;save();render()}}));
+  });
+  sec.appendChild(group);
+  if(state.chips&&state.level&&LEVEL_CHIPS[state.level]){
+    sec.appendChild(h('button',{class:'chip',type:'button',id:'chip-reset',text:'Reset to the advice',onclick:function(){state.chips=null;save();render()}}));
+  }
+  var rad=h('div',{class:'rad'},[h('label',{for:'sel-radius',text:'Within'}),
+    h('select',{id:'sel-radius',onchange:function(e){state.radius=+e.target.value;nVo=15;save();render()}},
+      [5,10,20,30].map(function(v){return h('option',{value:String(v),selected:state.radius===v?true:null,text:v+' km'})}))]);
+  sec.appendChild(rad);
+  if(DB.feat){
+    sec.appendChild(featFilter(FT_FILTER_VO,ffVo,function(){nVo=15;render()},'Show only schools with',"vo"));
+  }
+  var found=nearest(DB.vo,pt,function(s){return chipMatch(s,chips)&&hasFeat(s.id,ffVo)},state.radius);
+  var ex=dataYear('vo_exams'),pu=dataYear('vo_pupils');
+  sec.appendChild(h('p',{class:'note',style:'margin-top:0',text:(chips.length?'Schools that offer any selected level. ':'No level selected, so all schools with pupils are shown. ')+(ffVo.length?'Only schools with any selected feature. ':'')+found.length+' within '+state.radius+' km'+(found.length>nVo?', showing the nearest '+nVo:'')+'.'}));
+  if(!found.length){sec.appendChild(h('div',{class:'empty',text:'No school with these levels within '+state.radius+' km. Try a larger distance or fewer levels.'}))}
+  var ul=h('ul',{style:'padding:0;margin:0'});
+  found.slice(0,nVo).forEach(function(r){ul.appendChild(secondaryRow(r))});
+  sec.appendChild(ul);
+  if(found.length>nVo)sec.appendChild(h('button',{class:'btn sec more',type:'button',id:'more-vo',text:'Show 15 more ('+(found.length-nVo)+' left)',onclick:function(){nVo+=15;render()}}));
+  sec.appendChild(h('p',{class:'note',text:'Exam pass rate: share of final-year candidates who passed in '+ex.range+'. It is shown when at least 30 candidates took the exam. "Partial" means DUO hides some small groups, so the rate covers the visible candidates only. Pupil counts are from '+pu.date+' (provisional). A high pass rate is not the same as a good fit: it also depends on which pupils the school admits. "Levels under one roof" counts vmbo, havo and vwo; schools that offer several make switching levels easier, as parents often say. Features such as bilingual (tto), IB or Montessori come from association lists and school websites. They can be incomplete or out of date, so a school without a label may still offer it. Check open days and the school\'s own information.'}));
+  return sec;
+}
+function panelIsk(){
+  var sec=h('section',{class:'sp',id:'sp-isk'});
+  sec.appendChild(h('h4',{text:'Newcomer classes (ISK) near '+state.pc}));
+  sec.appendChild(h('div',{class:'sub',text:'Locations with ISK or a newcomer class in their name.'}));
+  if(DB.status==='loading'){sec.appendChild(loadingBox('Loading school data...'));return sec}
+  if(DB.status==='error'){sec.appendChild(errorBox());return sec}
+  var pt=pcPoint();if(!pt){sec.appendChild(noPc());return sec}
+  var found=nearest(DB.vo,pt,function(s){return s.isk},Math.max(state.radius,20));
+  if(!found.length)sec.appendChild(h('div',{class:'empty',text:'None found within '+Math.max(state.radius,20)+' km. Ask your municipality.'}));
+  var ul=h('ul',{style:'padding:0;margin:0'});
+  found.slice(0,nIsk).forEach(function(r){ul.appendChild(secondaryRow(r,true))});
+  sec.appendChild(ul);
+  if(found.length>nIsk)sec.appendChild(h('button',{class:'btn sec more',type:'button',id:'more-isk',text:'Show more',onclick:function(){nIsk+=10;render()}}));
+  sec.appendChild(h('p',{class:'note',text:'This is a name search, so some schools that run a newcomer class are missing. Your municipality or a nearby school can tell you where places exist.'}));
+  return sec;
+}
+
+/* ---------- inline questions ---------- */
+function selectQ(id,label,opts,value,onchange,hint){
+  var wrap=h('div',{class:'q-inline'});
+  wrap.appendChild(h('label',{for:id,text:label}));
+  var sel=h('select',{class:'fld',id:id,onchange:onchange});
+  opts.forEach(function(o){sel.appendChild(h('option',{value:o[0],selected:o[0]===value?true:null,text:o[1]}))});
+  wrap.appendChild(sel);
+  wrap.appendChild(h('span',{class:'opt',text:hint||'Optional. You can skip this.'}));
+  return wrap;
+}
+function qGroup(m){
+  var a=m.age;if(a<10||a>12)return null;
+  var cur=state.grp||(a===10?'7':a===11?'8':'vo');
+  return selectQ('q-grp','Which year group is your child in?',[['6','Year group 6'],['7','Year group 7'],['8','Year group 8'],['vo','Already in secondary school']],cur,function(e){state.grp=e.target.value;nVo=15;save();render()},'We guessed from the age. Change it if it is wrong.');
+}
+function qLevel(m){
+  var a=m.age;if(a<10||a>15)return null;
+  var inVo=(m.cur==='vo1'||m.cur==='vo23'||m.cur==='fin');
+  var opts=[['',inVo?'Not sure':'Not yet, or not sure']].concat(inVo?TYPE:ADV);
+  var val=state.level;
+  if(!opts.some(function(o){return o[0]===val}))val='';
+  return selectQ('q-level',inVo?'Which school type is your child in now?':'Has the school given a school advice (schooladvies) yet?',opts,val,function(e){state.level=e.target.value;state.chips=null;nVo=15;save();render()});
+}
+function qNew(m){
+  if(m.age<4)return null;
+  var w=h('div',{class:'q-inline chk'});
+  w.appendChild(h('label',{for:'q-newc'},[h('input',{type:'checkbox',id:'q-newc',checked:state.newc?true:null,onchange:function(e){state.newc=e.target.checked;nIsk=10;save();render()}}),
+    h('span',null,['Has your child been in the Netherlands less than a year, or is still learning Dutch?'])]));
+  w.appendChild(h('span',{class:'opt',text:'Optional. Adds newcomer class information.'}));
+  return w;
+}
+
+/* ---------- stop content ---------- */
+var ADV_DATES=[
+  {e:'2027-01-31',lab:'10 to 31 Jan 2027',t:'Provisional school advice',d:'The school gives a provisional advice. Ask for a talk and ask what it is based on.'},
+  {e:'2027-02-12',lab:'25 Jan to 12 Feb 2027',t:'End-of-primary test (doorstroomtoets)',d:'Your child takes the test at school. If the result is higher than the provisional advice, the school adjusts the advice upward, unless it explains why that is not in your child\'s interest.'},
+  {e:'2027-03-24',lab:'By 24 Mar 2027',t:'Final school advice',d:'The school sets the final advice. Secondary schools admit on this final advice.'},
+  {e:'2027-03-31',lab:'25 to 31 Mar 2027',t:'National sign-up week',d:'Sign up at the secondary school you choose, with the final advice. Many regions allow more than one school, so check how yours works.'}
+];
+function nextDated(){
+  var now=new Date(),i;
+  for(i=0;i<ADV_DATES.length;i++){if(new Date(ADV_DATES[i].e+'T23:59:59')>=now)return i}
+  return -1;
+}
+function whenText(id,m){
+  var ageTxt={pre:'Age 0 to 4',g12:'Age 4 to 6',g35:'Age 6 to 9',g67:'Age 9 to 11',g8:'Age 11 to 12',vo1:'Age 12 to 13',vo23:'Age 13 to 15',fin:'Age 15 to 18',he:'After the exam year'}[id];
+  if(id===m.cur)return 'Now, school year '+yl(m.sy)+' · '+ageTxt;
+  if(id==='he')return ageTxt+', from about age 16 to 18';
+  var y=m.sy+(STOP_START[id]-m.ae);
+  if(id==='pre')return ageTxt;
+  return 'School year '+yl(y)+' · '+ageTxt;
+}
+function advYearLabel(m){
+  var y=m.sy+(11-m.ae);
+  return 'January to March '+(y+1)+' (school year '+yl(y)+')';
+}
+
+function buildStops(m){
+  var idx=ORDER.indexOf(m.cur),list=[],grp=groupsNow();
+  ORDER.slice(idx).forEach(function(id){list.push(stopDef(id,m,grp))});
+  if(state.newc&&m.age>=4){
+    var young=m.age<12&&(m.cur!=='vo1'&&m.cur!=='vo23'&&m.cur!=='fin'&&m.cur!=='he');
+    var nst={id:'newc',icon:'globe',side:true,
+      title:young?'Newcomer class in primary school':'Newcomer class in secondary school (ISK)',
+      when:'First, usually for up to about two years',
+      what:young?['Parents usually choose between a special language class (schakelklas) for children who just arrived, and a regular class with extra Dutch lessons. A temporary newcomer provision can enrol a child for at most 2 years in total.']
+        :['A special class at a regular secondary school for recently arrived pupils who speak little or no Dutch. Lessons cover Dutch, maths and citizenship, and prepare pupils for regular secondary or mbo education. Most pupils stay up to about two years, then move to a regular class.'],
+      todo:['Ask your municipality, a reception location or the nearest school where places exist.','Places can be limited in some cities, so ask early.'],
+      src:['nieuw','loket'],schools:m.age>=10?'isk':null};
+    list.splice(1,0,nst);
+  }
+  return list;
+}
+
+function pathText(grp){
+  var out=[];
+  if(grp.indexOf('pro')>-1)out.push('<b>Practical education (praktijkonderwijs):</b> pupils can usually stay until the end of the school year in which they turn 18, on average about five years. Next: the mbo entry programme (level 1, one year, no earlier diploma needed, from age 16) or a work route that the school arranges with the mbo college.');
+  if(grp.indexOf('vbk')>-1)out.push('<b>vmbo basis or kader:</b> a diploma after 4 years. Basis leads to mbo level 2 (1 to 2 years). Kader leads to mbo level 3 (2 to 3 years) or level 4 (3 to 4 years), as the official entry requirements for 3 and 4 are the same. Programmes can add their own conditions, so ask the mbo college. A lower level is usually possible, and moving up later within mbo is possible.');
+  if(grp.indexOf('vgt')>-1)out.push('<b>vmbo gl/tl:</b> a diploma after 4 years. Leads to mbo level 3 or 4. Moving to havo year 4 is possible with an extra exam subject or other conditions, and the school decides.');
+  if(grp.indexOf('havo')>-1)out.push('<b>havo:</b> a diploma after 5 years. Leads to an hbo bachelor (4 years), an associate degree (2 years), mbo at any level, or vwo (the school decides the year, many use year 5). A havo diploma alone does not give access to wo.');
+  if(grp.indexOf('vwo')>-1)out.push('<b>vwo:</b> a diploma after 6 years. Leads to a wo bachelor (3 years), an hbo bachelor or an associate degree. Some studies ask for particular subjects or select applicants.');
+  return out;
+}
+
+function stopDef(id,m,grp){
+  var s={id:id,when:whenText(id,m),schools:null,src:[],todo:[],what:[]};
+  var dated=null;
+  switch(id){
+  case 'pre':
+    s.icon='clock';s.title='Before school: choose and register';
+    s.what=['A child may start primary school at age 4, and you can register from age 3. Many schools let a child come for a few settling-in days from age 3 years 10 months, up to 5 in total, but not every school offers them. Compulsory attendance starts on the first day of the month after the fifth birthday.',
+      'Public schools are open to every child. A denominational or other "special" school works from a religion or belief. Both kinds can follow methods such as Montessori or Dalton.'];
+    s.todo=['Visit two or three schools and read their school guide.','Ask each school how sign-up and any waiting list work.'];
+    s.src=['basis','wanneer'];s.schools='po';break;
+  case 'g12':
+    s.icon='school';s.title='Year groups 1 and 2';
+    s.what=['The first two years of primary school, which has eight year groups. Most children start on their fourth birthday.'];
+    s.todo=['Nothing to sign up for.','Ask how the school decides when a child moves on to year group 3. The school decides, together with you.'];
+    s.src=['wanneer','blijven'];s.schools=(m.cur===id)?'po':null;break;
+  case 'g35':
+    s.icon='school';s.title='Year groups 3 to 5';
+    s.what=['The school keeps a record of your child\'s progress. The school advice in year group 8 is the school\'s judgement of that whole record.'];
+    s.todo=['Ask for a talk once a year, and ask early if you are worried.','If the school suggests repeating a year, ask for the reasons in writing (see Questions).'];
+    s.src=['blijven','loket'];s.schools=(m.cur===id)?'po':null;break;
+  case 'g67':
+    s.icon='book';s.title='Year groups 6 and 7';
+    s.what=['Many schools start talking with parents about a likely secondary level around now. The formal advice is only given in year group 8.'];
+    s.todo=['Ask the teacher when your school starts the conversation.','Look at secondary schools and their open days. Dates differ per school.'];
+    s.src=['tijdlijn','loket'];s.schools=(m.cur===id)?'po':null;break;
+  case 'g8':
+    s.icon='fork';s.title='Year group 8: advice, test and sign-up';s.deadline=true;
+    s.what=['In year group 8 the school gives a school advice (schooladvies) and your child takes an end-of-primary test. The advice can name one level or two, for example havo and vwo. You sign up at a secondary school with the final advice.'];
+    if(m.sy+(11-m.ae)===2026){
+      var nx=nextDated();
+      dated={nx:nx};
+      s.what.push('Dates for school year 2026-27. They are set again every year.');
+    }else{
+      s.what.push('The usual pattern: provisional advice in January, the test from late January into February, final advice in March, and sign-up at the end of March. The exact dates are set each year. For your child this is '+advYearLabel(m)+'.');
+    }
+    s.todo=['Visit open days and make a short list of schools that offer the advised level.','Ask how your region organises sign-up, and sign up within the sign-up week.','Remember a school may refuse a child only on limited grounds, such as having no places left.'];
+    s.dated=dated;
+    s.src=['tijdlijn','voraad','advies','inschr','weiger'];
+    s.schools='vo';
+    if(m.cur===id||m.age>=10)s.schools2='po';
+    break;
+  case 'vo1':
+    s.icon='school';s.title='First year of secondary school (brugklas)';
+    s.what=['Year 1 usually lasts one year, sometimes two. Many schools combine at least two levels in one class, for example vmbo-t with havo, or havo with vwo. Some schools are single-level and start in one level directly.'];
+    s.todo=['Ask how and when a child can move up or down a level. The school decides.','Ask what extra support the school gives.'];
+    s.src=['brug','weiger','loket'];s.schools=(m.cur===id&&m.age<=15)?'vo':null;break;
+  case 'vo23':
+    s.icon='pencil';s.title='Years 2 and 3: choosing a pathway or profile';
+    s.what=['In vmbo, pupils choose a learning pathway (basis, kader, mixed or theoretical) and a sector by the end of year 2. In havo and vwo, pupils choose one of four profiles before the upper years: nature and technology, nature and health, economics and society, or culture and society. Schools usually ask at the end of year 3.',
+      'After year 3 of havo or vwo, a recognised pass certificate also gives access to mbo level 2, 3 or 4.'];
+    s.todo=['Ask which profiles the school offers and which studies each one opens.','Moving between levels in these years is sometimes possible. The school decides.'];
+    s.src=['vmbo','havo','vwo','mboRijks'];s.schools=(m.cur===id)?'vo':null;break;
+  case 'fin':
+    s.icon='pencil';s.title='Exam year and what comes next';s.deadline=true;
+    s.what=['The final exam year is year 4 in vmbo (age 15 to 16), year 5 in havo (age 16 to 17) and year 6 in vwo (age 17 to 18). Practical education runs to about age 18.'];
+    s.what=s.what.concat(pathText(grp));
+    s.todo=['For mbo, apply to the programme by 1 April of the exam year. You can apply later, but then you have no right to admission.','For hbo or wo, check the subjects and application dates of each programme early.'];
+    s.src=['mboToel','mboRijks','kiesmbo','vmbo','havo','vwo','pro'];s.schools=(m.cur===id&&m.age<=15)?'vo':null;break;
+  case 'he':
+    s.icon='cap';s.title='After secondary school: mbo, hbo or wo';
+    s.what=['<b>mbo</b> (vocational college) has four levels: level 1 takes 1 year, level 2 takes 1 to 2, level 3 takes 2 to 3 and level 4 takes 3 to 4 years. A level 4 diploma gives the right to enter hbo.',
+      '<b>hbo</b> (university of applied sciences): a bachelor takes 4 years, and the first year is the first-year certificate (propedeuse). An associate degree takes 2 years. A master takes 1 to 2 years.',
+      '<b>wo</b> (research university): a bachelor takes 3 years and a master 1 to 3 years. A PhD takes about 4 years. With a havo diploma, the usual route to wo is an hbo first year, and in most cases the university then decides. An hbo bachelor usually needs a bridging programme (pre-master) before a wo master.',
+      'Without the usual diploma, people from age 21 can ask for an admission test (21+ test). Each institution runs its own.'];
+    s.todo=['Check the entry rules, dates and any selection of each programme.'];
+    s.src=['schema','gov','sk123','sk21','mboRijks','nuf'];break;
+  }
+  return s;
+}
+
+/* ---------- next action card ---------- */
+function nextCard(m,stops){
+  var box=h('section',{class:'nextcard','aria-label':'Next action'});
+  var lab='Next action',date='',title='',text='',more=null;
+  var nx=nextDated();
+  var onG8=(m.cur==='g8'&&m.sy+(11-m.ae)===2026);
+  if(onG8&&nx>=0){
+    var d=ADV_DATES[nx];date=d.lab;title=d.t;text=d.d;
+    more='Four dates this school year: 10 to 31 Jan, 25 Jan to 12 Feb, 24 Mar, 25 to 31 Mar 2027 (source: Rijksoverheid, VO-raad).';
+  }else if(m.cur==='pre'){
+    lab='Next action';date='From age 3';title='Choose and register at a primary school';text='There is no national deadline. Visit schools and ask each how sign-up and any waiting list work.';
+  }else if(m.cur==='g8'||m.cur==='g67'){
+    lab='Coming up';date=m.cur==='g8'?advYearLabel(m):advYearLabel(m);title='School advice and secondary sign-up';
+    text=m.cur==='g8'?'Dates are set each year. Start visiting schools and ask your child\'s school for its calendar.':'Start looking at secondary schools now and ask the teacher when the conversation starts.';
+  }else if(m.cur==='g12'||m.cur==='g35'){
+    lab='Nothing to book yet';date=advYearLabel(m);title='First big step: school advice and secondary sign-up';
+    text='Until then there is nothing to sign up for. Keep in touch with the teacher and ask early if you are worried about progress.';
+  }else if(m.cur==='vo1'||m.cur==='vo23'){
+    lab='Next action';date='Ask the school';title='No national deadline right now';
+    text='Level and profile choices are made by the school. Ask when they are made and what they mean for later studies.';
+  }else if(m.cur==='fin'){
+    lab='Next action';date='1 April';title='Apply to the mbo programme';
+    text='For mbo, apply by 1 April of the exam year to keep the right to admission. For hbo or wo, each programme sets its own dates.';
+  }else{
+    lab='Next action';date='Ask the programme';title='Check dates and entry rules';text='Each programme sets its own application dates and entry rules.';
+  }
+  box.appendChild(h('div',{class:'nl',text:lab}));
+  box.appendChild(h('div',{class:'nd',text:date}));
+  var nb=h('div',{class:'nb'},[h('h3',{text:title}),h('p',{text:text})]);
+  if(more)nb.appendChild(h('p',{style:'font-size:.85rem',text:more}));
+  box.appendChild(nb);
+  return box;
+}
+
+/* ---------- route rendering ---------- */
+function renderStop(st,m,idx,firstDeadlineId){
+  var isNow=(idx===0);
+  var isNext=(st.id===firstDeadlineId);
+  var cls='stop'+(isNow?' now':'')+(isNext?' next':'')+(st.side?' side':'');
+  var li=h('li',{class:cls});
+  li.appendChild(h('span',{class:'tick','aria-hidden':'true'}));
+  var tags=h('div',{class:'tags'});
+  if(isNow)tags.appendChild(h('span',{class:'tg y',text:'You are here'}));
+  if(isNext)tags.appendChild(h('span',{class:'tg y',text:isNow?'Next action':'Next deadline'}));
+  if(st.side)tags.appendChild(h('span',{class:'tg',text:'Side step'}));
+  if(tags.firstChild)li.appendChild(tags);
+  var head=h('div',{class:'shead'},[h('span',{class:'pic'},ico(st.icon)),h('div',null,[h('div',{class:'when',text:st.when}),h('h3',{text:st.title})])]);
+  li.appendChild(head);
+  var info=h('div',{class:'sinfo'});
+  st.what.forEach(function(w){info.appendChild(raw('p','',w))});
+  if(st.dated){
+    var ul=h('ol',{class:'dated',style:'padding:0'});
+    ADV_DATES.forEach(function(d,i){
+      var cl=i<st.dated.nx||st.dated.nx<0?'past':(i===st.dated.nx?'nx':'');
+      ul.appendChild(h('li',{class:cl},[h('span',{class:'dd',text:d.lab}),h('span',{class:'dt',text:d.t}),h('span',{class:'dx',text:d.d})]));
+    });
+    info.appendChild(ul);
+  }
+  if(st.todo.length){
+    var d=h('div',{class:'do'},[h('b',{text:'What you do'})]);
+    var u=h('ul');st.todo.forEach(function(t){u.appendChild(h('li',{text:t}))});d.appendChild(u);info.appendChild(d);
+  }
+  if((st.id==='g8'||st.id==='g67')&&(m.age>=10||state.level||preview)){
+    var od=nearbyOpenDays();if(od)info.appendChild(od);
+  }
+  if(st.id==='g8'&&DB.pc4&&DB.pc4[state.pc]&&DB.pc4[state.pc][2]==='Amsterdam'){
+    info.appendChild(raw('div','do','<b>Amsterdam</b><p style="margin-top:4px">Amsterdam runs a central lottery and matching procedure (centrale loting en matching) for secondary school. As we understand it, you rank schools that fit the school advice, each pupil gets a lot number, and places are matched using your ranking and the lot number. Do not assume the rules you know from another city apply here. The exact steps, the schools that take part and the dates change each year. Use the official Amsterdam sources and ask your child\'s school.</p>'));
+  }
+  if(isNow){
+    [qGroup(m),qLevel(m),qNew(m)].forEach(function(q){if(q)info.appendChild(q)});
+  }
+  if(st.src.length)info.appendChild(srcLine(st.src));
+  var panels=[];
+  if(st.schools==='po')panels.push(panelPrimary(true));
+  if(st.schools==='vo'){
+    if(m.age>=10||state.level||preview)panels.push(panelSecondary());
+    else panels.push(previewBox());
+  }
+  if(st.schools==='isk')panels.push(panelIsk());
+  if(st.schools2==='po'&&m.age<12&&m.cur==='g8')panels.push(panelPrimary(false));
+  var body=h('div',{class:'sbody'+(panels.length?' two':'')},[info]);
+  if(panels.length){var col=h('div',{style:'min-width:0'});panels.forEach(function(p){col.appendChild(p)});body.appendChild(col)}
+  li.appendChild(body);
+  return li;
+}
+function previewBox(){
+  var b=h('div',{class:'sp'});
+  b.appendChild(h('h4',{text:'Secondary schools near '+state.pc}));
+  b.appendChild(h('p',{class:'sub',text:'Your child is under 10, so this step is a few years away. You can still look.'}));
+  b.appendChild(h('button',{class:'btn sec',type:'button',id:'btn-preview',text:'Preview secondary schools near me',onclick:function(){preview=true;render()}}));
+  return b;
+}
+
+function render(){
+  var active=document.activeElement&&document.activeElement.id;
+  var m=model();
+  var stops=buildStops(m);
+  /* header strip */
+  var rb=$('resbar');clear(rb);
+  var pt=DB.pc4&&DB.pc4[state.pc];
+  if(state.example)rb.appendChild(h('span',{class:'extag',text:'EXAMPLE'}));
+  rb.appendChild(h('h2',{text:'Your route'}));
+  var ageTxt=state.age==='u4'?'under 4 or expecting':state.age==='18'?'18 or older':'age '+state.age;
+  $('resmeta').textContent=(state.example?'Example: ':'')+ageTxt+', postcode '+state.pc+(pt?', '+pt[2]:'')+'. '+(state.example?'Enter your own details above to replace it.':'Only the steps still ahead are shown.');
+  var mu=$('muni');clear(mu);
+  if(pt){
+    var box=h('div',{class:'muni'});
+    box.appendChild(h('p',null,[h('b',{text:'You are in '+pt[2]+'. '}),'Secondary sign-up is organised by schools in your region; check with your child\'s primary school.']));
+    mu.appendChild(box);
+  }else if(DB.status==='ready'){
+    mu.appendChild(h('div',{class:'muni'},[h('p',{text:'We do not know postcode area '+state.pc+'. Check the digits. The route below still applies.'})]));
+  }
+  /* next card */
+  var nc=$('next');clear(nc);nc.appendChild(nextCard(m,stops));
+  /* first deadline stop */
+  var fd=null;
+  for(var i=0;i<stops.length;i++){if(stops[i].deadline){fd=stops[i].id;break}}
+  var r=$('route');clear(r);
+  stops.forEach(function(st,i){r.appendChild(renderStop(st,m,i,fd))});
+  $('exline').textContent=state.example?'Showing an example (age 11, postcode 3512, Utrecht). Fill in your own details and press the button.':'Nothing is sent anywhere. Your answers stay in this browser.';
+  if(active){var el=$(active);if(el&&el.focus){try{el.focus({preventScroll:true})}catch(e){}}}
+}
+function renderStatus(){
+  var s=$('status');clear(s);
+  if(DB.status==='loading')s.appendChild(loadingBox('Loading school data...'));
+}
+
+/* ---------- footer ---------- */
+function renderFooter(){
+  var u=$('srcList');clear(u);
+  SRC_ORDER.forEach(function(k){var s=S[k];u.appendChild(h('li',null,h('a',{href:s[1],target:'_blank',rel:'noopener',text:s[0]})))});
+  var at=$('attr');clear(at);
+  var list=DB.meta&&DB.meta.attribution;
+  if(DB.feat){
+    var A=function(t,u){return h('a',{href:u,target:'_blank',rel:'noopener',text:t})};
+    at.appendChild(h('li',null,['School features and open days (collected 2026-10-16): ',
+      A('Nuffic tto list','https://www.nuffic.nl/onderwijssectoren/voortgezet-onderwijs/tweetalig-onderwijs/alle-tto-scholen-in-nederland'),' (CC BY-NC 4.0), ',
+      A('Stichting Technasium','https://www.technasium.nl/'),', ',
+      A('Nederlandse Montessori Vereniging','https://montessori.nl/'),' (NMV), ',
+      A('Nederlandse Dalton Vereniging','https://dalton.nl/'),' (NDV), ',
+      A('Nederlandse Jenaplan Vereniging','https://jenaplan.nl/'),' (NJPV), ',
+      A('Vereniging van vrijescholen','https://www.vrijescholen.nl/'),', ',
+      A('Dutch International Schools','https://www.dutchinternationalschools.nl/'),', ',
+      A('SIO','https://sio.nl/'),' and the schools\' own websites (crawled 2026-10-16). Labels can be incomplete or out of date. Open day dates change, so check the school\'s site.']));
+  }
+  if(list&&list.length){
+    list.forEach(function(a){at.appendChild(h('li',null,[a.text+' Licence: '+a.licence+'. ',h('a',{href:a.licence_url,target:'_blank',rel:'noopener',text:'Licence'}),' · ',h('a',{href:a.url,target:'_blank',rel:'noopener',text:'Source'})]))});
+    $('disc').textContent=DB.meta.disclaimer||'';
+    var dy=DB.meta.data_years||{};
+    $('dataline').textContent='School data built on '+(DB.meta.generated||'')+'. Pupil counts: '+(dataYear('po_pupils').date||'')+'. Primary school advice: leavers '+(dataYear('po_advice').range||'')+'. Exam results: '+(dataYear('vo_exams').range||'')+'.';
+  }else{
+    at.appendChild(h('li',{text:'School data: DUO Open Onderwijsdata (CC BY 4.0). Postcode areas: CBS (CC BY 4.0). Addresses and municipalities: Kadaster BAG via PDOK.'}));
+    $('disc').textContent='Not affiliated with, or endorsed by, DUO, CBS, Kadaster or PDOK.';
+  }
+}
+
+/* ---------- whole system diagram ---------- */
+function buildSystem(){
+  var W=360,o=[];
+  function rect(x,y,w,hh,cls,txt,tcls){
+    o.push('<rect class="cell '+cls+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+hh+'"/>');
+    if(txt!==undefined&&txt!=='')o.push('<text class="'+(tcls||'on')+'" x="'+(x+w/2)+'" y="'+(y+hh/2+3.5)+'" text-anchor="middle">'+txt+'</text>');
+  }
+  function text(x,y,t,cls,anchor){o.push('<text class="'+(cls||'ax')+'" x="'+x+'" y="'+y+'"'+(anchor?' text-anchor="'+anchor+'"':'')+'>'+t+'</text>')}
+  function path(d,dash,both){o.push('<path class="ar'+(dash?' d':'')+'" d="'+d+'" marker-end="url(#ah)"'+(both?' marker-start="url(#ah)"':'')+'/>')}
+  function mk(x,y,t){o.push('<rect class="mkb" x="'+x+'" y="'+y+'" width="12" height="12"/><text class="mkt" x="'+(x+6)+'" y="'+(y+9)+'" text-anchor="middle">'+t+'</text>')}
+  function bar(x,y,w,n,cls,labels){for(var i=0;i<n;i++)rect(x,y+i*20,w,20,cls,labels?labels[i]:String(i+1))}
+  o.push('<defs><marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="ah" d="M0 0L8 4L0 8z"/></marker></defs>');
+  var LX=[40,120,200,280],LW=68;
+  /* primary */
+  text(40,14,'PRIMARY SCHOOL','ax');
+  for(var g=1;g<=8;g++){
+    var y=22+(g-1)*20;
+    rect(40,y,308,20,'f-bo');
+    o.push('<text class="on" x="48" y="'+(y+13.5)+'">Year group '+g+'</text><text class="on" x="340" y="'+(y+13.5)+'" text-anchor="end">age '+(g+3)+'</text>');
+  }
+  /* advice arrows */
+  [74,154,234,314].forEach(function(x){path('M'+x+' 184V230')});
+  o.push('<rect class="lbl" x="92" y="198" width="204" height="20"/>');
+  mk(98,202,'1');text(114,212,'School advice and sign-up, about age 12','ax');
+  /* secondary lanes */
+  var names=['praktijk','vmbo','havo','vwo'],cls=['f-pro','f-vbk','f-havo','f-vwo'],yrs=[5,4,5,6];
+  text(36,246,'age','ax','end');
+  for(var i=0;i<4;i++){
+    rect(LX[i],232,LW,18,cls[i],names[i],'hd');
+    bar(LX[i],250,LW,yrs[i],cls[i]);
+  }
+  [12,14,16,18].forEach(function(a,k){text(36,250+k*40+13,String(a),'ax','end')});
+  /* early switching and diploma moves between lanes */
+  path('M189 278H199',true,true);path('M269 278H279',true,true);mk(188,284,'2');mk(268,284,'2');
+  path('M189 314H199',true);mk(188,320,'3');
+  path('M269 334H279');mk(268,340,'4');
+  /* leaving school */
+  path('M74 352V424',true);mk(68,380,'5');
+  path('M154 332V424');mk(148,380,'6');
+  path('M242 352V424');mk(236,392,'7');
+  path('M222 352V392H176V424');mk(190,386,'7');
+  path('M314 372V424');mk(308,396,'8');
+  path('M300 372V404H262V424');mk(272,398,'8');
+  /* after secondary: mbo, hbo, wo */
+  rect(40,424,148,18,'f-mbo','mbo','hd');rect(200,424,68,18,'f-hbo','hbo','hd');rect(280,424,68,18,'f-wo','wo','hd');
+  [1,2,3,4].forEach(function(l,k){var lb=[];for(var q=0;q<l;q++)lb.push(q===0?String(l):'');bar(40+k*38,442,34,l,'f-mbo',lb)});
+  text(114,536,'levels 1 to 4','ax','middle');
+  bar(200,442,22,2,'f-hbo',['AD','']);
+  bar(226,442,42,4,'f-hbo');
+  path('M247 523V535',true);
+  bar(226,536,42,2,'f-hbo',['M','']);
+  bar(280,442,68,3,'f-wo');
+  path('M314 503V517',true);
+  bar(280,518,68,2,'f-wo',['M','']);
+  path('M314 559V571',true);
+  bar(280,572,68,4,'f-wo',['PhD','','','']);
+  path('M189 470H199');mk(188,476,'a');
+  path('M269 452H279',true);mk(268,458,'b');
+  path('M269 529H279',true);mk(268,533,'d');
+  text(36,622,'AD = associate degree, M = master','ax');
+  return '<svg class="sys-svg" viewBox="0 0 '+W+' 650" role="img" aria-labelledby="sysT sysD"><title id="sysT">The Dutch school system, top to bottom</title><desc id="sysD">Primary school of eight year groups leads, after school advice, to practical education, vmbo, havo or vwo. After those come mbo, hbo and wo. Arrows show how children can move between tracks.</desc>'+o.join('')+'</svg>';
+}
+var XFERS=[
+  ['1','After year group 8 (about age 12) the school advice and your sign-up decide the secondary track. The advice can name one level or two, such as havo and vwo.',['advies','tijdlijn']],
+  ['2','Early years of secondary school: moving up or down a level is sometimes possible, and the school decides. Dashed because it is not a right.',['brug','loket']],
+  ['3','vmbo gl/tl to havo year 4: possible with an extra exam subject or other conditions that the school sets.',['vmbo','loket']],
+  ['4','havo diploma to vwo: possible. The school decides which year your child joins, many use year 5.',['havo','loket']],
+  ['5','Practical education to the mbo entry programme (level 1) or to work: the school arranges this with the mbo college.',['kiesEntree','pro']],
+  ['6','vmbo diploma to mbo: basis leads to level 2. Kader, mixed or theoretical lead to level 3 or 4, because the official entry requirements for those are the same. A lower level is usually possible.',['mboRijks','kiesmbo']],
+  ['7','havo diploma to an hbo bachelor, an associate degree or mbo at any level. It does not give direct access to wo.',['havo','schema','mboRijks']],
+  ['8','vwo diploma to a wo bachelor, or to an hbo bachelor or associate degree. Some studies ask for particular subjects or select.',['vwo','schema','gov']],
+  ['a','An mbo level 4 diploma gives the right to enter hbo.',['mboRijks']],
+  ['b','hbo first year (propedeuse) to a wo bachelor: possible in most cases, but the university decides and subject requirements can still apply.',['loket','sk123']],
+  ['d','hbo bachelor to a wo master: usually through a bridging programme (pre-master). Length and cost differ per programme, and selection is possible.',['sk123','schema']]
+];
+function renderSystem(){
+  $('sysfig').innerHTML=buildSystem();
+  var ol=$('xfers');clear(ol);
+  XFERS.forEach(function(x){
+    ol.appendChild(h('li',null,[h('b',{text:x[0]}),h('span',null,[x[1]])]));
+  });
+  ol.appendChild(h('li',null,[h('b',{text:'+'}),h('span',null,['Other arrows without a letter: bachelor to master and master to PhD. Selection is possible at each.'])]));
+  var sl=$('syssrc');sl.textContent='Sources: ';
+  ['schema','nuf','loket','gov','mboRijks','sk123'].forEach(function(k,i){if(i)sl.appendChild(document.createTextNode(' · '));sl.appendChild(h('a',{href:S[k][1],target:'_blank',rel:'noopener',text:S[k][0]}))});
+}
+
+/* ---------- FAQ ---------- */
+var FAQ=[
+ {q:'What does "university" mean here (wo vs hbo)?',a:[
+   '<p>Dutch higher education has two kinds. <b>wo</b> is the research university: more theory, and a bachelor takes 3 years. <b>hbo</b> is the university of applied sciences: more practice, and a bachelor takes 4 years. Outside the Netherlands both are often called "university", so check which one a document means.</p>',
+   '<ul><li>vwo is the usual route to wo. havo leads to hbo. An mbo level 4 diploma also gives the right to enter hbo.</li><li>A havo diploma alone does not give access to wo. After the first hbo year (the propedeuse), wo is possible in most cases, but the university decides and subject requirements can still apply.</li><li>People from age 21 without the usual diploma can ask for an admission test (the 21+ test). Each institution runs its own.</li></ul>'],
+   s:['gov','sk123','sk21','schema']},
+ {q:'My child got a vmbo advice, what now?',a:[
+   '<p>vmbo takes 4 years and is a full route, not a dead end. After it comes mbo. The pathway matters: basis leads to mbo level 2, while kader, mixed or theoretical (gl/tl) lead to level 3 or 4. An mbo level 4 diploma gives the right to enter hbo, and from hbo wo is possible in most cases. That route takes more years than going straight through vwo, but every step exists.</p>',
+   '<ul><li>Ask which pathway the advice means: basis, kader or gl/tl.</li><li>Consider a school with several levels under one roof. A VO-raad factsheet argues that a broad first year keeps more options open. The school list shows this.</li><li>After vmbo gl/tl, moving to havo year 4 is possible with conditions. The school decides.</li><li>The advice is the school\'s judgement. The end-of-primary test can raise it, and the school must explain if it keeps a lower one.</li></ul>'],
+   s:['vmbo','mboRijks','brug','advies','sk123']},
+ {q:'Is repeating a year normal, and who decides?',a:[
+   '<p>The school decides whether a child moves up or repeats a year. There are no legal rules for it. The school guide describes how each school handles it. The school must tell you if your child repeats a year. If you disagree, you can object through the school\'s complaints procedure.</p>',
+   '<ul><li>Ask for the reasons in writing: which results and observations, and which support has been tried.</li><li>Ask for a meeting with the teacher and the school\'s learning-support coordinator (intern begeleider).</li><li>Repeating is not automatically good or bad. Ask the school what it expects to change.</li><li>If language is the issue, ask what support exists. Repeating a year may not fix a speech or pronunciation question, so ask the school and, if needed, a speech therapist.</li></ul>',
+   '<p>We have no official figure for how common it is, so we do not give one.</p>'],
+   s:['blijven']},
+ {q:'How do I ask the school about the advice, or ask for a second opinion?',a:[
+   '<p>The school advice is the school\'s professional judgement of your child\'s whole record. The end-of-primary test can raise it, and the school must explain if it does not raise it. Secondary schools admit on the final advice, and they may not ask a primary school to give an advice for one level only.</p>',
+   '<p class="say">Could we meet to talk about the advice? Which results and observations is it based on? What would change it?</p>',
+   '<ul><li>Ask for the final advice and the reasons in writing.</li><li>Ask whether the learning-support coordinator can join the meeting.</li><li>Independent assessments exist, for example from a child psychologist or an assessment bureau. Costs and insurance cover vary a lot, so ask before you book.</li><li>The advice is only advice for the child\'s next school. Ask the secondary schools you like what they need to admit your child.</li></ul>'],
+   s:['advies','tijdlijn','weiger']},
+ {q:'Do I need an international school?',a:[
+   '<p>Not necessarily. Many families, including expat families, use Dutch schools. Some Dutch schools teach part of the lessons in English, such as international departments in primary school and bilingual (tto) streams in secondary school. A newcomer class helps children who are still learning Dutch.</p>',
+   '<p>International schools are mostly private, and fees vary widely. Parents report anything from a few thousand to well over twenty thousand euro a year. Those are reports, not checked figures, so ask each school. SIO lists international schools.</p>',
+   '<p>Think about how long you will stay, your child\'s age and the language your child will need later.</p>'],
+   s:['nieuw','nuf','sio']},
+ {q:'Is there a lottery for secondary school places?',a:[
+   '<p>Where a school has more applicants than places, a lottery can be used. It is not how most of the country works, as far as we know. Amsterdam runs a central lottery and matching procedure for secondary school. Some schools also select, for example on a test or an essay. Check your region and ask your child\'s school.</p>'],
+   s:['inschr','weiger','oco']}
+];
+function renderFaq(){
+  var f=$('faq');clear(f);
+  FAQ.forEach(function(x,i){
+    var d=h('details',{id:'faq-'+i});
+    d.appendChild(h('summary',{text:x.q}));
+    var a=h('div',{class:'ans'});
+    x.a.forEach(function(p){a.appendChild(raw('div','',p))});
+    a.appendChild(srcLine(x.s));
+    d.appendChild(a);f.appendChild(d);
+  });
+}
+
+/* ---------- tabs ---------- */
+var TABS=['route','system','faq'];
+function showTab(name,focus){
+  TABS.forEach(function(t){
+    var on=t===name;
+    $('t-'+t).setAttribute('aria-selected',on?'true':'false');
+    $('t-'+t).tabIndex=on?0:-1;
+    $('p-'+t).hidden=!on;
+  });
+  if(focus)$('t-'+name).focus();
+}
+TABS.forEach(function(t,i){
+  var b=$('t-'+t);
+  b.addEventListener('click',function(){showTab(t)});
+  b.addEventListener('keydown',function(e){
+    var n=null;
+    if(e.key==='ArrowRight')n=TABS[(i+1)%3];else if(e.key==='ArrowLeft')n=TABS[(i+2)%3];
+    if(n){e.preventDefault();showTab(n,true)}
+  });
+});
+
+/* ---------- form ---------- */
+(function initForm(){
+  var sel=$('age');
+  sel.appendChild(h('option',{value:'u4',text:'Under 4, or expecting'}));
+  for(var a=4;a<=17;a++)sel.appendChild(h('option',{value:String(a),text:a+' years'}));
+  sel.appendChild(h('option',{value:'18',text:'18 or older'}));
+  sel.value=state.age;
+  $('pc').value=state.pc;
+  $('f').addEventListener('submit',function(e){
+    e.preventDefault();
+    var pc=/^\s*([1-9]\d{3})\s*(?:[A-Za-z]{2})?\s*$/.exec($('pc').value);
+    var err=$('ferr');
+    if(!pc){err.textContent='Enter the 4 digits of your postcode, for example 3512.';$('pc').setAttribute('aria-invalid','true');$('pc').focus();return}
+    if(DB.pc4&&!DB.pc4[pc[1]]){err.textContent='We do not know postcode area '+pc[1]+'. Check the digits. You can still see the route.'}
+    else err.textContent='';
+    $('pc').removeAttribute('aria-invalid');
+    var changed=(state.age!==sel.value||state.pc!==pc[1]);
+    state.age=sel.value;state.pc=pc[1];state.example=false;
+    if(changed){state.grp='';state.level='';state.chips=null}
+    nPo=15;nVo=15;nIsk=10;preview=false;
+    save();render();
+    var rb=$('resbar');if(rb&&rb.scrollIntoView)rb.scrollIntoView({block:'start'});
+  });
+})();
+
+/* ---------- start ---------- */
+renderSystem();renderFaq();renderFooter();render();loadData();
+})();
+</script>
+
+</body>
+</html>
