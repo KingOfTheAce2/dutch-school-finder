@@ -31,3 +31,5 @@ jobs:
           path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          timeout: 1800000   # about 9,000 files; the 10-minute default timed out while syncing (2026-11-10)
