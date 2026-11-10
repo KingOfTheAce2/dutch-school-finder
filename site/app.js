@@ -61,6 +61,11 @@ function numF(n){
   if(!NF0)NF0=new Intl.NumberFormat(LOCALE);
   return NF0.format(n);
 }
+var NF2=null;
+function dec2(n){
+  if(!NF2)NF2=new Intl.NumberFormat(LOCALE,{minimumFractionDigits:2,maximumFractionDigits:2});
+  return NF2.format(n);
+}
 function dec1(n){
   if(!NF1)NF1=new Intl.NumberFormat(LOCALE,{minimumFractionDigits:1,maximumFractionDigits:1});
   return NF1.format(n);
@@ -103,7 +108,7 @@ function loadDict(code){
 function setLocaleVars(code){
   LANG=code;
   LOCALE=(LANG_META[code]&&LANG_META[code].locale)||code;
-  PRULES=null;NF0=null;NF1=null;DTF=null;
+  PRULES=null;NF0=null;NF1=null;NF2=null;DTF=null;
   document.documentElement.setAttribute('lang',code);
   document.documentElement.setAttribute('dir',RTL_LANGS.indexOf(code)>-1?'rtl':'ltr');
 }
@@ -221,9 +226,12 @@ var SRC_URL={
   inspectie_van_het_onderwijs:'https://www.onderwijsinspectie.nl/',
   nuffic_bilingual_education:'https://www.nuffic.nl/onderwijssectoren/voortgezet-onderwijs/tweetalig-onderwijs',
   nuffic_all_tto_schools:'https://www.nuffic.nl/onderwijssectoren/voortgezet-onderwijs/tweetalig-onderwijs/alle-tto-scholen-in-nederland',
-  oco_amsterdam_when_to_register:'https://ocoamsterdam.nl/vragen/wanneer-moet-ik-mijn-kind-aanmelden-voor-de-basisschool'
+  oco_amsterdam_when_to_register:'https://ocoamsterdam.nl/vragen/wanneer-moet-ik-mijn-kind-aanmelden-voor-de-basisschool',
+  inspectie_oordelen_2026:'https://www.onderwijsinspectie.nl/documenten/2026/11/03/oordelen-1-november-2026',
+  inspectie_toezichtresultaten:'https://toezichtresultaten.onderwijsinspectie.nl/',
+  duo_so_pupils_cluster:'https://duo.nl/open_onderwijsdata/primair-onderwijs/aantal-leerlingen/leerlingen-onderwijssoort-cluster-leeftijd.jsp'
 };
-var SRC_ORDER=['schema','nuf','loket','gov','sk123','sk21','basis','wanneer','blijven','tijdlijn','advies','voraad','inschr','weiger','vmbo','havo','vwo','pro','brug','kiesmbo','kiesEntree','mboRijks','mboToel','nufMbo','mboraad','nieuw','sio','oco','vo_raad_moving_from_vmbo_to_havo_and_fro','rijksoverheid_what_is_tto','dutch_international_schools','isa_fees_2026_27','iamexpat_school_fees_third_party_guide','rijksoverheid_passend_onderwijs','rijksoverheid_bsn_in_education','rijksoverheid_leerplicht_en_kwalificatie','rijksoverheid_compulsory_education_and_a','rijksoverheid_leerplicht_and_school_holi','rijksoverheid_voluntary_parental_contrib','inspectie_voluntary_parental_contributio','rijksoverheid_lunch_at_primary_school','rijksoverheid_childcare_benefit_amounts_','rijksoverheid_when_to_register_at_a_prim','oco_amsterdam_priority_rules_for_primary','de_vo_gids_how_lotteries_work','samen_naar_het_vo_utrecht_2026','bovo_haaglanden_results_2026','rijksoverheid_passend_onderwijs2','rijksoverheid_public_and_special_educati','belastingdienst_content_of_the_expat_sch','business_gov_nl_30_ruling_down_to_27','nuffic_applying_for_a_credential_evaluat','study_in_nl_checking_your_diploma','study_in_nl','rijksoverheid_which_diplomas_give_access','duo_open_education_data','inspectie_van_het_onderwijs','nuffic_bilingual_education','nuffic_all_tto_schools','oco_amsterdam_when_to_register'];
+var SRC_ORDER=['schema','nuf','loket','gov','sk123','sk21','basis','wanneer','blijven','tijdlijn','advies','voraad','inschr','weiger','vmbo','havo','vwo','pro','brug','kiesmbo','kiesEntree','mboRijks','mboToel','nufMbo','mboraad','nieuw','sio','oco','vo_raad_moving_from_vmbo_to_havo_and_fro','rijksoverheid_what_is_tto','dutch_international_schools','isa_fees_2026_27','iamexpat_school_fees_third_party_guide','rijksoverheid_passend_onderwijs','rijksoverheid_bsn_in_education','rijksoverheid_leerplicht_en_kwalificatie','rijksoverheid_compulsory_education_and_a','rijksoverheid_leerplicht_and_school_holi','rijksoverheid_voluntary_parental_contrib','inspectie_voluntary_parental_contributio','rijksoverheid_lunch_at_primary_school','rijksoverheid_childcare_benefit_amounts_','rijksoverheid_when_to_register_at_a_prim','oco_amsterdam_priority_rules_for_primary','de_vo_gids_how_lotteries_work','samen_naar_het_vo_utrecht_2026','bovo_haaglanden_results_2026','rijksoverheid_passend_onderwijs2','rijksoverheid_public_and_special_educati','belastingdienst_content_of_the_expat_sch','business_gov_nl_30_ruling_down_to_27','nuffic_applying_for_a_credential_evaluat','study_in_nl_checking_your_diploma','study_in_nl','rijksoverheid_which_diplomas_give_access','duo_open_education_data','inspectie_van_het_onderwijs','nuffic_bilingual_education','nuffic_all_tto_schools','oco_amsterdam_when_to_register','inspectie_oordelen_2026','inspectie_toezichtresultaten','duo_so_pupils_cluster'];
 var LAST_CHECKED='2026-11-10';
 function srcLine(keys,cls){
   var p=h('p',{class:cls||'src'},[t('src.label')+' ']);
@@ -266,10 +274,10 @@ function save(){if(state.example)return;try{localStorage.setItem(KEY,JSON.string
 function hasInput(){return AGE_RE.test(state.age)&&/^[1-9]\d{3}$/.test(state.pc)}
 
 /* ================= data ================= */
-var DB={po:null,vo:null,pc4:null,meta:null,feat:null,status:'loading'};
+var DB={po:null,vo:null,so:[],pc4:null,meta:null,feat:null,status:'loading'};
 function denLabel(nl){var m=tv('den');return (m&&m[nl])||t('den.other')}
 function applyDen(){
-  [DB.po,DB.vo].forEach(function(l){if(l)l.forEach(function(o){o.denT=denLabel(o.denNl)})});
+  [DB.po,DB.vo,DB.so].forEach(function(l){if(l)l.forEach(function(o){o.denT=denLabel(o.denNl)})});
 }
 function mapRows(j,extra){
   var cols=j.cols,out=new Array(j.rows.length),i,r,o,c;
@@ -282,7 +290,7 @@ function mapRows(j,extra){
 var ST_BITS={PRO:1,VBO:6,MAVO:24,HAVO:32,VWO:64};
 function loadData(){
   DB.status='loading';renderStatus();
-  var names=['schools_po','schools_vo','pc4','meta'];
+  var names=['schools_po','schools_vo','pc4','meta','schools_so'];
   return Promise.all(names.map(function(n){
     return fetch('data/'+n+'.json').then(function(r){if(!r.ok)throw new Error(n);return r.json()}).catch(function(){return null});
   })).then(function(a){
@@ -293,6 +301,7 @@ function loadData(){
         if(!o.tracks&&o.st){o.fb=1;var tt=String(o.st).split('/'),m=0;tt.forEach(function(x){m|=ST_BITS[x]||0});o.tracks=m}
         o.isk=/\bISK\b|schakelklas|internationale schakel/i.test(o.name)||o.st==='BRUGJAAR';
       });
+      DB.so=a[4]?mapRows(a[4]):[];
       DB.pc4=a[2];DB.status='ready';
     }else{DB.status='error'}
   }).then(function(){if(DB.status==='ready')buildIndex();renderStatus();renderSources();render();loadFeatures();refreshView()});
@@ -466,7 +475,7 @@ function scholenLink(s,sector){
 function safeWeb(w){return w&&/^[a-z0-9][a-z0-9.\-\/_%?=&:~#+@]*$/i.test(w)?'https://'+w:null}
 function links(s,sector){
   var box=h('div',{class:'lk'});
-  box.appendChild(h('a',{href:scholenLink(s,sector),target:'_blank',rel:'noopener',text:t('link.sodk')}));
+  if(sector!=='so')box.appendChild(h('a',{href:scholenLink(s,sector),target:'_blank',rel:'noopener',text:t('link.sodk')}));
   var w=safeWeb(s.web);if(w)box.appendChild(h('a',{href:w,target:'_blank',rel:'noopener',text:t('link.site')}));
   return box;
 }
@@ -920,6 +929,29 @@ function renderFooter(){
   var e=$('foot-checked');if(e)e.textContent=t('foot.checked',{date:d?fmtDay(d):LAST_CHECKED});
 }
 function aLink(text,url){return h('a',{href:url,target:'_blank',rel:'noopener',text:text})}
+/* which open dataset feeds which part of a profile, with the counts from meta.json and inspection.json */
+function sourcesBlocks(){
+  var box=h('div',{class:'psec'},[h('h3',{text:t('sources.blocks.title')}),h('p',{text:t('sources.blocks.intro')})]);
+  var ul=h('ul',{class:'srclist'});
+  (tv('sources.blocks.items')||[]).forEach(function(x){ul.appendChild(h('li',{text:x}))});
+  box.appendChild(ul);
+  var c=DB.meta&&DB.meta.counts;
+  if(c&&typeof c.schools_po==='number'){
+    box.appendChild(h('p',{text:t('sources.counts.schools',{po:c.schools_po-(c.schools_po_sbo||0),sbo:c.schools_po_sbo||0,so:c.schools_so||0,vo:c.schools_vo||0})}));
+  }
+  var I=DET.insp;
+  if(I&&I.counts&&typeof I.counts.listed==='number'){
+    var k=I.counts,by=k.by_o&&typeof k.by_o==='object'?RATINGS.filter(function(j){return typeof k.by_o[j]==='number'}).map(function(j){return j+' '+numF(k.by_o[j])}).join(', '):'';
+    box.appendChild(h('p',{text:t('sources.counts.insp',{listed:k.listed,rated:k.rated,none:k.geen_eindoordeel,basic:k.basistoezicht,asof:I.as_of||''})+(by?' '+t('sources.counts.by',{by:by}):'')}));
+    var links=[];
+    if(safeUrl(I.source_url))links.push(aLink(t('sources.insp.file'),I.source_url));
+    if(safeUrl(I.notes_url))links.push(aLink(t('sources.insp.notes'),I.notes_url));
+    if(links.length){var p=h('p',{class:'dsrc'});links.forEach(function(a,i){if(i)p.appendChild(document.createTextNode(' · '));p.appendChild(a)});box.appendChild(p)}
+  }else if(DET.st.insp==='loading'){
+    box.appendChild(h('p',{class:'note',role:'status',text:t('load.insp')}));
+  }
+  return box;
+}
 function renderSources(){
   renderFooter();
   var out=$('sources-out');if(!out)return;
@@ -958,6 +990,7 @@ function renderSources(){
   }
   dt.appendChild(h('p',{text:t('sources.sodk')}));
   out.appendChild(dt);
+  out.appendChild(sourcesBlocks());
   var sl=h('div',{class:'psec'},[h('h3',{text:t('sources.list.title')})]);
   var u=h('ul',{class:'srclist'});
   SRC_ORDER.forEach(function(k){u.appendChild(h('li',null,aLink(t('src.'+k),SRC_URL[k])))});
@@ -1103,11 +1136,11 @@ var TABS=['route','find','map','system','faq','sources'];
 var VIEW='route',CUR_ID='',FIRST=true,LANG_CHANGE=false;
 function secShort(s){return t('sec.short.'+s.sec)}
 function secLong(s){return t('sec.long.'+s.sec)}
-var SEC_OPTS=['','po','sbo','vo'];
+var SEC_OPTS=['','po','sbo','vo','so'];
 var R_OPTS=[0,2,5,10,20,50];
 var PAGE=25;
 
-function grpOf(s){return s.sec==='vo'?'vo':'po'}
+function grpOf(s){return s.sec==='vo'?'vo':s.sec==='so'?'so':'po'}
 function isId(x){return typeof x==='string'&&/^[0-9A-Za-z]{6}$/.test(x)}
 function valTxt(v,lb){return v==null?t('val.fewer5'):lb?t('val.atLeast',{n:v}):numF(v)}
 
@@ -1118,6 +1151,7 @@ function buildIndex(){
   ALL=[];BYID={};var dens={};
   DB.po.forEach(function(s){s.sec=s.sbo?'sbo':'po';ALL.push(s)});
   DB.vo.forEach(function(s){s.sec='vo';ALL.push(s)});
+  (DB.so||[]).forEach(function(s){s.sec='so';s.cll=Array.isArray(s.cls)&&s.cls.length?s.cls:(s.cl!=null?[s.cl]:[]);ALL.push(s)});
   ALL.forEach(function(s){
     var pc=String(s.pc||'').toLowerCase();
     s.nk=norm(s.name);
@@ -1131,14 +1165,15 @@ function buildIndex(){
 }
 
 /* ---------- filter state shared by Find and Map ---------- */
-var F={q:'',sec:'',tr:[],ft:[],den:'',pc:'',r:0};
-function fReset(){F.q='';F.sec='';F.tr=[];F.ft=[];F.den='';F.pc='';F.r=0}
+var F={q:'',sec:'',tr:[],ft:[],cl:[],den:'',pc:'',r:0};
+function fReset(){F.q='';F.sec='';F.tr=[];F.ft=[];F.cl=[];F.den='';F.pc='';F.r=0}
 function fQuery(withFocus){
   var p=[];
   if(F.q)p.push('q='+encodeURIComponent(F.q));
   if(F.sec)p.push('sec='+F.sec);
   if(F.tr.length)p.push('tr='+F.tr.join(','));
   if(F.ft.length)p.push('ft='+F.ft.join(','));
+  if(F.cl.length)p.push('cl='+F.cl.join(','));
   if(F.den)p.push('den='+encodeURIComponent(F.den));
   if(F.pc)p.push('pc='+F.pc);
   if(F.r)p.push('r='+F.r);
@@ -1157,9 +1192,11 @@ function parseQ(str){
 function applyQuery(q){
   fReset();
   F.q=String(q.q||'').slice(0,80);
-  F.sec=(q.sec==='po'||q.sec==='sbo'||q.sec==='vo')?q.sec:'';
+  F.sec=(q.sec==='po'||q.sec==='sbo'||q.sec==='vo'||q.sec==='so')?q.sec:'';
   F.tr=String(q.tr||'').split(',').filter(function(x){return CHIP_DEF.some(function(c){return c[0]===x})});
   F.ft=String(q.ft||'').split(',').filter(function(x){return FT_ALL.indexOf(x)>-1});
+  F.cl=String(q.cl||'').split(',').filter(function(x,i,a){return /^[1-4]$/.test(x)&&a.indexOf(x)===i});
+  if(F.cl.length)F.sec='so';
   F.den=String(q.den||'').slice(0,80);
   F.pc=parsePc(q.pc||'');
   F.r=R_OPTS.some(function(o){return String(o)===String(q.r)})?+q.r:0;
@@ -1179,6 +1216,7 @@ function runFilter(){
     s=ALL[i];
     if(F.sec&&s.sec!==F.sec)continue;
     if(mask&&(s.sec!=='vo'||!(s.tracks&mask)))continue;
+    if(F.cl.length&&(s.sec!=='so'||!s.cll.some(function(c){return F.cl.indexOf(String(c))>-1})))continue;
     if(F.den&&s.denT!==F.den)continue;
     if(F.ft.length&&!hasFeat(s.id,F.ft))continue;
     ok=true;for(k=0;k<toks.length;k++){if(!matchTok(s,toks[k])){ok=false;break}}
@@ -1205,14 +1243,22 @@ function ensureForm(){
     oninput:function(){clearTimeout(qTimer);qTimer=setTimeout(function(){F.q=FP.q.value.slice(0,80);filterChanged()},120)}});
   f.appendChild(h('div',null,[h('label',{for:'f-q',text:t('filters.qLabel')}),FP.q]));
   FP.sec=h('div',{class:'ctrl',role:'group','aria-label':t('filters.typeAria')});
-  SEC_OPTS.forEach(function(o){FP.sec.appendChild(chipBtn(t('sec.opt.'+(o||'all')),false,function(){F.sec=o;if(o&&o!=='vo')F.tr=[];filterChanged();syncForm()},'f-sec-'+(o||'all')))});
+  SEC_OPTS.forEach(function(o){FP.sec.appendChild(chipBtn(t('sec.opt.'+(o||'all')),false,function(){F.sec=o;if(o&&o!=='vo')F.tr=[];if(o!=='so')F.cl=[];filterChanged();syncForm()},'f-sec-'+(o||'all')))});
   f.appendChild(h('div',{class:'fgrp'},[h('span',{class:'fl',text:t('filters.type')}),FP.sec]));
   FP.tr=h('div',{class:'ctrl',role:'group','aria-label':t('filters.levelsAria')});
   CHIP_DEF.forEach(function(c){FP.tr.appendChild(chipBtn(t('chips.'+c[0]),false,function(){
     var i=F.tr.indexOf(c[0]);if(i>-1)F.tr.splice(i,1);else F.tr.push(c[0]);
     if(F.tr.length&&F.sec&&F.sec!=='vo')F.sec='vo';
+    if(F.tr.length)F.cl=[];
     filterChanged();syncForm()},'f-tr-'+c[0]))});
   f.appendChild(h('div',{class:'fgrp'},[h('span',{class:'fl',text:t('filters.levels')}),FP.tr]));
+  FP.cl=h('div',{class:'ctrl',role:'group','aria-label':t('filters.clAria')});
+  [1,2,3,4].forEach(function(c){FP.cl.appendChild(chipBtn(t('so.cl.'+c+'.chip'),false,function(){
+    var k=String(c),i=F.cl.indexOf(k);if(i>-1)F.cl.splice(i,1);else F.cl.push(k);
+    if(F.cl.length)F.sec='so';
+    filterChanged();syncForm()},'f-cl-'+c))});
+  FP.clWrap=h('div',{class:'fgrp'},[h('span',{class:'fl',text:t('filters.cl')}),FP.cl,h('p',{class:'ffl',text:t('filters.clNote')})]);
+  f.appendChild(FP.clWrap);
   FP.ft=h('div',{class:'ctrl',role:'group','aria-label':t('filters.ftAria')});
   FT_ALL.forEach(function(k){FP.ft.appendChild(chipBtn(ftShort(k),false,function(){
     var i=F.ft.indexOf(k);if(i>-1)F.ft.splice(i,1);else F.ft.push(k);filterChanged();syncForm()},'f-ft-'+k))});
@@ -1248,6 +1294,8 @@ function syncForm(){
   SEC_OPTS.forEach(function(o){$('f-sec-'+(o||'all')).setAttribute('aria-pressed',F.sec===o?'true':'false')});
   CHIP_DEF.forEach(function(c){$('f-tr-'+c[0]).setAttribute('aria-pressed',F.tr.indexOf(c[0])>-1?'true':'false')});
   FT_ALL.forEach(function(k){$('f-ft-'+k).setAttribute('aria-pressed',F.ft.indexOf(k)>-1?'true':'false')});
+  [1,2,3,4].forEach(function(c){$('f-cl-'+c).setAttribute('aria-pressed',F.cl.indexOf(String(c))>-1?'true':'false')});
+  FP.clWrap.hidden=F.sec!=='so';
   FP.ftWrap.hidden=!DB.feat;
   FP.den.value=F.den;
   if(parsePc(FP.pc.value)!==F.pc&&document.activeElement!==FP.pc)FP.pc.value=F.pc;
@@ -1260,7 +1308,7 @@ function syncForm(){
   else msg=t('filters.sortedName');
   FP.pcmsg.textContent=msg;
   FP.pc.setAttribute('aria-invalid',FP.pcBad&&!F.pc?'true':'false');
-  var n=(F.q?1:0)+(F.sec?1:0)+F.tr.length+F.ft.length+(F.den?1:0)+(F.pc?1:0)+(F.r?1:0);
+  var n=(F.q?1:0)+(F.sec?1:0)+F.tr.length+F.ft.length+F.cl.length+(F.den?1:0)+(F.pc?1:0)+(F.r?1:0);
   ['find','map'].forEach(function(k){var e=$(k+'-fsum');if(e)e.textContent=t('filters.summary')+(n?' '+t('filters.active',{n:n}):'')});
 }
 function mountForm(slot){
@@ -1297,7 +1345,7 @@ function cmpToggle(s){
     if(CMP.length>=4){CMSG=t('cmp.max')}
     else{
       var g=CMP.length?BYID[CMP[0]]:null;
-      if(g&&grpOf(g)!==grpOf(s))CMSG=t(grpOf(g)==='vo'?'cmp.mixedVo':'cmp.mixedPo');
+      if(g&&grpOf(g)!==grpOf(s))CMSG=t({vo:'cmp.mixedVo',so:'cmp.mixedSo',po:'cmp.mixedPo'}[grpOf(g)]);
       else{CMP.push(s.id);say(t('cmp.added',{name:s.name}))}
     }
     if(CMSG)say(CMSG);
@@ -1334,19 +1382,49 @@ function renderCbar(){
 }
 
 /* ---------- lazy detail files ---------- */
-var DET={po:null,vo:null,insp:null,p:{}};
+/* inspection.json (about 1.5 MB) and detail_po/vo.json (about 3 MB) are fetched only when a profile, compare
+   view or the sources tab needs them, once per visit. DET.st[key] is 'loading', 'ok' or 'fail' (a failed file is retried on the next visit). */
+var DET={po:null,vo:null,insp:null,p:{},st:{}};
 function loadJson(key,url){
   if(DET.p[key])return DET.p[key];
+  DET.st[key]='loading';
   DET.p[key]=fetch(url).then(function(r){if(!r.ok)throw new Error(key);return r.json()}).then(function(j){
-    j=j&&j.schools&&typeof j.schools==='object'?j:null;DET[key]=j;return j;
-  }).catch(function(){DET[key]=null;return null});
+    j=j&&j.schools&&typeof j.schools==='object'?j:null;
+    if(!j)throw new Error(key);
+    DET[key]=j;DET.st[key]='ok';return j;
+  }).catch(function(){DET[key]=null;DET.st[key]='fail';delete DET.p[key];return null});
   return DET.p[key];
 }
-function loadDetail(grp){return Promise.all([loadJson(grp,'data/detail_'+grp+'.json'),loadJson('insp','data/inspection.json')])}
+/* one promise per file, so a profile can redraw as soon as either file is in */
+function loadDetail(grp){
+  var a=[];
+  if(grp==='po'||grp==='vo')a.push(loadJson(grp,'data/detail_'+grp+'.json'));
+  a.push(loadJson('insp','data/inspection.json'));
+  return a;
+}
+function detSig(grp){return (grp==='so'?'-':DET.st[grp]||'-')+'|'+(DET.st.insp||'-')}
+/* 'loading', 'fail' or 'ok' for everything a profile of this group needs */
+function detState(grp){
+  var k=grp==='so'?['insp']:[grp,'insp'],bad=false,i;
+  for(i=0;i<k.length;i++){var x=DET.st[k[i]];if(x==='loading'||!x)return 'loading';if(x==='fail')bad=true}
+  return bad?'fail':'ok';
+}
+function detNote(grp){
+  var st=detState(grp);
+  if(st==='ok')return null;
+  return h('p',{class:'note detnote',role:'status',text:t(st==='loading'?'load.detail':'err.detail')});
+}
 function detOf(s){var d=DET[grpOf(s)];return d&&d.schools&&Object.prototype.hasOwnProperty.call(d.schools,s.id)?d.schools[s.id]:null}
 function inspOf(s){var d=DET.insp;return d&&d.schools&&Object.prototype.hasOwnProperty.call(d.schools,s.id)?d.schools[s.id]:null}
 function detYear(grp,key){var d=DET[grp];return d&&d.years&&d.years[key]!=null?String(d.years[key]):''}
 
+/* ---------- special education (SO/VSO) helpers ---------- */
+function soTags(s){
+  var w=h('div');
+  if(s.so_type)w.appendChild(h('span',{class:'tr t-so',text:s.so_type}));
+  (s.cll||[]).forEach(function(c){w.appendChild(h('span',{class:'tr t-socl',text:t('so.cl.'+c+'.chip')}))});
+  return w;
+}
 /* ---------- Find view ---------- */
 var FOUND=[],shown=0;
 function findRow(r){
@@ -1354,6 +1432,7 @@ function findRow(r){
   main.appendChild(h('a',{class:'nm',href:U.school(s.id),text:s.name}));
   main.appendChild(h('div',{class:'mt',text:[r.d!=null?secShort(s):null,s.city,s.mun&&s.mun!==s.city?s.mun:null,s.denT,pupilsText(s)].filter(Boolean).join(' · ')}));
   if(s.sec==='vo')main.appendChild(h('div',{style:'margin-top:5px'},trackBadges(s)));
+  if(s.sec==='so')main.appendChild(h('div',{style:'margin-top:5px'},soTags(s)));
   var fc=featChips(s);if(fc)main.appendChild(fc);
   main.appendChild(h('div',{class:'rowact'},cmpBtn(s)));
   var left=r.d!=null?distCell(r,s):h('div',{class:'kt',text:secShort(s)});
@@ -1416,11 +1495,11 @@ function loadLeaflet(){
 function readPal(){
   var cs=getComputedStyle(document.documentElement);
   function v(n){return cs.getPropertyValue(n).trim()||'#888'}
-  return {po:v('--c-bo'),sbo:v('--c-wo'),pro:v('--c-pro'),vbk:v('--c-vbk'),vgt:v('--c-vgt'),havo:v('--c-havo'),vwo:v('--c-vwo'),unk:v('--c-mbo'),pc:v('--ink')};
+  return {po:v('--c-bo'),sbo:v('--c-wo'),so:v('--c-so'),pro:v('--c-pro'),vbk:v('--c-vbk'),vgt:v('--c-vgt'),havo:v('--c-havo'),vwo:v('--c-vwo'),unk:v('--c-mbo'),pc:v('--ink')};
 }
-var MAP_LEG=['po','sbo','pro','vbk','vgt','havo','vwo','unk'];
+var MAP_LEG=['po','sbo','so','pro','vbk','vgt','havo','vwo','unk'];
 function mapGroup(s){
-  if(s.sec==='po'||s.sec==='sbo')return s.sec;
+  if(s.sec==='po'||s.sec==='sbo'||s.sec==='so')return s.sec;
   var tr=s.tracks||0;
   if(tr&64)return 'vwo';if(tr&32)return 'havo';if(tr&24)return 'vgt';if(tr&6)return 'vbk';if(tr&1)return 'pro';
   return 'unk';
@@ -1438,6 +1517,7 @@ function openPop(s){
   n.appendChild(h('b',{text:s.name}));
   n.appendChild(h('span',{text:secLong(s)+(s.city?', '+s.city:'')}));
   var pu=pupilsText(s);if(pu)n.appendChild(h('span',{text:pu}));
+  if(s.sec==='so')n.appendChild(h('span',{text:[s.so_type].concat((s.cll||[]).map(function(c){return t('so.cl.'+c+'.chip')})).filter(Boolean).join(' · ')}));
   n.appendChild(h('div',{class:'rowact'},[h('a',{href:U.school(s.id),text:t('map.openProfile')}),cmpBtn(s)]));
   L.popup({maxWidth:260,autoPanPadding:[20,20]}).setLatLng([s.lat,s.lon]).setContent(n).openOn(MAP.map);
 }
@@ -1567,6 +1647,7 @@ function pupilsSection(s,d){
   var big=s.pupils==null?t('prof.pupils.notShown'):(s.pupils_lb?t('prof.pupils.bigAtLeast',{n:s.pupils}):numF(s.pupils));
   kids.push(h('div',{class:'big',text:big}));
   kids.push(h('p',{class:'note',style:'margin-top:4px',text:s.pupils==null?t('prof.pupils.noCount'):t('prof.pupils.total')+(s.pupils_lb?' '+t('prof.pupils.hiddenNote'):'')}));
+  var ljb=ljBlock(d);if(ljb)kids.push(ljb);
   var pt=d&&Array.isArray(d.pt)?d.pt:null;
   if(pt){
     var ch=trendChart(pt);
@@ -1578,7 +1659,7 @@ function pupilsSection(s,d){
       det.appendChild(tb);kids.push(det);
     }
   }
-  return psec(t('prof.pupils.title'),t('prof.pupils.expl'),kids,duoSrc('prof.pupils.srcWhat',s.sec==='vo'?'vo_pupils':'po_pupils'));
+  return psec(t('prof.pupils.title'),t('prof.pupils.expl'),kids,duoSrc('prof.pupils.srcWhat',s.sec==='vo'?'vo_pupils':s.sec==='so'?'so_pupils':'po_pupils'));
 }
 function adviceSection(s,d){
   var kids=[adviceBar(s.adv)];
@@ -1674,20 +1755,284 @@ function catchSection(s,d){
   if(typeof d.cmo==='number')kids.push(h('p',{class:'note',text:t('prof.catch.other',{pct:Math.round(d.cmo)})}));
   return psec(t('prof.catch.title'),t('prof.catch.expl'),kids,t('prof.catch.src')+(y?', '+y:'')+'.');
 }
+/* ---------- year-group bars (lj) ---------- */
+function ljChart(lj){
+  if(!Array.isArray(lj)||!lj.length)return null;
+  var vals=lj.filter(function(v){return typeof v==='number'});
+  if(!vals.length)return null;
+  var n=lj.length,W=520,H=230,L0=40,R0=8,T0=22,B0=52;
+  var top=Math.ceil(Math.max.apply(null,vals)/10)*10||10;
+  var bw=(W-L0-R0)/n,w=Math.min(40,bw*0.62);
+  function Y(v){return T0+(H-T0-B0)*(1-v/top)}
+  var list=lj.map(function(v,i){return t('prof.lj.pt',{g:i+1,v:valTxt(v)})}).join(t('sep.list'));
+  var svg=svgEl('svg',{'class':'trend ljc',viewBox:'0 0 '+W+' '+H,role:'img','aria-label':t('prof.lj.aria',{list:list})});
+  [0,top/2,top].forEach(function(v){
+    svg.appendChild(svgEl('line',{'class':'gr',x1:L0,x2:W-R0,y1:Y(v),y2:Y(v)}));
+    svg.appendChild(svgEl('text',{x:L0-6,y:Y(v)+4,'text-anchor':'end'},numF(Math.round(v))));
+  });
+  lj.forEach(function(v,i){
+    var cx=L0+bw*i+bw/2,x=cx-w/2;
+    if(typeof v==='number'){
+      var y=Y(v);
+      svg.appendChild(svgEl('rect',{'class':'lbar',x:x,y:y,width:w,height:Math.max(1,Y(0)-y)}));
+      svg.appendChild(svgEl('text',{x:cx,y:y-5,'text-anchor':'middle','class':'lv'},numF(v)));
+    }else{
+      svg.appendChild(svgEl('rect',{'class':'lbar lnull',x:x,y:Y(0)-14,width:w,height:14}));
+      svg.appendChild(svgEl('text',{x:cx,y:Y(0)-19,'text-anchor':'middle','class':'lv'},t('val.fewer5Short')));
+    }
+    svg.appendChild(svgEl('text',{x:cx,y:H-B0+18,'text-anchor':'middle'},String(i+1)));
+  });
+  svg.appendChild(svgEl('text',{x:L0+(W-L0-R0)/2,y:H-8,'text-anchor':'middle'},t('prof.lj.axis')));
+  return svg;
+}
+function ljBlock(d){
+  var lj=d&&Array.isArray(d.lj)?d.lj:null,ch=lj?ljChart(lj):null;
+  if(!ch)return null;
+  var det=h('details',{style:'margin-top:6px'},[h('summary',{style:'cursor:pointer;font-weight:700',text:t('prof.lj.table')})]);
+  var tb=h('div',{class:'kv'});
+  lj.forEach(function(v,i){tb.appendChild(kvRow(t('prof.lj.group',{g:i+1}),valTxt(v)))});
+  det.appendChild(tb);
+  return h('div',{style:'margin-top:14px'},[h('b',{text:t('prof.lj.title')}),h('p',{class:'note',style:'margin:2px 0 4px',text:t('prof.lj.note')}),ch,det]);
+}
+
+/* ---------- reference levels (rn) and advice reconsidered (hv) ---------- */
+var RN_DEF=[['lezen','1F','2F'],['taal','1F','2F'],['rekenen','1F','1S']];
+function pctTxt(v){return t('unit.pct',{n:numF(Math.round(v))})}
+function refSection(s,d){
+  var rn=d&&d.rn&&typeof d.rn==='object'?d.rn:null;
+  if(!rn)return null;
+  var kids=[];
+  RN_DEF.forEach(function(def){
+    var a=rn[def[0]];
+    if(!Array.isArray(a)||typeof a[0]!=='number'||typeof a[1]!=='number'||typeof a[2]!=='number')return;
+    var blk=h('div',{style:'margin:10px 0 14px'},[h('b',{text:t('prof.rn.subj.'+def[0])})]);
+    [[def[1],a[0]],[def[2],a[1]]].forEach(function(r){
+      blk.appendChild(h('div',{class:'hbar'},[h('span',{text:t('prof.rn.atLeast',{lvl:r[0]})}),
+        h('span',{class:'tk','aria-hidden':'true'},h('i',{class:'b-brand',style:'width:'+Math.max(1,Math.min(100,r[1]))+'%'})),
+        h('span',{class:'nn',text:pctTxt(r[1])})]));
+    });
+    blk.appendChild(h('p',{class:'note',style:'margin:2px 0 0',text:t('prof.rn.n',{n:a[2]})+(a[2]<20?' '+t('prof.rn.small'):'')}));
+    kids.push(blk);
+  });
+  if(!kids.length)return null;
+  var y=detYear('po','refniveau');
+  kids.push(h('p',{class:'note',text:t('prof.rn.note')}));
+  return psec(t('prof.rn.title'),t('prof.rn.expl'),kids,t('prof.rn.src')+(y?', '+y:'')+'.');
+}
+function hvSection(s,d){
+  var a=d&&Array.isArray(d.hv)?d.hv:null;
+  if(!a)return null;
+  var rec=a[0]==null?t('val.fewer5'):numF(a[0]),rai=a[1]==null?t('val.fewer5'):numF(a[1]);
+  var kids=[hr('p','big2',t('prof.hv.line',{rec:rec,rai:rai}))];
+  if(typeof a[2]==='number')kids.push(h('p',{class:'note',text:t('prof.hv.of',{n:a[2]})}));
+  kids.push(h('p',{class:'note',text:t('prof.hv.noRatio')}));
+  var y=detYear('po','heroverweging');
+  return psec(t('prof.hv.title'),t('prof.hv.expl'),kids,t('prof.hv.src')+(y?', '+y:'')+'.');
+}
+
+/* ---------- secondary: central exam grade, repeaters, Inspectie results, placement ---------- */
+function ceSection(s,d){
+  var ce=d&&d.ce&&typeof d.ce==='object'?d.ce:null,kids=[];
+  if(ce)tkKeys(ce).forEach(function(k){
+    var arr=ce[k];if(!Array.isArray(arr)||!arr.length)return;
+    var inf=tkInfo(k),tb=h('table',{class:'prtab'},[h('caption',{class:'sr',text:t('prof.ce.caption',{level:inf[0]})}),h('tbody')]),b=tb.lastChild;
+    arr.slice().sort(sortYear).forEach(function(e){
+      if(!Array.isArray(e)||typeof e[1]!=='number')return;
+      b.appendChild(h('tr',null,[h('th',{scope:'row',text:t('prof.pass.year',{y:String(e[0])})}),
+        h('td',{text:t('prof.ce.row',{v:dec1(e[1]),n:e[2]})+(e[3]?' '+t('prof.ce.partial'):'')})]));
+    });
+    if(b.childNodes.length)kids.push(h('div',null,[h('span',{class:'tr t-'+inf[1],text:inf[0]}),tb]));
+  });
+  if(!kids.length)return null;
+  kids.push(h('p',{class:'note',text:t('prof.ce.note')}));
+  return psec(t('prof.ce.title'),t('prof.ce.expl'),kids,duoSrc('prof.ce.srcWhat','vo_exams'));
+}
+function zbSection(s,d){
+  var z=d&&Array.isArray(d.zb)?d.zb:null;
+  if(!z||typeof z[0]!=='number')return null;
+  function cell(v){return v==null?t('val.fewer5'):numF(v)+' '+t('prof.zb.share',{p:dec1(100*v/z[0])})}
+  var kids=[h('div',{class:'kv'},[kvRow(t('prof.zb.pupils'),numF(z[0])),kvRow(t('prof.zb.rep'),cell(z[2])),kvRow(t('prof.zb.down'),cell(z[1])),kvRow(t('prof.zb.up'),cell(z[3]))]),
+    h('p',{class:'note',text:t('prof.zb.note')})];
+  var y=detYear('vo','zb');
+  return psec(t('prof.zb.title'),t('prof.zb.expl'),kids,t('prof.zb.src')+(y?', '+y:'')+'.');
+}
+var OV_VERD={'voldoende':'sufficient','onvoldoende':'insufficient','onvoldoende, tenzij':'insufficientUnless'};
+function ovCells(a,fmt){
+  if(!Array.isArray(a)||typeof a[0]!=='number')return [t('prof.ov.na'),''];
+  var side=a[2]===1?'above':a[2]===0?'below':'';
+  return [fmt(a[0]),typeof a[1]==='number'?t('prof.ov.norm',{v:fmt(a[1])})+(side?' · '+t('prof.ov.'+side):''):''];
+}
+function ovBlock(k,a){
+  var inf=tkInfo(k),pc=function(v){return t('unit.pct',{n:dec1(v)})},gr=function(v){return dec2(v)};
+  var tb=h('table',{class:'prtab ovtab'},[h('caption',{class:'sr',text:t('prof.ov.caption',{level:inf[0]})}),h('tbody')]),b=tb.lastChild;
+  [['ob',pc],['bb',pc],['ce',gr]].forEach(function(def,i){
+    var c=ovCells(a[i],def[1]);
+    b.appendChild(h('tr',null,[h('th',{scope:'row',text:t('prof.ov.ind.'+def[0])}),h('td',{text:c[0]}),h('td',{class:'sm',text:c[1]})]));
+  });
+  var v=a[3],vk=v==null?'none':OV_VERD[v];
+  b.appendChild(h('tr',null,[h('th',{scope:'row',text:t('prof.ov.verdict')}),h('td',{colspan:'2',text:vk?t('prof.ov.v.'+vk):String(v)})]));
+  return h('div',{style:'margin-top:10px'},[h('span',{class:'tr t-'+inf[1],text:inf[0]}),tb]);
+}
+function ovSection(s,d){
+  var ov=d&&d.ov&&typeof d.ov==='object'?d.ov:null,kids=[];
+  if(!ov)return null;
+  var dl=h('dl',{class:'dl'});
+  ['ob','bb','ce','verdict'].forEach(function(k){dl.appendChild(h('dt',{text:t(k==='verdict'?'prof.ov.verdict':'prof.ov.ind.'+k)}));dl.appendChild(h('dd',{text:t('prof.ov.def.'+k)}))});
+  kids.push(dl);
+  tkKeys(ov).forEach(function(k){if(Array.isArray(ov[k]))kids.push(ovBlock(k,ov[k]))});
+  if(kids.length<2)return null;
+  kids.push(h('p',{class:'note',text:t('prof.ov.note')}));
+  var yr=DET.vo&&DET.vo.years&&DET.vo.years.ov;
+  return psec(t('prof.ov.title'),t('prof.ov.expl'),kids,t('prof.ov.src')+(yr?': '+String(yr).replace(/^[^:]*:\s*/,''):'')+'.');
+}
+function opSection(s,d){
+  var a=d&&Array.isArray(d.op)?d.op:null;
+  if(!a||typeof a[0]!=='number')return null;
+  var side=a[2]===1?'above':a[2]===0?'below':'';
+  var kids=[h('div',{class:'kv'},[kvRow(t('prof.op.value'),t('prof.op.pts',{v:dec1(a[0])})),
+    typeof a[1]==='number'?kvRow(t('prof.op.norm'),t('prof.op.pts',{v:dec1(a[1])})):null,
+    side?kvRow(t('prof.op.cmp'),t('prof.ov.'+side)):null]),
+    h('p',{class:'note',text:t('prof.op.note')})];
+  var yr=DET.vo&&DET.vo.years&&DET.vo.years.ov;
+  return psec(t('prof.op.title'),t('prof.op.expl'),kids,t('prof.ov.src')+(yr?': '+String(yr).replace(/^[^:]*:\s*/,''):'')+'.');
+}
+
+/* ---------- special education (SO/VSO) ---------- */
+function soSection(s){
+  var kids=[],kv=[];
+  kv.push(kvRow(t('prof.so.type'),t('so.type.'+(s.so_type==='SO/VSO'?'both':s.so_type==='VSO'?'vso':'so'))));
+  var cls=s.cll||[];
+  kv.push(kvRow(t('prof.so.cluster'),cls.length?cls.map(function(c){return t('so.cl.'+c+'.name')}).join(' · '):t('prof.so.clusterNone')));
+  var hasSo=s.so_type!=='VSO',hasVso=s.so_type!=='SO';
+  if(hasSo)kv.push(kvRow(t('prof.so.pso'),s.pso==null?t('prof.so.noCount'):numF(s.pso)));
+  if(hasVso)kv.push(kvRow(t('prof.so.pvso'),s.pvso==null?t('prof.so.noCount'):numF(s.pvso)));
+  kids.push(h('div',{class:'kv stack'},kv));
+  var dl=h('dl',{class:'dl'});
+  cls.forEach(function(c){dl.appendChild(h('dt',{text:t('so.cl.'+c+'.name')}));dl.appendChild(h('dd',{text:t('so.cl.'+c+'.desc')}))});
+  if(cls.length)kids.push(dl);
+  var faq=h('details',{class:'soq'},[h('summary',{text:t('prof.so.faqQ')})]);
+  (tv('prof.so.faqA')||[]).forEach(function(x){faq.appendChild(h('p',{text:x}))});
+  kids.push(faq);
+  kids.push(srcLine(['rijksoverheid_passend_onderwijs','duo_so_pupils_cluster']));
+  return psec(t('prof.so.title'),t('prof.so.expl'),kids,null);
+}
+
+/* ---------- Inspectie (inspection.json v2) ---------- */
+var RATINGS=['Goed','Voldoende','Onvoldoende','Zwak','Zeer zwak'];
+var WARN_J=['Onvoldoende','Zeer zwak','Zwak','Voldoet niet'];
+var J_SLUG={'Goed':'good','Voldoende':'sufficient','Onvoldoende':'insufficient','Zwak':'weak','Zeer zwak':'veryweak','Voldoet':'meets','Voldoet niet':'notmeets','N.t.b.':'ntb','Niet beoordeeld':'notassessed','Niet te beoordelen':'notassessable','Hersteld binnen onderzoek':'restored'};
+var DEEPLINK_DEF='https://toezichtresultaten.onderwijsinspectie.nl/extern?code={BRIN4}&sector={SECTOR}';
+function isRated(o){return typeof o==='string'&&RATINGS.indexOf(o)>-1}
+function jEn(j){var k=Object.prototype.hasOwnProperty.call(J_SLUG,j)?'insp.j.'+J_SLUG[j]:'';return k&&has(k)?t(k):''}
+function jPill(j){
+  var warn=WARN_J.indexOf(j)>-1,en=jEn(j);
+  return h('span',{class:'jv'+(warn?' warn':'')},[en?h('span',{text:en}):null,h('small',{text:j})]);
+}
+function stdLabel(code){
+  var I=DET.insp||{},L=I.labels&&I.labels[code],nl='',en='',old=false;
+  if(L){nl=L.nl||'';en=L.en||''}
+  else if(I.labels_wv){
+    var wk=Object.keys(I.labels_wv),i;
+    for(i=0;i<wk.length;i++){if(I.labels_wv[wk[i]][code]){nl=I.labels_wv[wk[i]][code].nl||'';en=I.labels_wv[wk[i]][code].en||'';break}}
+  }
+  if(!L&&!en&&I.labels_2017&&I.labels_2017[code]){nl=I.labels_2017[code];old=true}
+  return {main:en||nl||code,sub:[nl&&nl!==en?nl:'',code].filter(Boolean).join(' · ')+(old?' ('+t('insp.oldFramework')+')':'')};
+}
+var STD_ORDER=['OP0','OP1','OP2','OP3','OP4','OP5','OP6','VS1','VS2','OR1','OR2','SKA1','SKA2','SKA3','WV1','WV2'];
+function stdCodes(o){
+  var ks=Object.keys(o).filter(function(k){return typeof o[k]==='string'});
+  ks.sort(function(a,b){var x=STD_ORDER.indexOf(a),y=STD_ORDER.indexOf(b);x=x<0?99:x;y=y<0?99:y;return x-y||(a<b?-1:1)});
+  return ks;
+}
+function stdTable(o,cap){
+  var tb=h('table',{class:'prtab insptab'},[h('caption',{class:'sr',text:cap}),
+    h('thead',{class:'sr'},h('tr',null,[h('th',{scope:'col',text:t('insp.col.std')}),h('th',{scope:'col',text:t('insp.col.j')})])),h('tbody')]),b=tb.lastChild;
+  stdCodes(o).forEach(function(c){
+    var L=stdLabel(c);
+    b.appendChild(h('tr',null,[h('th',{scope:'row'},[h('span',{text:L.main}),h('small',{class:'nlname',text:L.sub})]),h('td',null,jPill(o[c]))]));
+  });
+  return tb;
+}
+function progName(k){return has('insp.prog.'+k)?t('insp.prog.'+k):k}
+function inspSector(s){return s.sec==='vo'?'VO':s.sec==='so'?'SO':'PO'}
+function inspLink(s){
+  var brin=encodeURIComponent(String(s.id).slice(0,4)),tpl=DET.insp&&typeof DET.insp.deeplink==='string'?DET.insp.deeplink:DEEPLINK_DEF;
+  var u=tpl.replace('{BRIN4}',brin).replace('{SECTOR}',inspSector(s));
+  if(!/^https:\/\/toezichtresultaten\.onderwijsinspectie\.nl\//.test(u))u=DEEPLINK_DEF.replace('{BRIN4}',brin).replace('{SECTOR}',inspSector(s));
+  return u;
+}
+function inspButton(s){
+  return h('div',{style:'margin-top:12px'},[
+    h('a',{class:'btn lnk',href:inspLink(s),target:'_blank',rel:'noopener'},[t('insp.btn'),h('span',{class:'sr',text:' '+t('insp.btnNew')})]),
+    h('p',{class:'note',text:t('insp.btnNote',{brin:String(s.id).slice(0,4)})})]);
+}
+function inspMeta(r){
+  var kv=[];
+  if(r.t)kv.push(kvRow(t('insp.m.type'),r.t));
+  if(r.vd)kv.push(kvRow(t('insp.m.vd'),r.vd));
+  if(r.pd)kv.push(kvRow(t('insp.m.pd'),r.pd));
+  if(r.k)kv.push(kvRow(t('insp.m.k'),r.k));
+  if(Array.isArray(r.b)&&r.b[1])kv.push(kvRow(t('insp.m.board'),r.b[1]));
+  return kv.length?h('div',{class:'kv'},kv):null;
+}
 function inspSection(s){
-  var r=inspOf(s),I=DET.insp,kids=[];
+  var r=inspOf(s),I=DET.insp,kids=[],stt=DET.st.insp;
+  if(stt==='loading'||!stt){
+    kids.push(h('p',{class:'note',role:'status',text:t('load.insp')}));
+    return psec(t('prof.insp.title'),t('prof.insp.expl'),kids,null);
+  }
   var link=h('a',{href:'https://www.onderwijsinspectie.nl/',target:'_blank',rel:'noopener',text:t('prof.insp.linkText')});
-  if(r&&typeof r.o==='string'){
-    var box=h('div',{class:'insp'},[h('b',{text:r.o})]);
+  if(stt==='fail'){
+    kids.push(h('p',null,[t('err.insp')+' ',link,'.']));
+    kids.push(inspButton(s));
+    return psec(t('prof.insp.title'),t('prof.insp.expl'),kids,null);
+  }
+  if(r&&isRated(r.o)){
+    var warn=WARN_J.indexOf(r.o)>-1;
+    var box=h('div',{class:'insp'+(warn?' warn':'')},[h('b',{text:r.o})]);
+    var gloss=I&&I.scale&&I.scale[r.o]?I.scale[r.o]:'';
+    if(gloss)box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:gloss}));
     var xk=(r.x&&typeof r.x==='object')?Object.keys(r.x).filter(function(k){return typeof r.x[k]==='string'}):[];
     if(xk.length)box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:t('prof.insp.lowest')}));
     if(r.d)box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:t('prof.insp.dated',{date:r.d})}));
-    xk.forEach(function(k){box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:k+': '+r.x[k]}))});
     kids.push(box);
+    if(xk.length){
+      var ul=h('ul',{class:'progs'});
+      xk.forEach(function(k){ul.appendChild(h('li',null,[h('span',{text:progName(k)}),jPill(r.x[k])]))});
+      kids.push(h('div',null,[h('b',{text:t('insp.perProg')}),ul]));
+    }
+    var m=inspMeta(r);if(m)kids.push(m);
+    var stdBox=h('div',{style:'margin-top:12px'},[h('b',{text:t('insp.std.title')}),h('p',{class:'note',style:'margin:2px 0 6px',text:t('insp.std.note')})]);
+    var any=false;
+    if(r.st&&typeof r.st==='object'&&Object.keys(r.st).length){
+      if(xk.length||r.xs)stdBox.appendChild(h('p',{class:'note',style:'margin:8px 0 0;font-weight:700',text:t('insp.std.shared')}));
+      stdBox.appendChild(stdTable(r.st,t('insp.std.cap')));any=true;
+    }
+    if(r.xs&&typeof r.xs==='object')Object.keys(r.xs).forEach(function(k){
+      if(!r.xs[k]||typeof r.xs[k]!=='object')return;
+      stdBox.appendChild(h('p',{class:'note',style:'margin:12px 0 0;font-weight:700',text:t('insp.std.forProg',{prog:progName(k)})}));
+      stdBox.appendChild(stdTable(r.xs[k],t('insp.std.capProg',{prog:progName(k)})));any=true;
+    });
+    if(any){
+      kids.push(stdBox);
+      var leg=h('details',{style:'margin-top:8px'},[h('summary',{style:'cursor:pointer;font-weight:700',text:t('insp.scaleQ')})]);
+      var dl=h('dl',{class:'dl'});
+      RATINGS.concat(['Voldoet','Voldoet niet','Niet beoordeeld','Niet te beoordelen','Hersteld binnen onderzoek','N.t.b.']).forEach(function(j){
+        if(I&&I.scale&&I.scale[j]){dl.appendChild(h('dt',{text:j}));dl.appendChild(h('dd',{text:I.scale[j]}))}
+      });
+      leg.appendChild(dl);kids.push(leg);
+    }
+    kids.push(inspButton(s));
     var srcA=I&&safeUrl(I.source_url)?h('a',{href:I.source_url,target:'_blank',rel:'noopener',text:I.source||t('od.source')}):(I&&I.source?I.source:'');
     kids.push(h('p',{class:'dsrc'},[t('prof.insp.source')+' ',srcA,I&&I.as_of?'. '+t('prof.insp.asOf',{date:I.as_of}):'',I&&I.licence?'. '+t('attr.licence',{licence:I.licence}).replace(/\.$/,''):'','.']));
+  }else if(r&&(r.o==='Geen eindoordeel'||r.o==='Basistoezicht')){
+    var gk=r.o==='Basistoezicht'?'basic':'none';
+    kids.push(h('div',{class:'insp nofinal'},[h('b',{text:t('insp.nf.'+gk+'.title')}),h('div',{class:'note',style:'margin:4px 0 0',text:t('insp.nf.'+gk+'.expl')})]));
+    if(Array.isArray(r.b)&&r.b[1])kids.push(h('div',{class:'kv'},kvRow(t('insp.m.board'),r.b[1])));
+    kids.push(inspButton(s));
   }else{
     kids.push(h('p',null,[t('prof.insp.none')+' ',link,'.']));
+    kids.push(inspButton(s));
   }
   return psec(t('prof.insp.title'),t('prof.insp.expl'),kids,null);
 }
@@ -1737,18 +2082,17 @@ function renderSchool(id){
     return;
   }
   document.title=t('title.school',{name:s.name});
-  var grp=grpOf(s);
+  var grp=grpOf(s),ps=loadDetail(grp),last='';
   build();
-  loadDetail(grp).then(function(r){
-    if(VIEW==='school'&&CUR_ID===id&&(r[0]||r[1]))build();
-  });
+  ps.forEach(function(p){p.then(function(){if(VIEW==='school'&&CUR_ID===id&&detSig(grp)!==last)build()})});
   function build(){
-    var d=detOf(s),sc=window.pageYOffset;
+    var d=detOf(s),sc=window.pageYOffset;last=detSig(grp);
     clear(out);
     var ph=h('div',{class:'phead'});
     ph.appendChild(h('a',{class:'back',href:U.view('find',fQuery()),text:t('school.back')}));
     ph.appendChild(h('div',{class:'when',text:secLong(s)}));
     ph.appendChild(h('h2',{id:'h-school',tabindex:'-1',text:s.name}));
+    if(s.sec==='so')ph.appendChild(h('div',{style:'margin:0 0 6px'},soTags(s)));
     ph.appendChild(h('p',{class:'addr',text:[s.addr,[s.pc&&s.pc.length===6?s.pc.slice(0,4)+' '+s.pc.slice(4):s.pc,s.city].filter(Boolean).join(' '),s.mun&&s.mun!==s.city?t('school.municipality',{mun:s.mun}):null].filter(Boolean).join(', ')}));
     ph.appendChild(h('p',{style:'margin:0 0 6px',text:t('school.denom',{den:s.denT})+(s.sec==='vo'&&s.isk?t('school.isk'):'')}));
     var fc=featChips(s);if(fc)ph.appendChild(fc);
@@ -1760,10 +2104,12 @@ function renderSchool(id){
     if(s.g>0&&s.g<3)ph.appendChild(h('p',{class:'note',text:t('school.approx')}));
     out.appendChild(ph);
     var secs=[pupilsSection(s,d)];
-    if(s.sec==='vo'){secs.push(levelsSection(s,d));secs.push(passSection(s,d));secs.push(catchSection(s,d))}
-    else if(s.sec==='po'){secs.push(adviceSection(s,d));secs.push(testSection(s,d));secs.push(distSection(s,d))}
-    else{secs.push(testSection(s,d));secs.push(distSection(s,d));secs.push(psec(t('prof.sbo.title'),t('prof.sbo.text'),[],null))}
+    if(s.sec==='so')secs.push(soSection(s));
+    else if(s.sec==='vo'){secs.push(levelsSection(s,d));secs.push(passSection(s,d));secs.push(ceSection(s,d));secs.push(zbSection(s,d));secs.push(ovSection(s,d));secs.push(opSection(s,d));secs.push(catchSection(s,d))}
+    else if(s.sec==='po'){secs.push(adviceSection(s,d));secs.push(testSection(s,d));secs.push(refSection(s,d));secs.push(hvSection(s,d));secs.push(distSection(s,d))}
+    else{secs.push(testSection(s,d));secs.push(refSection(s,d));secs.push(hvSection(s,d));secs.push(distSection(s,d));secs.push(psec(t('prof.sbo.title'),t('prof.sbo.text'),[],null))}
     secs.push(inspSection(s));secs.push(openDaysSection(s));secs.push(nearbySection(s));
+    var dn=grp==='so'?null:detNote(grp);if(dn)out.appendChild(dn);
     var grid=h('div',{class:'pgrid'});
     secs.forEach(function(x){if(x)grid.appendChild(x)});
     out.appendChild(grid);
@@ -1784,20 +2130,127 @@ function latestPass(d){
   });
   return box.childNodes.length?box:null;
 }
-function compareRows(grp){
+function trackLines(map,fn){
+  /* one line per track; when every track gives the same text it collapses to a single line */
+  var keys=tkKeys(map),lines=[];
+  keys.forEach(function(k){var x=fn(map[k],k);if(x!=null)lines.push([tkInfo(k)[0],x])});
+  if(!lines.length)return null;
+  var same=lines.every(function(l){return l[1]===lines[0][1]});
+  var b=h('div');
+  if(same)b.appendChild(h('div',{text:lines[0][1]}));
+  else lines.forEach(function(l){b.appendChild(h('div',{text:l[0]+': '+l[1]}))});
+  return b;
+}
+function cmpCe(d){
+  var ce=d&&d.ce&&typeof d.ce==='object'?d.ce:null;if(!ce)return t('cmp.noData');
+  var b=trackLines(ce,function(arr){
+    if(!Array.isArray(arr)||!arr.length)return null;
+    var e=arr.slice().sort(sortYear).pop();
+    return typeof e[1]==='number'?t('cmp.ceOne',{v:dec1(e[1]),y:String(e[0])})+(e[3]?' '+t('cmp.partialShort'):''):null;
+  });
+  return b||t('cmp.noData');
+}
+function cmpOv(d,idx){
+  var ov=d&&d.ov&&typeof d.ov==='object'?d.ov:null;if(!ov)return t('cmp.noData');
+  var b=trackLines(ov,function(a){
+    if(!Array.isArray(a))return null;
+    if(idx===3){var v=a[3];return v==null?t('prof.ov.v.none'):OV_VERD[v]?t('prof.ov.v.'+OV_VERD[v]):String(v)}
+    var x=a[idx];
+    if(!Array.isArray(x)||typeof x[0]!=='number')return t('prof.ov.na');
+    var f=idx===2?dec2:function(v){return t('unit.pct',{n:dec1(v)})};
+    return f(x[0])+(typeof x[1]==='number'?' ('+t('prof.ov.norm',{v:f(x[1])})+')':'');
+  });
+  return b||t('cmp.noData');
+}
+function cmpInsp(s){
+  var r=inspOf(s),st=DET.st.insp;
+  if(st==='loading'||!st)return t('load.insp');
+  if(st==='fail')return t('cmp.noData');
+  if(!r)return t('cmp.noInsp');
+  if(r.o==='Geen eindoordeel')return t('insp.nf.none.title');
+  if(r.o==='Basistoezicht')return t('insp.nf.basic.title');
+  if(!isRated(r.o))return t('cmp.noInsp');
+  var xk=(r.x&&typeof r.x==='object')?Object.keys(r.x).filter(function(k){return typeof r.x[k]==='string'}):[];
+  var d=r.d?' ('+r.d+')':'';
+  if(!xk.length)return r.o+d;
+  var b=h('div',null,[h('div',{text:t('cmp.inspLowest',{o:r.o})+d})]);
+  xk.forEach(function(k){b.appendChild(h('div',{text:progName(k)+': '+r.x[k]}))});
+  return b;
+}
+function cmpInspType(s){
+  var r=inspOf(s);
+  if(DET.st.insp!=='ok')return DET.st.insp==='fail'?t('cmp.noData'):t('load.insp');
+  if(!r||!isRated(r.o))return t('cmp.na');
+  return [r.t,r.k?t('cmp.fw',{k:r.k}):''].filter(Boolean).join(' · ')||t('cmp.noData');
+}
+function stdRows(schools){
+  var codes={};
+  schools.forEach(function(s){
+    var r=inspOf(s);if(!r||!isRated(r.o))return;
+    if(r.st)Object.keys(r.st).forEach(function(c){codes[c]=1});
+    if(r.xs)Object.keys(r.xs).forEach(function(k){Object.keys(r.xs[k]||{}).forEach(function(c){codes[c]=1})});
+  });
+  var ks=Object.keys(codes);
+  ks.sort(function(a,b){var x=STD_ORDER.indexOf(a),y=STD_ORDER.indexOf(b);x=x<0?99:x;y=y<0?99:y;return x-y||(a<b?-1:1)});
+  return ks.map(function(c){
+    var L=stdLabel(c);
+    return [L.main,L.sub,function(s){
+      var r=inspOf(s);if(!r||!isRated(r.o))return t('cmp.na');
+      var vals=[];
+      if(r.st&&typeof r.st[c]==='string')vals.push(['',r.st[c]]);
+      else if(r.xs)Object.keys(r.xs).forEach(function(k){if(r.xs[k]&&typeof r.xs[k][c]==='string')vals.push([progName(k),r.xs[k][c]])});
+      if(!vals.length)return t('cmp.notListed');
+      var nProg=r.xs?Object.keys(r.xs).length:0;
+      if(vals.every(function(v){return v[1]===vals[0][1]})&&(vals.length===1||vals.length===nProg))return jPill(vals[0][1]);
+      var b=h('div');
+      vals.forEach(function(v){b.appendChild(h('div',{class:'cj'},[v[0]?h('span',{text:v[0]+': '}):null,jPill(v[1])]))});
+      return b;
+    }];
+  });
+}
+function cmpRn(d){
+  var rn=d&&d.rn&&typeof d.rn==='object'?d.rn:null;if(!rn)return t('cmp.noData');
+  var b=h('div');
+  RN_DEF.forEach(function(def){
+    var a=rn[def[0]];if(!Array.isArray(a)||typeof a[0]!=='number'||typeof a[1]!=='number')return;
+    b.appendChild(h('div',{text:t('cmp.rn',{subj:t('prof.rn.subj.'+def[0]),a:pctTxt(a[0]),la:def[1],b:pctTxt(a[1]),lb:def[2],n:a[2]})}));
+  });
+  return b.childNodes.length?b:t('cmp.noData');
+}
+function cmpHv(d){
+  var a=d&&Array.isArray(d.hv)?d.hv:null;if(!a)return t('cmp.noData');
+  return t('prof.hv.lineText',{rec:a[0]==null?t('val.fewer5'):numF(a[0]),rai:a[1]==null?t('val.fewer5'):numF(a[1])});
+}
+function cmpZb(d){
+  var z=d&&Array.isArray(d.zb)?d.zb:null;if(!z||typeof z[0]!=='number')return t('cmp.noData');
+  function c(v){return v==null?t('val.fewer5'):numF(v)}
+  return t('cmp.zb',{p:numF(z[0]),rep:c(z[2]),down:c(z[1]),up:c(z[3])});
+}
+function compareRows(grp,schools){
   var rows=[];
   function R(l,sm,fn){rows.push([t('cmp.row.'+l),sm?t('cmp.row.'+sm):'',fn])}
   R('type','',function(s){return secLong(s)});
   R('place','',function(s){return [s.city,s.mun&&s.mun!==s.city?'('+s.mun+')':''].filter(Boolean).join(' ')});
   R('den','',function(s){return s.denT});
   R('pupils','pupilsSm',function(s){return s.pupils==null?t('cmp.notShown'):valTxt(s.pupils,s.pupils_lb)});
-  R('features','featuresSm',function(s){return featChips(s)||t('cmp.noneListed')});
-  if(grp==='po'){
+  if(grp!=='so')R('features','featuresSm',function(s){return featChips(s)||t('cmp.noneListed')});
+  if(grp==='so'){
+    R('soType','',function(s){return t('so.type.'+(s.so_type==='SO/VSO'?'both':s.so_type==='VSO'?'vso':'so'))});
+    R('soCluster','soClusterSm',function(s){var c=s.cll||[];return c.length?c.map(function(x){return t('so.cl.'+x+'.name')}).join(' · '):t('cmp.notInData')});
+    R('soSplit','soSplitSm',function(s){
+      var a=[];
+      if(s.so_type!=='VSO')a.push(t('cmp.soPart',{part:'SO',n:s.pso==null?t('cmp.notShown'):numF(s.pso)}));
+      if(s.so_type!=='SO')a.push(t('cmp.soPart',{part:'VSO',n:s.pvso==null?t('cmp.notShown'):numF(s.pvso)}));
+      return a.join(' · ');
+    });
+  }else if(grp==='po'){
     R('advice','adviceSm',function(s){return s.sec==='sbo'?t('cmp.na'):adviceBar(s.adv)});
     R('test','testSm',function(s,d){
       if(!d||!Array.isArray(d.es)||!d.es.length)return t('cmp.noData');
       var b=h('div');d.es.forEach(function(e){if(Array.isArray(e))b.appendChild(h('div',{text:e[0]+': '+(e[1]==null?t('cmp.notShown'):e[1])+(e[2]==null?'':' '+t('cmp.nIs',{n:e[2]}))}))});return b;
     });
+    R('rn','rnSm',function(s,d){return cmpRn(d)});
+    R('hv','hvSm',function(s,d){return cmpHv(d)});
     R('home','homeSm',function(s,d){if(!d||!Array.isArray(d.dm))return t('cmp.noData');return d.dm[1]!=null?kmText(d.dm[1]):d.dm[0]!=null?t('cmp.avgSuffix',{v:kmText(d.dm[0])}):t('cmp.noData')});
   }else{
     R('levels','',function(s){var tb=trackBadges(s);return tb.childNodes.length?tb:t('cmp.notInData')});
@@ -1806,17 +2259,21 @@ function compareRows(grp){
       var b=h('div');tkKeys(d.tp).forEach(function(k){b.appendChild(h('div',{text:tkInfo(k)[0]+': '+valTxt(d.tp[k],Array.isArray(d.tpl)&&d.tpl.indexOf(k)>-1)}))});return b;
     });
     R('exam','examSm',function(s,d){return latestPass(d)||(s.exam&&s.exam.length?examLine(s):t('cmp.noData'))});
+    R('ce','ceSm',function(s,d){return cmpCe(d)});
+    R('zb','zbSm',function(s,d){return cmpZb(d)});
+    R('ovOb','ovObSm',function(s,d){return cmpOv(d,0)});
+    R('ovBb','ovBbSm',function(s,d){return cmpOv(d,1)});
+    R('ovCe','ovCeSm',function(s,d){return cmpOv(d,2)});
+    R('ovV','ovVSm',function(s,d){return cmpOv(d,3)});
+    R('op','opSm',function(s,d){
+      var a=d&&Array.isArray(d.op)?d.op:null;if(!a||typeof a[0]!=='number')return t('cmp.noData');
+      return t('prof.op.pts',{v:dec1(a[0])})+(typeof a[1]==='number'?' ('+t('prof.ov.norm',{v:t('prof.op.pts',{v:dec1(a[1])})})+')':'');
+    });
   }
-  R('insp','',function(s){
-    var r=inspOf(s);if(!(r&&r.o))return t('cmp.noInsp');
-    var xk=(r.x&&typeof r.x==='object')?Object.keys(r.x).filter(function(k){return typeof r.x[k]==='string'}):[];
-    var d=r.d?' ('+r.d+')':'';
-    if(!xk.length)return r.o+d;
-    var b=h('div',null,[h('div',{text:t('cmp.inspLowest',{o:r.o})+d})]);
-    xk.forEach(function(k){b.appendChild(h('div',{text:k+': '+r.x[k]}))});
-    return b;
-  });
-  R('od','odSm',function(s){return openLine(s)||t('cmp.noOd')});
+  R('insp','',function(s){return cmpInsp(s)});
+  R('inspType','inspTypeSm',function(s){return cmpInspType(s)});
+  if(DET.st.insp==='ok')stdRows(schools).forEach(function(r){rows.push(r)});
+  if(grp!=='so')R('od','odSm',function(s){return openLine(s)||t('cmp.noOd')});
   return rows;
 }
 function renderCompare(ids){
@@ -1838,12 +2295,14 @@ function renderCompare(ids){
   }
   var grp=grpOf(BYID[list[0]]);
   var schools=list.map(function(id){return BYID[id]});
+  var ps=loadDetail(grp),last='';
   build();
-  loadDetail(grp).then(function(r){if(VIEW==='compare'&&(r[0]||r[1]))build()});
+  ps.forEach(function(p){p.then(function(){if(VIEW==='compare'&&detSig(grp)!==last)build()})});
   function build(){
-    var sc=window.pageYOffset;
+    var sc=window.pageYOffset;last=detSig(grp);
     clear(out);
-    out.appendChild(h('p',{class:'resmeta',text:t(grp==='vo'?'cmp.metaVo':'cmp.metaPo')}));
+    out.appendChild(h('p',{class:'resmeta',text:t({vo:'cmp.metaVo',so:'cmp.metaSo',po:'cmp.metaPo'}[grp])}));
+    var dn=grp==='so'?null:detNote(grp);if(dn)out.appendChild(dn);
     var table=h('table',{class:'cmp'});
     var hrw=h('tr',null,[h('th',{scope:'col'},h('span',{class:'sr',text:t('cmp.measure')}))]);
     schools.forEach(function(s){
@@ -1854,7 +2313,7 @@ function renderCompare(ids){
     });
     table.appendChild(h('thead',null,hrw));
     var tb=h('tbody');
-    compareRows(grp).forEach(function(row){
+    compareRows(grp,schools).forEach(function(row){
       var tr=h('tr');
       tr.appendChild(h('th',{scope:'row'},[row[0],row[1]?h('small',{text:row[1]}):null]));
       schools.forEach(function(s){
@@ -1868,8 +2327,10 @@ function renderCompare(ids){
     table.appendChild(tb);
     out.appendChild(h('div',{class:'cmpscroll',id:'compare-table-wrap',tabindex:'0',role:'region','aria-label':t('cmp.tableAria')},table));
     var y=detYear(grp,'pupils');
-    var nt=[t(grp==='vo'?'cmp.noteVo':'cmp.notePo',{y:y?t('cmp.noteYear',{y:y}):''})];
+    var nt=[t({vo:'cmp.noteVo',so:'cmp.noteSo',po:'cmp.notePo'}[grp],{y:y?t('cmp.noteYear',{y:y}):''})];
     if(grp==='po')nt.push(t('cmp.noteTests'));
+    if(grp==='vo')nt.push(t('cmp.noteOv'));
+    nt.push(t('cmp.noteInsp'));
     out.appendChild(h('p',{class:'note',text:nt.join(' ')}));
     var acts=h('div',{class:'ctrl'});
     if(schools.length<4)acts.appendChild(h('a',{class:'btn sec',style:'display:inline-flex;align-items:center;text-decoration:none',href:U.view('find'),text:t('cmp.addAnother')}));
@@ -1954,6 +2415,7 @@ function router(keep){
   }
   FIRST=false;
   if(v==='faq')faqFocus(r.q.q);
+  if(v==='sources'&&!DET.insp)loadJson('insp','data/inspection.json').then(function(j){if(j&&VIEW==='sources')renderSources()});
 }
 
 /* ================= static text, language, form ================= */
