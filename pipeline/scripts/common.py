@@ -16,6 +16,7 @@ PO_PUPIL_FILE = "bo_leerlingen_2025-2026.csv"
 PO_ADVICE_FILE = "bo_advies_2024-2025.csv"
 VO_PUPIL_FILE = "vo_leerlingen_2025.csv"
 VO_EXAM_FILE = "vo_examens_2024-2025.csv"
+SO_PUPIL_FILE = "so_leerlingen_2025-2026.csv"
 
 
 def read_jsonl(path):

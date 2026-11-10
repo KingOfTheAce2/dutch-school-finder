@@ -33,9 +33,26 @@ def check_detail():
     po, vo = load("schools_po.json"), load("schools_vo.json")
     ids_po, ids_vo = {r[0] for r in po["rows"]}, {r[0] for r in vo["rows"]}
     dp, dv, ins = load("detail_po.json"), load("detail_vo.json"), load("inspection.json")
+    so = load("schools_so.json")
+    rs = [rec(so, r) for r in so["rows"]]
+    ids_so = {r["id"] for r in rs}
+    print("\n==== schools_so.json: %d rows | type %s | cluster %s" % (
+        len(rs), dict(collections.Counter(r["so_type"] for r in rs)), dict(collections.Counter(r["cl"] for r in rs))))
+    print("  geo %s | with pupils %s | with website %s" % (
+        dict(collections.Counter(r["g"] for r in rs)), pct(sum(1 for r in rs if r["pupils"] is not None), len(rs)),
+        pct(sum(1 for r in rs if r["web"]), len(rs))))
+    if len(ids_so) != len(rs) or ids_so & ids_po:
+        errs.append("schools_so ids not unique / overlap with schools_po")
+    for r in rs:
+        if r["so_type"] not in ("SO", "VSO", "SO/VSO") or r["cl"] not in (1, 2, 3, 4, None):
+            errs.append("so invalid type/cluster " + r["id"])
+        if r["lat"] is not None and not (50.7 < r["lat"] < 53.7 and 3.2 < r["lon"] < 7.3):
+            errs.append("so outside NL " + r["id"])
+        if r["pupils"] is not None and r["pupils"] < 0:
+            errs.append("so pupils invalid " + r["id"])
     print("\n==== detail_po.json (%d schools with data of %d)" % (len(dp["schools"]), len(ids_po)))
     S = dp["schools"]
-    for f in ("pt", "es", "dm", "at"):
+    for f in ("pt", "es", "dm", "at", "lj", "rn", "hv"):
         print("  %-3s %s" % (f, pct(sum(1 for d in S.values() if f in d), len(ids_po))))
     print("  pt with a 2025 value: %s" % pct(sum(1 for d in S.values() if any(x[0] == 2025 and x[1] is not None for x in d.get("pt", []))), len(ids_po)))
     for i, d in S.items():
@@ -49,9 +66,16 @@ def check_detail():
         for y, n, s_, sh in d.get("at", []):
             if sh is not None and abs(sum(x for x in sh if x is not None) - 100) > 0.6:
                 errs.append("advice shares not 100 %s %s" % (i, y))
+        for k, (p1, p2, n) in d.get("rn", {}).items():
+            if n < 5 or any(x is not None and not 0 <= x <= 100 for x in (p1, p2)) or (p1 is not None and p2 is not None and p2 > p1 + 0.05):
+                errs.append("rn invalid %s %s" % (i, k))
+        if "hv" in d and (d["hv"][2] < 5 or any(x is not None and x < 0 for x in d["hv"])):
+            errs.append("hv invalid " + i)
+        if "lj" in d and (len(d["lj"]) != 8 or any(x is not None and (x < 0 or 1 <= x <= 4) for x in d["lj"])):
+            errs.append("lj invalid " + i)
     print("\n==== detail_vo.json (%d schools with data of %d)" % (len(dv["schools"]), len(ids_vo)))
     V = dv["schools"]
-    for f in ("pt", "tp", "pr", "cm"):
+    for f in ("pt", "tp", "pr", "cm", "ce", "zb", "ov", "op"):
         print("  %-3s %s" % (f, pct(sum(1 for d in V.values() if f in d), len(ids_vo))))
     for i, d in V.items():
         if i not in ids_vo:
@@ -60,14 +84,37 @@ def check_detail():
             for pr_ in lst:
                 if (pr_[1] is None) != (pr_[2] is None) or (pr_[1] is not None and (pr_[1] < 5 or not 0 <= pr_[2] <= 100)):
                     errs.append("pr invalid %s %s %s" % (i, lab, pr_))
+        for lab, lst in d.get("ce", {}).items():
+            for y, m_, n, *_ in lst:
+                if n < 5 or not 1.0 <= m_ <= 10.0:
+                    errs.append("ce invalid %s %s %s" % (i, lab, [y, m_, n]))
+        if "zb" in d and (d["zb"][0] is None or d["zb"][0] < 5):
+            errs.append("zb invalid " + i)
         for pc4_, n, *_ in d.get("cm", []):
             if n < 5:
                 errs.append("cm below 5 " + i)
     print("\n==== inspection.json: %d schools, as_of %s, licence %s" % (len(ins["schools"]), ins["as_of"], ins["licence"]))
-    print("  coverage of po+vo schools: %s" % pct(len(ins["schools"]), len(ids_po) + len(ids_vo)))
-    for i in ins["schools"]:
-        if i not in ids_po and i not in ids_vo:
+    RATED = ("Goed", "Voldoende", "Onvoldoende", "Zwak", "Zeer zwak")
+    allids = len(ids_po) + len(ids_so) + len(ids_vo)
+    print("  listed schools: %s | counts %s" % (pct(len(ins["schools"]), allids), ins["counts"]))
+    rated = {i: s for i, s in ins["schools"].items() if s["o"] in RATED}
+    print("  rated: %s | with standards st/xs: %s | with bestuur b: %s" % (
+        pct(len(rated), allids), pct(sum(1 for s in rated.values() if "st" in s or "xs" in s), len(rated)),
+        pct(sum(1 for s in ins["schools"].values() if "b" in s), len(ins["schools"]))))
+    if ins["counts"]["rated"] != len(rated):
+        errs.append("inspection counts.rated does not match")
+    for i, s in ins["schools"].items():
+        if i not in ids_po and i not in ids_vo and i not in ids_so:
             errs.append("inspection id unknown " + i)
+        if s["o"] in RATED and not s.get("d"):
+            errs.append("rated without date " + i)
+        if s["o"] not in RATED and s["o"] not in ("Geen eindoordeel", "Basistoezicht"):
+            errs.append("inspection unknown o %s %s" % (i, s["o"]))
+        if s["o"] == "Geen eindoordeel" and ("d" in s or "st" in s):
+            errs.append("unrated school with details " + i)
+        for code in list(s.get("st", {})) + [c for v_ in s.get("xs", {}).values() for c in v_]:
+            if code in ("OP0", "OP1", "OP2", "OP3", "OP4", "OP5", "OP6", "VS1", "VS2", "OR1", "OR2", "SKA1", "SKA2", "SKA3") and code not in ins["labels"]:
+                errs.append("no label for " + code)
     print("\n---- detail spot checks")
     for f, nm, city in (("vo", "Vossius", "Amsterdam"), ("vo", "Stedelijk Gymnasium", "Utrecht"), ("po", "Maasparel", "Stevensweert")):
         d = load("schools_%s.json" % f)

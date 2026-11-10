@@ -32,6 +32,23 @@ FILES["bo_afstand_2025-2026.csv"] = "05.-gemiddelde-afstand-tussen-woonadres-lee
 # VO: multi-year exam candidates and pass rates; pupil home postcode (catchment)
 FILES["vo_examenkandidaten_2020-2025.csv"] = "examenkandidaten-en-geslaagden-2020-2025.csv"
 FILES["vo_postcode_2025.csv"] = "02.-leerlingen-per-vestiging-naar-postcode-en-leerjaar-2025.csv"
+# Inspectie onderwijsresultaten VO 2026 (per vestiging and onderwijssoort: onderbouwsnelheid, bovenbouwsucces, examencijfers,
+# onderwijspositie; CC0 1.0 per the page metadata)
+FILES["inspectie_onderwijsresultaten_vo_2026.ods"] = ("https://www.onderwijsinspectie.nl/site/binaries/site-content/collections/documents/"
+                                                     "2026/03/02/uitkomsten-onderwijsresultaten-voortgezet-onderwijs-2026/uitkomsten-onderwijsresultaten.ods")
+# --- gap-closing files (parity analysis, 2026-11): special education, reference levels, advice reconsiderations,
+# exam grades, VO repeaters
+FILES["so_leerlingen_2025-2026.csv"] = "01.-leerlingen-po-soort-po-cluster-leeftijd-2025-2026.csv"
+FILES["vso_uitstroom_2025-2026.csv"] = "07.-uitstroomprofiel-vso-leerlingen-per-swv-vestiging-2025-2026.csv"
+FILES["bo_referentieniveaus_2025-2026.xlsx"] = "leerlingen-bo-referentieniveaus-2025-2026.xlsx"
+FILES["bo_heroverwegingen_2025-2026.xlsx"] = "heroverwegingen-en-bijgestelde-adviezen-2025-2026.xlsx"
+FILES["vo_zittenblijvers_vestiging_2024-2025_2025-2026.csv"] = "05.-zittenblijvers-niveau-vestiging-2024-2025-tov-2025-2026.csv"
+# central-exam grades: one combined file per school year ("geslaagden, gezakten en cijfers"; 2024-2025 is step 1)
+for y, remote in ((2020, "geslaagden%2C-gezakten-en-cijfers-2020-2021.csv"),
+                  (2021, "geslaagden,-gezakten-en-cijfers-2021-2022.csv"),
+                  (2022, "geslaagden-gezakten-en-cijfers-2022-2023.csv"),
+                  (2023, "geslaagden-gezakten-en-cijfers-2023-2024.csv")):
+    FILES["vo_examens_%d-%d.csv" % (y, y + 1)] = remote
 
 
 def looks_bad(data, name):

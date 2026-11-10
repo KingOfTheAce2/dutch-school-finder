@@ -19,8 +19,9 @@ Always run with `-I` (isolated mode): the files in `raw/` are untrusted download
 |---|---|---|
 | 1 | `01_download.py` | DUO CSVs into `raw/`, writes `raw/MANIFEST.json` (URL, size, sha256). Skips files already present. |
 | 2 | `02_pc4.py` | CBS Postcode4 polygons (PDOK OGC API) reduced to one centroid per PC4, then municipality per PC4. Checkpoints: `raw/pc4_geom.jsonl` (per page), `raw/pc4_muni.jsonl` (per PC4). |
-| 4 | `04_geocode.py` | PDOK Locatieserver lookups for every school address. Checkpoint: `raw/geocode_cache.jsonl` (flush + fsync per unit, batches of 24, resumes by skipping cached keys). `--limit N` runs a test batch. |
+| 4 | `04_geocode.py` | PDOK Locatieserver lookups for every school address (PO, SBO, SO/VSO and VO). Checkpoint: `raw/geocode_cache.jsonl` (flush + fsync per unit, batches of 24, resumes by skipping cached keys). `--limit N` runs a test batch. |
 | 5 | `05_build_po.py` | `out/schools_po.json` |
+| 5b | `05b_build_so.py` | `out/schools_so.json` (special education SO/VSO) |
 | 6 | `06_build_vo.py` | `out/schools_vo.json` |
 | 7 | `07_build_pc4.py` | `out/pc4.json` |
 | 8 | `08_build_meta.py` | `out/meta.json` |
@@ -84,6 +85,21 @@ Extra columns: `tracks` (bitmask), `exam`, `st` (DUO "onderwijsstructuur" string
 `exam`: `null` or a list, one entry per track with exam data, `[track, candidates, pass_pct, partial]`, track in `bb kb gl tl havo vwo` (school year 2024/25, final-year candidates). DUO reports exams per department/profile; we add the exact rows up. `candidates` and `pass_pct` are `null` when every row of the track is suppressed. `partial = 1` means some rows of that track were suppressed (1 to 4 candidates each) and left out of the totals, so the figures cover the disclosed rows only. Praktijkonderwijs has no exam. Suggested display rule (from the data inventory): show pass rate only when `candidates >= 30`.
 
 `pupils`: all years, VAVO excluded, 1 October 2025 (provisional DUO figure).
+
+## out/schools_so.json
+
+Special education: every SO (speciaal onderwijs, ages 4-12) and VSO (voortgezet speciaal onderwijs) location of DUO "alle vestigingen sbo, so en vso" (639 locations). SBAO stays in schools_po (`sbo = 1`). Same envelope and the same first 16 columns as schools_po (`sbo` is always 0, `adv` always null: there is no schooladvies in SO), plus:
+
+| col | meaning |
+|---|---|
+| `so_type` | `"SO"`, `"VSO"` or `"SO/VSO"`. Derived from the DUO column ONDERWIJS ("SO ZMLK + VSO ZMLK ..."; RP-SO and RP-VSO parts count as SO and VSO), not from the pupil file |
+| `cl` | cluster 1 to 4 when DUO gives exactly one, else `null` (9 locations are `3/4`: see `cls`). 1 visual, 2 hearing and severe speech/language problems, 3 physical or intellectual disability and long-term illness, 4 behavioural or psychiatric problems (also in the top-level `clusters` object) |
+| `cls` | list of all clusters, e.g. `[3,4]`; `null` when DUO leaves it blank |
+| `pso`, `pvso` | pupils in the SO part and in the VSO part, 1 October 2025. `null` = no row, or only suppressed cells |
+
+`pupils` is the sum of the exact SO and VSO cells (all ages), `pupils_lb = 1` when some age cell was suppressed (`<5`), so it is a lower bound. A location with `pupils = null` (44 of 639) has no row in the DUO pupil file. `levels` is an empty array. Source: DUO "leerlingen po naar soort po, cluster en leeftijd" 2025-2026 (`raw/so_leerlingen_2025-2026.csv`, one row per vestiging and type, age columns) and the address file. The ids of schools_so never occur in schools_po. The file is geocoded by the same checkpointed step 4 and the same cache.
+
+Not available as open data per vestiging: ondersteuningsprofiel, toelaatbaarheid/TLV criteria, VSO uitstroom per school (DUO publishes uitstroom only per samenwerkingsverband).
 
 ## out/pc4.json
 
@@ -177,21 +193,28 @@ Suppression rules used everywhere: DUO `<5`, `-1` and `NA` become null. DUO tota
 ### detail_po.json
 | Key | Meaning |
 |---|---|
-| `years` | `pupils` [2021..2025] (peildatum 1 Oct of that year), `eindscore` "2025-2026", `dist` "2025-2026", `advice` peildatum years of the advice history |
+| `years` | `pupils` [2021..2025] (peildatum 1 Oct of that year), `eindscore` "2025-2026", `dist` "2025-2026", `advice` peildatum years of the advice history, `refniveau` "2025-2026", `heroverweging` "2025-2026" |
 | `pt` | `[[year, n|null, lb]]` pupils (sum of the exact LEERJAAR_1..8 cells over M and V rows); lb=1 lower bound |
 | `es` | `[[test, avg, n]]` doorstroomtoets average (latest year), one entry per test with n >= 5; tests: Route 8, IEP, DIA, AMN, DOE, LIB. Scores of different tests are not comparable. Omitted when none |
 | `dm` | `[mean m, median m|null, n]` average home-to-school distance (n >= 5). The DUO median is 0 for 43 % of schools next to a large mean, which is implausible; median is null in that case |
+| `lj` | `[8 numbers]` pupils per leerjaar 1-8, 2025-2026 (peildatum 1 Oct 2025). `null` per cell = suppressed (1-4 pupils) |
+| `rn` | `{"lezen":[p1F,p2F,n],"taal":[p1F,p2F,n],"rekenen":[p1F,p1S,n]}` referentieniveaus of the doorstroomtoets, 2025-2026. Percent of the `n` tested pupils who reached at least 1F and 2F (lezen = DUO LV, taal = DUO TV, i.e. taalverzorging) or at least 1F and 1S (rekenen). DUO publishes mutually exclusive counts (below 1F, 1F, 2F or 1S); we add the upper categories. A subject is omitted when a needed cell is `<5`; the whole key is omitted when the school total is `<5` (so `n >= 5` always holds). Rows whose categories do not add up to the total are dropped. Small n: show a warning below about 20 |
+| `hv` | `[n_reconsidered, n_raised, n_leavers]` heroverwegingen 2025-2026. `n_reconsidered` = DUO HEROVERWEGING_TOTAAL (leavers whose doorstroomtoets pointed above the advice, so the school had to reconsider), `n_raised` = BIJSTELLING (advices raised), `n_leavers` = TOTAAL (>= 5 or the key is absent). Either of the first two is null when `<5`. In 20 % of schools `n_raised` exceeds `n_reconsidered` (DUO counts adjustments outside the reconsideration group too), so do not show a ratio of the two |
 | `at` | `[[year, n, s, [12 shares]]]` advice mix, same encoding as `adv` in schools_po (n = exact leavers, s = suppressed cells, shares in `levels` order, null = suppressed). `year` = peildatum year of the DUO file (2024 = the 2024-2025 file, i.e. advice given in spring 2025). The 12th level ADVIES_NIET_MOGELIJK is absent from the DUO xlsx years, so its share is null there and not counted in s |
 
-Sources: DUO bo-sbo leerlingen per vestiging 2021-2022 to 2025-2026 (CSV), schooladviezen 2021-2022 to 2025-2026 (CSV and xlsx), gemiddelde scores doorstroomtoets 2025-2026 (xlsx; DUO publishes it only as xlsx), gemiddelde afstand woonadres-school 2025-2026.
+Sources: DUO leerlingen per referentieniveau taal en rekenen 2025-2026 (xlsx), DUO heroverwegingen en bijgestelde adviezen 2025-2026 (xlsx), DUO bo-sbo leerlingen per vestiging 2021-2022 to 2025-2026 (CSV), schooladviezen 2021-2022 to 2025-2026 (CSV and xlsx), gemiddelde scores doorstroomtoets 2025-2026 (xlsx; DUO publishes it only as xlsx), gemiddelde afstand woonadres-school 2025-2026.
 
 ### detail_vo.json
 | Key | Meaning |
 |---|---|
-| `years` | `pupils` [2021..2025], `exams` [2021..2025] (exam year = end of the school year: 2024-2025 is 2025), `catchment` 2025 |
+| `years` | `pupils` [2021..2025], `exams` [2021..2025] (exam year = end of the school year: 2024-2025 is 2025), `catchment` 2025, `ce` [2021..2025], `zb` "2024-2025 to 2025-2026", `ov` text |
 | `pt` | `[[year, n|null, lb]]` all pupils except VAVO-outsourced rows |
 | `tp` | pupils by track, latest year; null = only suppressed cells; tracks with no pupils omitted. `tpl` (extra key) lists tracks whose number is a lower bound |
 | `pr` | `{track: [[year, candidates, pass %, (1)]]}` pass % = geslaagden / kandidaten summed over sector/afdeling rows whose cells are both exact; null/null when fewer than 5 known candidates; a trailing 1 means some rows of that track were suppressed, so the figure covers the unsuppressed rows only. No pass rate exists for PRO or BRUGJAAR |
+| `ce` | `{track: [[year, mean CE grade, candidates, (1)]]}` mean central-exam (centraal examen) grade per track and exam year 2021-2025, tracks as in `pr`. It is the candidate-weighted mean of the DUO row means (DUO "GEMIDDELD CIJFER CENTRAAL EXAMEN" per sector/afdeling), over rows with at least 5 exact candidates and a published mean; rows with `<5` candidates are left out. A trailing 1 = some rows of that track were left out, so the mean covers the disclosed rows only. Omitted when fewer than 5 candidates remain. A weighted mean of row means is an approximation of the school's true mean; show it as "about". Per-year files from DUO "geslaagden, gezakten en cijfers" |
+| `zb` | `[pupils, afstromers, zittenblijvers, opstromers]` VO repeaters and down/up-streamers, school year 2024/25 to 2025/26, per vestiging (all tracks together). null per cell = `<5`; the key is absent when pupils is `<5`. Source: DUO "zittenblijvers, op- en afstroom" |
+| `ov` | `{track: [ob, bb, ce, verdict]}` Inspectie onderwijsresultaten VO 2026 (CC0), 3-year averages 2022/23 to 2024/25: `ob` = onderbouwsnelheid (% of pupils moving through the onderbouw on time), `bb` = bovenbouwsucces (%), `ce` = mean central-exam grade. Each is `[value, norm after correction, 1 above norm / 0 below norm]` or null when the Inspectie did not compute it (too few pupils). `verdict` = the Inspectie's calculated verdict for the onderwijssoort ("voldoende", "onvoldoende", "onvoldoende, tenzij"; null = "geen oordeel"). This is a model output, not an Inspectie judgement of the school; norms depend on the pupil population (corrected values). Tracks: VMBO-B, VMBO-K, VMBO-GL/TL, HAVO, VWO |
+| `op` | `[value, norm, 1 above / 0 below]` onderwijspositie t.o.v. advies po (per vestiging; Inspectie 2026, 3 years 2023/24 to 2025/26): net share of pupils placed above the primary advice minus below it, in percent points, so negative is common; compare to the norm only (technical note: onderwijsresultaten VO 2026 section 4.2) |
 | `cm` | top 10 pupil home PC4s `[pc4, pupils, (1)]` (only PC4s with >= 5 pupils; trailing 1 = lower bound because some leerjaar cells were suppressed), `cmo` = % of known pupils living outside those 10 |
 
 Track mapping (DUO `ONDERWIJSTYPE VO EN LEER- OF VERBLIJFSJAAR` pupils file):
@@ -209,4 +232,32 @@ Track mapping (DUO `ONDERWIJSTYPE VO EN LEER- OF VERBLIJFSJAAR` pupils file):
 Not mapped (counted in `pt` only): Engelse Stroom, European Secondary School, Int. Baccelaureaat; `... uitbest. aan VAVO` rows are excluded everywhere. Exam file (`examenkandidaten-en-geslaagden-2020-2025`): ONDERWIJSTYPE HAVO/VWO map directly; VMBO is mapped from OPLEIDINGSNAAM: `VMBO B` to VMBO-B, `VMBO K` to VMBO-K, `VMBO G` and `VMBO T` to VMBO-GL/TL. `VMBO LWT` rows (about 500 candidates a year nationally, overlap with B/K is unclear) are left out. Sources: DUO leerlingen vo per vestiging naar onderwijstype 2021 to 2025, examenkandidaten en geslaagden 2020-2021 to 2024-2025, leerlingen per vestiging naar postcode en leerjaar 2025.
 
 ### inspection.json
-`{v, as_of, source, source_url, licence, note, schools:{BRIN6:{o, d, x?}}}`. Source: Inspectie van het Onderwijs open data oordelen (po/vo ODS, peildatum 1 November 2026, licence CC0 1.0 per the page metadata). `o` = overall judgement (PO: the school judgement; VO: the lowest judgement among rated opleidingen, `x` gives the per-opleiding judgements when more than one), `d` = date the judgement was set. Schools with "Geen eindoordeel" or "Basistoezicht" are absent: absence is not a rating, and the rated set skews towards schools visited after earlier concerns, so do not rank or average. The DUO copy (oordelen-v02) is a 2018 snapshot and is not used. The file is monthly: update the URL in `15_download_detail.py` and `AS_OF`/`PAGE` in `18_build_inspection.py` when refreshing.
+Envelope: `{v:2, as_of, source, source_url, notes_url, licence, note, deeplink, deeplink_note, counts, scale, labels, labels_wv, labels_2017, labels_note, generated, schools}`. Source: Inspectie van het Onderwijs open data oordelen (po/so/vo ODS, peildatum 1 November 2026, licence CC0 1.0 per the page metadata); column notes: Inspectie "Toelichting open data oordelen en standaarden 2025/2026" (`notes_url`). One ODS row is an object van toezicht (PO cluster, SO onderwijskundige eenheid, VO onderwijssoort); `BetrokkenVestigingen` maps it to BRIN6 locations. Covers PO, SBO, SO/VSO and VO ids. 8415 of 8618 locations are listed.
+
+**Changed in v2:** schools with "Geen eindoordeel" or "Basistoezicht" are now listed, with `o` set to that text. The front-end must test `o` against the five ratings (Goed, Voldoende, Onvoldoende, Zwak, Zeer zwak) instead of testing presence. "Geen eindoordeel" is NOT a rating (new or merged school, judgement older than four years, or the school was not visited) and is not a bad sign. Keep the old caveat: the rated set skews to schools visited after concerns; do not rank or average.
+
+Per school `schools[BRIN6]`:
+
+| Key | Meaning |
+|---|---|
+| `o` | Overall judgement. Rated: Goed / Voldoende / Onvoldoende / Zwak / Zeer zwak (VO: the worst of the rated opleidingen). Not rated: `"Geen eindoordeel"` (5876 schools, only `b`) or `"Basistoezicht"` (6) |
+| `d` | Latest Vaststellingsdatum of the rated rows, YYYY-MM-DD (rated only) |
+| `x` | VO, more than one rated opleiding: `{opleiding: judgement}` |
+| `st` | `{standard code: judgement string}` for the school-level row (PO and SO: the single OVT row; VO: the standards that all rated opleidingen share). Keys are exactly the ODS columns, only non-empty ones. Codes that occur: OP0..OP6, VS1, VS2, OR1, OR2, SKA1..SKA3, WV1, WV2. Judgement strings: Goed, Voldoende, Onvoldoende, Voldoet, Voldoet niet, N.t.b., Niet beoordeeld, Niet te beoordelen, Hersteld binnen onderzoek (see `scale`) |
+| `xs` | VO when the rated opleidingen have different standards: `{opleiding: {code: judgement}}` (instead of `st`) |
+| `t`, `tc` | TypeOnderzoek text and TypeOnderzoekCode of the most recent rated row |
+| `on` | Onderzoeksnummer (string) |
+| `vd`, `pd` | Vaststellingsdatum and Publicatiedatum, YYYY-MM-DD |
+| `k` | Kader, the framework version (e.g. `PO2021_V25`). The meaning of OP4..OP6 and WV codes depends on it |
+| `b` | `[Bestuursnummer, Bestuursnaam]`, present for almost every listed school, also unrated ones |
+
+`t`, `tc`, `on`, `vd`, `pd`, `k` describe the most recently determined rated row (for VO with several opleidingen the other opleidingen can have an older investigation). Top-level helpers:
+
+- `counts` = `{rated, geen_eindoordeel, basistoezicht, listed, by_o:{judgement: n}}`: 2533 rated, 5876 Geen eindoordeel, 6 Basistoezicht.
+- `labels` = `{code: {nl, en}}` for the codes in the file. The Dutch names are copied from the Inspectie data notes (kaders PO2021, SO2021, VO2021 and their _V23 revisions); the newer _V25/_V26 revisions and the BTL/CN kaders are not in those notes and are assumed to use the same names (`labels_note`). The English text is our short gloss. OP5 only occurs in SO and VO praktijkonderwijs, OR2 only in PO and SO. Verified against the notes: OP0 Basisvaardigheden, OP1 Aanbod, OP2 Zicht op ontwikkeling en begeleiding, OP3 Pedagogisch-didactisch handelen, OP4 Onderwijstijd, OP5 Praktijkvorming/Stage, OP6 Afsluiting, VS1 Veiligheid, VS2 Schoolklimaat, OR1 Resultaten, OR2 Sociale en maatschappelijke competenties, SKA1 Visie, ambities en doelen, SKA2 Uitvoering en kwaliteitscultuur, SKA3 Evaluatie, verantwoording en dialoog. Not verified (the owner's draft list used the 2017 meanings): OP4 "(Extra) ondersteuning" and OP6 "Samenwerking" are 2017 names; in the 2021 kader they are Onderwijstijd and Afsluiting.
+- `labels_wv` = names of WV1/WV2, keyed by kader (VO_WV2021, V0_WV2023; the kader code is spelled with a zero in the data). `labels_2017` = codes of the 2017 framework (SK1 Veiligheid, SK2 Pedagogisch klimaat, OR3 Vervolgsucces, KA1..KA3, OP8 Toetsing en afsluiting ...) for older reports; none of them occurs in this file, so do not use them with the current `st`. The columns OP, SK, OR, KA, OP7, OP8, SK1, SK2, OR3, KA1..KA3, BA2, WV3..WV7 and the 1.1..6.1 series are empty in the PO/SO/VO file.
+- `scale` = English gloss per judgement string. "N.t.b." is not defined in the Inspectie notes.
+
+Deep link to the Inspectie results site (`deeplink`): `https://toezichtresultaten.onderwijsinspectie.nl/extern?code=<BRIN4>&sector=<PO|SO|VO>`, where BRIN4 is the first four characters of the school id and sector follows the schools file (PO for schools_po incl. SBO, SO for schools_so, VO for schools_vo). It is the site's own external-link route and opens the result list for that BRIN, so a VO school group shows all its locations. Checked with a headless browser for 00AR (PO, one result), 00AH (VO, 8 results) and 06SV (SO, 3 results). `/zoek?q=<BRIN4>` gives the same list; `q=<BRIN6>` returns nothing. A per-school page or a report PDF has no stable URL without the site's internal API, which we do not use (the page metadata says CC0 1.0, but the API states no licence of its own, and the owner asked not to scrape it).
+
+The DUO copy (oordelen-v02) is a 2018 snapshot and is not used. The file is monthly: update the URL in `15_download_detail.py` and `AS_OF`/`PAGE` in `18_build_inspection.py` when refreshing.

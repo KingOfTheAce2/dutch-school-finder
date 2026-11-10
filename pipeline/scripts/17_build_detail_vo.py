@@ -5,17 +5,31 @@ Fields per BRIN6 (all optional):
   tp   pupils by track, latest year (null = only suppressed cells); tpl lists tracks whose number is a lower bound
   pr   pass rate per track and exam year [year, candidates, pass %]; a trailing 1 = computed from the unsuppressed
        rows only (some sector/afdeling rows of that track were suppressed)
+  ce   mean central-exam grade per track and exam year [year, mean, candidates (, 1)] from the DUO "geslaagden,
+       gezakten en cijfers" files: candidate-weighted mean of the sector/afdeling row means, over rows with >= 5
+       exact candidates and a published CE mean; a trailing 1 = some rows of that track were suppressed
+  zb   [pupils, afstromers, zittenblijvers, opstromers] school year 2024/25 vs 2025/26 (null = suppressed)
+  ov   Inspectie onderwijsresultaten 2026 per onderwijssoort {track: [ob, bb, ce, verdict]}; ob = onderbouwsnelheid %,
+       bb = bovenbouwsucces %, ce = mean central-exam grade, each [3-year value, norm after correction, 1 above norm | 0 below];
+       verdict = the Inspectie's calculated verdict ("voldoende", "onvoldoende", "onvoldoende, tenzij"), null = no verdict
+  op   Inspectie onderwijspositie t.o.v. advies po (per vestiging) [value, norm, 1 above norm | 0 below]
   cm   top 10 home PC4s [pc4, pupils] (trailing 1 = lower bound), cmo = % of known pupils living outside the top 10
 Suppression: "<5" => null. The SLAAGPERC column of the DUO file is never used (it can reveal a suppressed GESLAAGDEN
 cell); pass % is geslaagden / kandidaten from exact cells only, shown only when the known candidates are >= 5.
 """
 import datetime, json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import OUT, write_json_atomic
+from common import OUT, RAW, write_json_atomic
 import duo
+from xlsx import read_ods
 
 PUPIL_YEARS = [2021, 2022, 2023, 2024, 2025]
 EXAM_FILE = "vo_examenkandidaten_2020-2025.csv"
+CE_FILES = {2021: "vo_examens_2020-2021.csv", 2022: "vo_examens_2021-2022.csv", 2023: "vo_examens_2022-2023.csv",
+            2024: "vo_examens_2023-2024.csv", 2025: "vo_examens_2024-2025.csv"}   # exam year -> file
+ZB_FILE, ZB_YEARS = "vo_zittenblijvers_vestiging_2024-2025_2025-2026.csv", "2024-2025 to 2025-2026"
+OV_FILE = "inspectie_onderwijsresultaten_vo_2026.ods"
+OV_TRACK = {"vmbo b": "VMBO-B", "vmbo k": "VMBO-K", "vmbo (g)t": "VMBO-GL/TL", "havo": "HAVO", "vwo": "VWO"}
 POSTCODE_FILE = "vo_postcode_2025.csv"
 CATCH_YEAR = 2025
 TRACKS = ["VMBO-B", "VMBO-K", "VMBO-GL/TL", "HAVO", "VWO", "PRO", "BRUGJAAR"]
@@ -144,6 +158,87 @@ def main():
     for i, d in pr.items():
         det[i]["pr"] = {lab: sorted(d[lab]) for lab in TRACKS if lab in d}
 
+    # mean central-exam grade (CE) per track and year. Rows with fewer than 5 exact candidates (or a CE mean that is
+    # not published) are left out; the row means are weighted by candidate count.
+    ce = {}   # (id, track, year) -> [sum(n*grade), n, suppressed rows]
+    for y, fn in CE_FILES.items():
+        for r in duo.read_csv_auto(fn):
+            t = r["ONDERWIJSTYPE VO"].strip()
+            if t in ("HAVO", "VWO"):
+                lab = t
+            elif t == "VMBO":
+                lab = {"BL": "VMBO-B", "KL": "VMBO-K", "GL": "VMBO-GL/TL", "TL": "VMBO-GL/TL"}.get(r["LEERWEG VMBO"].strip())
+            else:
+                lab = None
+            i = (r.get("VESTIGINGSCODE") or r.get("VESTIGINGSNUMMER") or "").strip()
+            if not lab or i not in det:
+                continue
+            n = cell(r["EXAMENKANDIDATEN"])
+            try:
+                g = float(r["GEMIDDELD CIJFER CENTRAAL EXAMEN"].replace(",", "."))
+            except ValueError:
+                g = None
+            x = ce.setdefault((i, lab, y), [0.0, 0, 0])
+            if n is None or g is None or not 1.0 <= g <= 10.0:
+                if num(r["EXAMENKANDIDATEN"]) != 0:
+                    x[2] += 1
+            else:
+                x[0] += n * g
+                x[1] += n
+    cem = {}
+    for (i, lab, y), (sg, n, sp) in ce.items():
+        if n >= 5:
+            cem.setdefault(i, {}).setdefault(lab, []).append([y, round(sg / n, 2), n] + ([1] if sp else []))
+    for i, d in cem.items():
+        det[i]["ce"] = {lab: sorted(d[lab]) for lab in TRACKS if lab in d}
+
+    # repeaters and up/down-streaming (school year 2024/25 -> 2025/26); cells "<5" => null
+    for r in duo.read_csv_auto(ZB_FILE):
+        i = brin6(r)
+        if i in det:
+            z = [num(r["AANTAL_LEERLINGEN"]), num(r["AANTAL_AFSTROMERS"]), num(r["AANTAL_ZITTENBLIJVERS"]), num(r["AANTAL_OPSTROMERS"])]
+            if z[0] is not None and z[0] >= 5:
+                det[i]["zb"] = z
+
+    # Inspectie onderwijsresultaten VO (CC0): indicators per vestiging and onderwijssoort, 3-year averages. Values the
+    # Inspectie did not compute (too few pupils) are empty in the file and stay null here.
+    def fl(v):
+        try:
+            return float(v.replace(",", "."))
+        except ValueError:
+            return None
+
+    ov_rows = next(iter(read_ods(os.path.join(RAW, OV_FILE)).values()))
+    oh = ov_rows[0]
+    for raw in ov_rows[1:]:
+        r = dict(zip(oh, raw + [""] * (len(oh) - len(raw))))
+        i = r["brin"].strip() + r["vestnr"].strip().zfill(2)
+        lab = OV_TRACK.get(r["onderwijssoort"].strip())
+        if i not in det:
+            continue
+
+        def ind(val, norm, oordeel):
+            v, n_ = fl(r[val]), fl(r[norm])
+            o = r[oordeel].strip()
+            if v is None or n_ is None or o not in ("boven de norm", "onder de norm"):
+                return None
+            return [v, n_, 1 if o == "boven de norm" else 0]
+        op = ind("obopaf_gem_2324_2425_2526", "obopaf_norm", "obopaf_oordeel_2324_2425_2526")
+        if op:
+            det[i]["op"] = op
+        if not lab:
+            continue
+        ob = ind("obdoor_gem_2223_2324_2425", "obdoor_norm_na_cor", "obdoor_oordeel_2223_2324_2425")
+        bb = ind("bbdoor_gem_2223_2324_2425", "bbdoor_norm_na_cor", "bbdoor_oordeel_2223_2324_2425")
+        ce_ = ind("ce_gem_2223_2324_2425", "ce_norm_na_cor", "ce_oordeel_2223_2324_2425")
+        vd_ = r["berekend_oordeel"].strip()
+        vd_ = None if vd_ in ("", "geen oordeel") else vd_
+        if ob or bb or ce_ or vd_:
+            det[i].setdefault("ov", {})[lab] = [ob, bb, ce_, vd_]
+    for d in det.values():
+        if "ov" in d:
+            d["ov"] = {lab: d["ov"][lab] for lab in TRACKS if lab in d["ov"]}
+
     # catchment: pupil home PC4 (latest year)
     pc, known = {}, {}
     for r in duo.read_csv_auto(POSTCODE_FILE):
@@ -169,7 +264,7 @@ def main():
 
     schools = {i: d for i, d in sorted(det.items()) if d}
     out = {"v": 1, "generated": datetime.date.today().isoformat(),
-           "years": {"pupils": PUPIL_YEARS, "exams": exam_years, "catchment": CATCH_YEAR},
+           "years": {"pupils": PUPIL_YEARS, "exams": exam_years, "ce": sorted(CE_FILES), "ov": "Inspectie onderwijsresultaten VO 2026: 2022/23 to 2024/25 (op: 2023/24 to 2025/26)", "zb": ZB_YEARS, "catchment": CATCH_YEAR},
            "schools": schools}
     write_json_atomic(os.path.join(OUT, "detail_vo.json"), out)
     print("detail_vo.json schools:", len(schools), "of", len(ids), "| exam years", exam_years)

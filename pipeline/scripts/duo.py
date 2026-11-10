@@ -116,6 +116,39 @@ def load_po_schools():
     return list(out.values())
 
 
+def so_kind(r):
+    """'SO' | 'VSO' | 'SO/VSO' from the DUO ONDERWIJS string ('SO ZMLK + VSO ZMLK + RP-SO ZMLK'); falls back to
+    SOORT PRIMAIR ONDERWIJS. RP- prefixed parts (RP-SO, RP-VSO) count as the same kind."""
+    kinds = set()
+    for part in r["ONDERWIJS"].split("+"):
+        tok = part.strip().replace("RP-", "").split(" ")[0]
+        if tok in ("SO", "VSO"):
+            kinds.add(tok)
+    if not kinds:
+        t = r["SOORT PRIMAIR ONDERWIJS"].strip()
+        kinds = {t} if t in ("SO", "VSO") else {"SO", "VSO"}
+    return "SO/VSO" if len(kinds) == 2 else kinds.pop()
+
+
+def cluster_list(c):
+    """DUO CLUSTER '4' or '3/4' -> sorted list of ints in 1..4 (empty when blank)."""
+    return sorted({int(x) for x in re.findall(r"[1-4]", c or "")})
+
+
+def load_so_schools():
+    """Speciaal onderwijs (SO) and voortgezet speciaal onderwijs (VSO) locations; SBAO is in load_po_schools()."""
+    out = {}
+    for r in read_csv("adressen_sbo_so_vso.csv", "cp1252"):
+        if r["SOORT PRIMAIR ONDERWIJS"].strip() == "SBAO":
+            continue
+        s = _school(r, r["VESTIGINGSCODE"].strip())
+        s["sbo"] = 0
+        s["so_type"] = so_kind(r)
+        s["clusters"] = cluster_list(r["CLUSTER"])
+        out[s["id"]] = s
+    return list(out.values())
+
+
 def load_vo_schools():
     out = []
     for r in read_csv("adressen_vo.csv", "cp1252"):

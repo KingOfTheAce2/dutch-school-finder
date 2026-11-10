@@ -73,7 +73,7 @@ def main():
     ap_.add_argument("--workers", type=int, default=3, help="concurrent in-flight requests (rate is still capped)")
     a = ap_.parse_args()
 
-    schools = duo.load_po_schools() + duo.load_vo_schools()
+    schools = duo.load_po_schools() + duo.load_so_schools() + duo.load_vo_schools()
     keys = sorted({k for k in (duo.geo_key(s) for s in schools) if k})
     path = os.path.join(RAW, "geocode_cache.jsonl")
     cache = {r["k"]: r for r in read_jsonl(path) if "k" in r}

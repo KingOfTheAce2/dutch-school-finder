@@ -4,6 +4,9 @@ Fields per BRIN6 (all optional):
   pt  pupils per peildatum year (sum of the exact LEERJAAR cells; lb=1 when DUO suppressed a cell, so the sum is a lower bound)
   es  doorstroomtoets averages per test (latest year; only tests with >= 5 pupils)
   dm  [mean m, median m, n pupils] home-to-school distance
+  lj  pupils per leerjaar 1-8, latest year: [8 values, null = suppressed cell] (cells are never recovered by subtraction)
+  rn  referentieniveaus (doorstroomtoets, latest year): {"lezen":[%1F,%2F,n],"taal":[%1F,%2F,n],"rekenen":[%1F,%1S,n]}
+  hv  heroverwegingen (latest year): [n_reconsidered, n_raised, n_leavers]
   at  advice mix per year, same encoding as `adv` in schools_po: [year, n, suppressed cells, [12 shares]]
 Suppression: "<5" / -1 / NA => null. Cells holding 1 to 4 in the older DUO files (published unsuppressed) are treated as
 suppressed in the advice mix so every year follows the current DUO rule. DUO totals (TOTAAL columns) are never used, so
@@ -25,6 +28,8 @@ ES_FILE, ES_YEAR = "bo_eindscores_2025-2026.xlsx", "2025-2026"
 DIST_FILE, DIST_YEAR = "bo_afstand_2025-2026.csv", "2025-2026"
 LEVELS = ["VSO", "PRO", "VMBO_B", "VMBO_B_K", "VMBO_K", "VMBO_K_GT", "VMBO_GT", "VMBO_GT_HAVO",
           "HAVO", "HAVO_VWO", "VWO", "ADVIES_NIET_MOGELIJK"]
+RN_FILE, RN_YEAR = "bo_referentieniveaus_2025-2026.xlsx", "2025-2026"
+HV_FILE, HV_YEAR = "bo_heroverwegingen_2025-2026.xlsx", "2025-2026"
 TEST_NAMES = {"ROUTE 8": "Route 8"}
 
 
@@ -87,6 +92,45 @@ def main():
                 n = s if (any_exact or not lb) else None
                 det[i].setdefault("pt", []).append([y, n, lb])
 
+    # pupils per leerjaar, latest year (suppressed cell => null; no subtraction from totals)
+    for r in duo.read_csv_auto(PUPIL_FILE % (PUPIL_YEARS[-1], PUPIL_YEARS[-1] + 1)):
+        i = r["INSTELLINGSCODE"].strip() + r["VESTIGINGSCODE"].strip()
+        if i in det:
+            lj = [adv_cell(r["LEERJAAR_%d" % k]) for k in range(1, 9)]
+            if any(v is not None for v in lj):
+                det[i]["lj"] = lj
+
+    # referentieniveaus. DUO gives mutually exclusive counts per level (lager dan 1F / 1F / 2F, rekenen 1F / 1S);
+    # the output is the share of tested pupils who reached AT LEAST the level. TOTAAL "<5" => school omitted.
+    for r in read_xlsx_dicts(os.path.join(RAW, RN_FILE)):
+        i = r["VESTIGINGSCODE"].strip()
+        n = num(r["TOTAAL_REFERENTIENIVEAUS"])
+        if i not in det or n is None or n < 5:
+            continue
+        out = {}
+        for key, low, mid, top, atleast in (("lezen", "LV_LAGER1F", "LV_1F", "LV_2F", ("12", "2")),
+                                            ("taal", "TV_LAGER1F", "TV_1F", "TV_2F", ("12", "2")),
+                                            ("rekenen", "REKENEN_LAGER1F", "REKENEN_1F", "REKENEN_1S", ("12", "2"))):
+            a, b, c = num(r[low]), num(r[mid]), num(r[top])
+            p1 = None if b is None or c is None else round(100.0 * (b + c) / n, 1)   # reached 1F (or higher)
+            p2 = None if c is None else round(100.0 * c / n, 1)                       # reached 2F (lezen/taal) or 1S (rekenen)
+            if p1 is not None and a is not None and a + b + c != n:
+                p1 = p2 = None                                                          # inconsistent row: do not publish
+            if p1 is not None or p2 is not None:
+                out[key] = [p1, p2, n]
+        if out:
+            det[i]["rn"] = out
+
+    # heroverwegingen en bijgestelde adviezen (cells "<5" => null; the file's own TOTAAL "<5" => school omitted)
+    for r in read_xlsx_dicts(os.path.join(RAW, HV_FILE)):
+        i = r["VESTIGINGSCODE"].strip()
+        n = num(r["TOTAAL"])
+        if i not in det or n is None or n < 5:
+            continue
+        h, b = num(r["HEROVERWEGING_TOTAAL"]), num(r["BIJSTELLING"])
+        if h is not None or b is not None:
+            det[i]["hv"] = [h, b, n]
+
     # doorstroomtoets averages
     es_rows = read_xlsx_dicts(os.path.join(RAW, ES_FILE))
     tests = sorted({k[:-7] for k in es_rows[0] if k.endswith("_AANTAL")})
@@ -124,7 +168,7 @@ def main():
 
     schools = {i: d for i, d in sorted(det.items()) if d}
     out = {"v": 1, "generated": datetime.date.today().isoformat(),
-           "years": {"pupils": PUPIL_YEARS, "eindscore": ES_YEAR, "dist": DIST_YEAR, "advice": sorted(ADV_FILES)},
+           "years": {"pupils": PUPIL_YEARS, "eindscore": ES_YEAR, "refniveau": RN_YEAR, "heroverweging": HV_YEAR, "dist": DIST_YEAR, "advice": sorted(ADV_FILES)},
            "schools": schools}
     write_json_atomic(os.path.join(OUT, "detail_po.json"), out)
     print("detail_po.json schools:", len(schools), "of", len(ids))
