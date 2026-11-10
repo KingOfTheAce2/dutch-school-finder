@@ -24,9 +24,13 @@ Always run with `-I` (isolated mode): the files in `raw/` are untrusted download
 | 6 | `06_build_vo.py` | `out/schools_vo.json` |
 | 7 | `07_build_pc4.py` | `out/pc4.json` |
 | 8 | `08_build_meta.py` | `out/meta.json` |
-| 9 | `09_validate.py` | Prints coverage, bounding-box and spot checks. |
+| 15 | `15_download_detail.py` | Extra DUO files (pupil history, doorstroomtoets, advice history, distance, exam history, pupil postcodes) and the Inspectie ODS into `raw/`, MANIFEST entries, skips files present. |
+| 16 | `16_build_detail_po.py` | `out/detail_po.json` |
+| 17 | `17_build_detail_vo.py` | `out/detail_vo.json` |
+| 18 | `18_build_inspection.py` | `out/inspection.json` |
+| 9 | `09_validate.py` | Prints coverage, bounding-box and spot checks, plus coverage/consistency checks for the three detail files (exits non-zero on failure). Runs after step 8 in `build_all.py`. |
 
-Helpers: `common.py` (paths, retrying HTTP, JSONL appender), `duo.py` (CSV parsers and cleaning), `geo.py` (coordinate fallback chain).
+Helpers: `xlsx.py` (stdlib .xlsx/.ods readers for DUO/Inspectie spreadsheets), `common.py` (paths, retrying HTTP, JSONL appender), `duo.py` (CSV parsers and cleaning), `geo.py` (coordinate fallback chain).
 
 `raw/` is git-ignored (`data/.gitignore`). Politeness: about 3.5 requests per second to PDOK, retry with exponential backoff on 429/5xx.
 
@@ -162,3 +166,47 @@ Acceptance rules for site flags: concept words (montessori, dalton, jenaplan, vr
 - Primary schooladvies data is 2024/25 (latest DUO file); primary pupils are 2025/26.
 - DUO's primary pupil file lists about 87 BO locations that are not in the BO address file; they are skipped (no address).
 - Postcode-only fallback when an address is not found in the BAG (see `g`).
+
+
+## Detail files (steps 15 to 18)
+
+Per-school detail for the school page, keyed by BRIN6 (`id` in schools_po / schools_vo; only ids present there). Short keys, `null` = suppressed or unknown. Data years are in each file's `years` block. None of these files is fetched until the user opens a school.
+
+Suppression rules used everywhere: DUO `<5`, `-1` and `NA` become null. DUO totals (TOTAAL columns) and DUO's own SLAAGPERC column are never used, so a suppressed cell can not be recovered by subtraction (SLAAGPERC does leak: it can show 60 % next to a suppressed GESLAAGDEN). Cells holding 1 to 4 in the older DUO files (published unsuppressed up to 2021-2022) are treated as suppressed so all years follow the current rule. Sums over exact cells are lower bounds when any cell was suppressed and are flagged.
+
+### detail_po.json
+| Key | Meaning |
+|---|---|
+| `years` | `pupils` [2021..2025] (peildatum 1 Oct of that year), `eindscore` "2025-2026", `dist` "2025-2026", `advice` peildatum years of the advice history |
+| `pt` | `[[year, n|null, lb]]` pupils (sum of the exact LEERJAAR_1..8 cells over M and V rows); lb=1 lower bound |
+| `es` | `[[test, avg, n]]` doorstroomtoets average (latest year), one entry per test with n >= 5; tests: Route 8, IEP, DIA, AMN, DOE, LIB. Scores of different tests are not comparable. Omitted when none |
+| `dm` | `[mean m, median m|null, n]` average home-to-school distance (n >= 5). The DUO median is 0 for 43 % of schools next to a large mean, which is implausible; median is null in that case |
+| `at` | `[[year, n, s, [12 shares]]]` advice mix, same encoding as `adv` in schools_po (n = exact leavers, s = suppressed cells, shares in `levels` order, null = suppressed). `year` = peildatum year of the DUO file (2024 = the 2024-2025 file, i.e. advice given in spring 2025). The 12th level ADVIES_NIET_MOGELIJK is absent from the DUO xlsx years, so its share is null there and not counted in s |
+
+Sources: DUO bo-sbo leerlingen per vestiging 2021-2022 to 2025-2026 (CSV), schooladviezen 2021-2022 to 2025-2026 (CSV and xlsx), gemiddelde scores doorstroomtoets 2025-2026 (xlsx; DUO publishes it only as xlsx), gemiddelde afstand woonadres-school 2025-2026.
+
+### detail_vo.json
+| Key | Meaning |
+|---|---|
+| `years` | `pupils` [2021..2025], `exams` [2021..2025] (exam year = end of the school year: 2024-2025 is 2025), `catchment` 2025 |
+| `pt` | `[[year, n|null, lb]]` all pupils except VAVO-outsourced rows |
+| `tp` | pupils by track, latest year; null = only suppressed cells; tracks with no pupils omitted. `tpl` (extra key) lists tracks whose number is a lower bound |
+| `pr` | `{track: [[year, candidates, pass %, (1)]]}` pass % = geslaagden / kandidaten summed over sector/afdeling rows whose cells are both exact; null/null when fewer than 5 known candidates; a trailing 1 means some rows of that track were suppressed, so the figure covers the unsuppressed rows only. No pass rate exists for PRO or BRUGJAAR |
+| `cm` | top 10 pupil home PC4s `[pc4, pupils, (1)]` (only PC4s with >= 5 pupils; trailing 1 = lower bound because some leerjaar cells were suppressed), `cmo` = % of known pupils living outside those 10 |
+
+Track mapping (DUO `ONDERWIJSTYPE VO EN LEER- OF VERBLIJFSJAAR` pupils file):
+
+| Output label | DUO value(s) |
+|---|---|
+| VMBO-B | VMBO BL lj 3-4 |
+| VMBO-K | VMBO KL lj 3-4 |
+| VMBO-GL/TL | VMBO GL lj 3-4 + VMBO TL lj 3-4 |
+| HAVO | HAVO lj 4-5 |
+| VWO | VWO lj 4-6 |
+| PRO | Praktijkonderwijs alle vj |
+| BRUGJAAR | Brugjaar 1-2 + HAVO/VWO lj 3 |
+
+Not mapped (counted in `pt` only): Engelse Stroom, European Secondary School, Int. Baccelaureaat; `... uitbest. aan VAVO` rows are excluded everywhere. Exam file (`examenkandidaten-en-geslaagden-2020-2025`): ONDERWIJSTYPE HAVO/VWO map directly; VMBO is mapped from OPLEIDINGSNAAM: `VMBO B` to VMBO-B, `VMBO K` to VMBO-K, `VMBO G` and `VMBO T` to VMBO-GL/TL. `VMBO LWT` rows (about 500 candidates a year nationally, overlap with B/K is unclear) are left out. Sources: DUO leerlingen vo per vestiging naar onderwijstype 2021 to 2025, examenkandidaten en geslaagden 2020-2021 to 2024-2025, leerlingen per vestiging naar postcode en leerjaar 2025.
+
+### inspection.json
+`{v, as_of, source, source_url, licence, note, schools:{BRIN6:{o, d, x?}}}`. Source: Inspectie van het Onderwijs open data oordelen (po/vo ODS, peildatum 1 November 2026, licence CC0 1.0 per the page metadata). `o` = overall judgement (PO: the school judgement; VO: the lowest judgement among rated opleidingen, `x` gives the per-opleiding judgements when more than one), `d` = date the judgement was set. Schools with "Geen eindoordeel" or "Basistoezicht" are absent: absence is not a rating, and the rated set skews towards schools visited after earlier concerns, so do not rank or average. The DUO copy (oordelen-v02) is a 2018 snapshot and is not used. The file is monthly: update the URL in `15_download_detail.py` and `AS_OF`/`PAGE` in `18_build_inspection.py` when refreshing.

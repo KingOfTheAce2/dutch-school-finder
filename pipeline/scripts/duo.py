@@ -129,3 +129,18 @@ def geo_key(s):
     if not s["pc6"] or s["hn"] is None:
         return None
     return "%s|%d|%s" % (s["pc6"], s["hn"], s["suf"])
+
+
+def read_csv_auto(name, delim=";"):
+    """read_csv with encoding detection (UTF-8 with/without BOM, else cp1252) and normalised header names
+    (dots replaced by spaces, as in the 2022 VO file)."""
+    path = os.path.join(RAW, name)
+    raw = open(path, "rb").read()
+    try:
+        text = raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        text = raw.decode("cp1252")
+    import io
+    rd = csv.DictReader(io.StringIO(text, newline=""), delimiter=delim)
+    rd.fieldnames = [f.strip().replace(".", " ") if "." in f and " " not in f else f.strip() for f in rd.fieldnames]
+    return list(rd)

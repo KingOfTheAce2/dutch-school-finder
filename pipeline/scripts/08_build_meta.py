@@ -49,14 +49,23 @@ def main():
             "po": q(po["rows"], gi_po),
             "vo": q(vo["rows"], gi_vo),
         },
+        "detail": {"po": "detail_po.json", "vo": "detail_vo.json", "inspection": "inspection.json"},
         "attribution": [
             {"source": "DUO Open Onderwijsdata",
              "text": "School addresses, pupil numbers, schooladviezen and exam results: DUO (Dienst Uitvoering Onderwijs), "
-                     "Open Onderwijsdata, https://duo.nl/open_onderwijsdata. We selected, joined and calculated "
+                     "Open Onderwijsdata, https://duo.nl/open_onderwijsdata (also: pupil history, doorstroomtoets averages, "
+                     "home-to-school distance, pupil home postcodes, exam pass rates 2021 to 2025). We selected, joined and calculated "
                      "percentages from the original files.",
              "licence": "CC BY 4.0 (DUO's own site also states CC0 1.0; we apply the stricter CC BY 4.0)",
              "licence_url": "https://creativecommons.org/licenses/by/4.0/",
              "url": "https://onderwijsdata.duo.nl"},
+            {"source": "Inspectie van het Onderwijs",
+             "text": "School quality judgements (oordelen), peildatum 1 November 2026: Inspectie van het Onderwijs, "
+                     "open data oordelen (Ministerie van Onderwijs, Cultuur en Wetenschap). Only the overall judgement "
+                     "per school is shown.",
+             "licence": "CC0 1.0 Universal",
+             "licence_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+             "url": "https://www.onderwijsinspectie.nl/documenten/2026/11/03/oordelen-1-november-2026"},
             {"source": "CBS",
              "text": "Postcode (PC4) areas: CBS (Statistics Netherlands), dataset CBS Postcode4 statistics, "
                      "distributed via PDOK. Centroids computed by us.",
@@ -71,7 +80,7 @@ def main():
              "licence_url": "https://creativecommons.org/licenses/by/4.0/",
              "url": "https://www.pdok.nl/ogc-apis/-/article/pdok-locatieserver"},
         ],
-        "disclaimer": "Not affiliated with, or endorsed by, DUO, CBS, Kadaster or PDOK. DUO hides counts below 5 "
+        "disclaimer": "Not affiliated with, or endorsed by, DUO, CBS, Kadaster, PDOK or the Inspectie van het Onderwijs. DUO hides counts below 5 "
                       "(shown as null); shares and pass rates computed from partial data are flagged.",
     }
     old_path = os.path.join(OUT, "meta.json")

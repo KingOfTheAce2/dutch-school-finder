@@ -274,9 +274,119 @@ footer .cols{display:grid;gap:10px 28px}
   .sysfig{margin:0}
   .stop h3{font-size:1.6rem}
 }
+
+/* ---------- v3: find, map, profile, compare ---------- */
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+body[data-view="find"] .hero,body[data-view="map"] .hero,body[data-view="school"] .hero,body[data-view="compare"] .hero,
+body[data-view="find"] #resbar,body[data-view="map"] #resbar,body[data-view="school"] #resbar,body[data-view="compare"] #resbar,
+body[data-view="find"] #resmeta,body[data-view="map"] #resmeta,body[data-view="school"] #resmeta,body[data-view="compare"] #resmeta,
+body[data-view="find"] #muni,body[data-view="map"] #muni,body[data-view="school"] #muni,body[data-view="compare"] #muni{display:none}
+body.has-cbar{padding-bottom:84px}
+.tabs{flex-wrap:wrap}
+a.tab{display:block;text-align:center;text-decoration:none;flex:1 1 auto;min-width:0;padding:12px 8px;font-size:.9rem;overflow-wrap:anywhere}
+a.tab[aria-current="page"]{background:var(--brand);color:var(--on-brand)}
+.vh{font-size:1.6rem;font-weight:900;margin:0 0 6px}
+.vh:focus{outline:none}
+.fcard{background:var(--surface);border-top:5px solid var(--brand);padding:14px;display:grid;gap:12px;margin-bottom:14px}
+.fcard label,.fl{display:block;font:800 .76rem var(--disp);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.frow{display:grid;gap:12px}
+.fcard .fld{height:46px;font-size:1rem}
+.fcard select.fld{padding:0 8px}
+.fcard .ctrl{margin:0}
+.fgrp{min-width:0;border:0;padding:0;margin:0}
+.res-h{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;justify-content:space-between;margin:6px 0}
+.res-h p{margin:0}
+.kt{font:800 .72rem/1.2 var(--disp);text-transform:uppercase;letter-spacing:.06em;color:var(--ink2)}
+.sch a.nm{display:block;font:800 1.02rem/1.2 var(--disp);color:var(--link)}
+.rowact{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:8px}
+.chip.cmp{font-size:.8rem;padding:4px 8px}
+.list-card{background:var(--surface);padding:4px 14px 14px}
+.list-card .sch:first-child{border-top:0}
+/* map */
+.mapwrap{position:relative;margin-bottom:10px}
+#mapel{height:68vh;min-height:360px;background:var(--soft);border:2px solid var(--ink)}
+.mapnote{font-size:.88rem;color:var(--ink2);margin:6px 0}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;list-style:none;font-size:.84rem;margin:6px 0}
+.legend li{display:flex;align-items:center;gap:6px}
+.legend i{display:block;width:12px;height:12px;border-radius:50%}
+.leaflet-popup-content-wrapper{border-radius:0;background:var(--surface);color:var(--ink)}
+.leaflet-popup-tip{background:var(--surface)}
+.leaflet-container{font-family:var(--sans)}
+.leaflet-container a{color:var(--link)}
+.leaflet-popup-content{margin:12px 14px}
+.pop b{display:block;font:800 1rem/1.2 var(--disp);margin-bottom:2px}
+.pop span{display:block;font-size:.88rem;color:var(--ink2)}
+.pop .rowact{margin-top:6px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.9)}}
+:root[data-theme="dark"] .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.9)}
+/* profile */
+.phead{background:var(--surface);border-top:6px solid var(--brand);padding:16px 16px 14px;margin-bottom:16px}
+.phead h2{font-size:clamp(1.5rem,5.5vw,2.2rem);font-weight:900;letter-spacing:-.01em;overflow-wrap:anywhere}
+.phead .addr{color:var(--ink2);margin:4px 0 8px}
+.back{display:inline-block;margin-bottom:10px;font-weight:700}
+.psec{background:var(--surface);border-top:5px solid var(--brand);padding:14px 16px 14px;margin-bottom:14px;min-width:0}
+.psec h3{font-size:1.25rem;font-weight:800;margin-bottom:6px}
+.expl{background:var(--soft);padding:8px 12px;margin:0 0 10px;font-size:.92rem;max-width:68ch}
+.expl b{font:800 .72rem var(--disp);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:2px}
+.big{font:900 2rem/1 var(--disp);font-variant-numeric:tabular-nums}
+.kv{display:grid;grid-template-columns:minmax(0,1fr);gap:2px;margin:6px 0}
+.kv .r{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-top:1px solid var(--rule);font-size:.95rem}
+.kv .r span:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.hbar{display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:8px;align-items:center;margin:4px 0;font-size:.9rem}
+.hbar .tr{margin:0;justify-self:start}
+.hbar .tk{background:var(--soft);height:14px}
+.hbar .tk i{display:block;height:100%}
+.hbar .nn{font-variant-numeric:tabular-nums;font-weight:700}
+.trend{width:100%;height:auto;display:block;max-width:520px}
+.trend text{font:400 17px var(--sans);fill:var(--ink2)}
+.trend .ln{fill:none;stroke:var(--brand);stroke-width:2.5}
+.trend .pt{fill:var(--surface);stroke:var(--brand);stroke-width:2.5}
+.trend .gr{stroke:var(--rule);stroke-width:1}
+.prtab{width:100%;border-collapse:collapse;font-size:.9rem;margin:4px 0 8px}
+.prtab th,.prtab td{text-align:left;padding:4px 8px 4px 0;border-top:1px solid var(--rule);vertical-align:top;font-weight:400}
+.prtab th{font-weight:700;width:6.5em}
+.pcl{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:4px 0}
+.pcl a{display:inline-block;padding:4px 8px;border:2px solid var(--brand);text-decoration:none;font-weight:700;font-size:.9rem}
+.pcl a small{font-weight:400;color:var(--ink2)}
+.pcl a:hover{background:var(--soft)}
+.dsrc{font-size:.8rem;color:var(--ink2);margin:8px 0 0}
+.insp{padding:8px 12px;border-left:6px solid var(--brand);background:var(--soft);margin:6px 0}
+.insp b{font:800 1.1rem var(--disp)}
+.nb-list{list-style:none;padding:0;margin:0}
+.nb-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule)}
+.nb-list li:first-child{border-top:0}
+.nb-list a{font-weight:700}
+.nb-list .d{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink2)}
+/* compare */
+.cmpscroll{overflow-x:auto;background:var(--surface);border-top:5px solid var(--brand);margin-bottom:12px}
+table.cmp{border-collapse:collapse;width:100%;min-width:600px;table-layout:fixed}
+table.cmp th,table.cmp td{vertical-align:top;text-align:left;padding:10px 12px;border-top:1px solid var(--rule);font-size:.92rem;font-weight:400;overflow-wrap:anywhere}
+table.cmp thead th{border-top:0;font:800 1rem/1.2 var(--disp)}
+table.cmp tbody th{width:130px;font-weight:700;background:var(--soft);position:sticky;left:0;z-index:1}
+table.cmp tbody th small{display:block;font-weight:400;color:var(--ink2);font-size:.76rem}
+table.cmp thead th:first-child{width:130px;background:var(--soft);position:sticky;left:0;z-index:1}
+@media (max-width:639px){table.cmp tbody th,table.cmp thead th:first-child{width:96px;padding:8px}table.cmp th,table.cmp td{padding:8px}}
+table.cmp .adv{margin:0}
+table.cmp .bar{margin:2px 0}
+.cbar{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--bg);z-index:1000;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.cbar .in{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between}
+.cbar b{font:800 1rem var(--disp)}
+.cbar .acts{display:flex;gap:8px}
+.cbar .btn{height:42px;font-size:.95rem;display:inline-flex;align-items:center;text-decoration:none}
+.cbar .btn.sec{background:transparent;color:var(--bg);border-color:var(--bg)}
+.toast{margin:6px 0;font-weight:700;color:var(--err);min-height:1.2em}
+@media (min-width:640px){
+  .frow.two{grid-template-columns:1fr 1fr}
+  .frow.three{grid-template-columns:2fr 1fr 1fr}
+  a.tab{font-size:1.05rem;padding:14px 10px}
+}
+@media (min-width:960px){
+  .pgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 16px;align-items:start}
+}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.leaflet-fade-anim .leaflet-popup,.leaflet-zoom-anim .leaflet-zoom-animated{transition:none!important}}
 </style>
 
-<a class="skip" href="#main">Skip to the route</a>
+<a class="skip" href="#main" id="skip">Skip to the content</a>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
@@ -310,7 +420,7 @@ footer .cols{display:grid;gap:10px 28px}
       <ul class="vals">
         <li><b>1</b><span>Only the steps still ahead of your child, with dates and what you have to do.</span></li>
         <li><b>2</b><span>Real schools near your postcode, with pupil numbers, where their pupils go next and exam results.</span></li>
-        <li><b>3</b><span>Every municipality. Nothing is sent anywhere: your answers stay in this browser.</span></li>
+        <li><b>3</b><span>Every municipality. Your answers stay in this browser and are never sent to us.</span></li>
       </ul>
     </div>
     <form class="q" id="f" novalidate aria-describedby="exline">
@@ -329,19 +439,21 @@ footer .cols{display:grid;gap:10px 28px}
   </div>
 </section>
 
-<main id="main" class="wrap">
+<main id="main" class="wrap" tabindex="-1">
   <div class="status" id="status" aria-live="polite"></div>
   <div class="resbar" id="resbar"></div>
   <p class="resmeta" id="resmeta"></p>
   <div id="muni"></div>
 
-  <div class="tabs" role="tablist" aria-label="Views">
-    <button class="tab" role="tab" id="t-route" aria-controls="p-route" aria-selected="true" type="button">Your route</button>
-    <button class="tab" role="tab" id="t-system" aria-controls="p-system" aria-selected="false" tabindex="-1" type="button">Whole system</button>
-    <button class="tab" role="tab" id="t-faq" aria-controls="p-faq" aria-selected="false" tabindex="-1" type="button">Questions</button>
-  </div>
+  <nav class="tabs" id="nav" aria-label="Views">
+    <a class="tab" id="t-route" href="#/">Your route</a>
+    <a class="tab" id="t-find" href="#/find">Find a school</a>
+    <a class="tab" id="t-map" href="#/map">Map</a>
+    <a class="tab" id="t-system" href="#/system">Whole system</a>
+    <a class="tab" id="t-faq" href="#/faq">Questions</a>
+  </nav>
 
-  <section id="p-route" role="tabpanel" aria-labelledby="t-route">
+  <section id="p-route">
     <details class="gloss">
       <summary>You will hear these words (glossary)</summary>
       <dl>
@@ -366,7 +478,30 @@ footer .cols{display:grid;gap:10px 28px}
     <p class="note" id="routenote">Ages and school years are typical. Children can start, repeat or switch at different times, and the school decides. Check every date and rule with the school and your municipality.</p>
   </section>
 
-  <section id="p-system" role="tabpanel" aria-labelledby="t-system" hidden>
+  <section id="p-find" hidden>
+    <h2 class="vh" id="h-find" tabindex="-1">Find a school</h2>
+    <p class="resmeta">Every primary, special primary and secondary school in the open data. Type a name, a town, a municipality or a postcode.</p>
+    <details class="gloss fdet" id="find-fdet" open><summary id="find-fsum">Filters and search</summary><div id="find-form" style="margin-top:10px"></div></details>
+    <div id="find-out"></div>
+  </section>
+
+  <section id="p-map" hidden>
+    <h2 class="vh" id="h-map" tabindex="-1">Map</h2>
+    <p class="resmeta">The schools that match your filters. Colour shows the type, not a quality. Prefer a list? <a id="map-list-link" href="#/find">Open the same filters as a list</a>.</p>
+    <details class="gloss fdet" id="map-fdet"><summary id="map-fsum">Filters and search</summary><div id="map-form" style="margin-top:10px"></div></details>
+    <div id="map-out"></div>
+  </section>
+
+  <section id="p-school" hidden>
+    <div id="school-out"></div>
+  </section>
+
+  <section id="p-compare" hidden>
+    <h2 class="vh" id="h-compare" tabindex="-1">Compare schools</h2>
+    <div id="compare-out"></div>
+  </section>
+
+  <section id="p-system" hidden>
     <h2 style="font-size:1.5rem;font-weight:900;margin-bottom:6px">The whole system on one page</h2>
     <p style="max-width:62ch">Read from top to bottom. Each block is one school year. Every track has its own colour, and higher education has colours of its own, because finishing one school does not move a child on automatically: each change needs a diploma, an application and sometimes selection. No track is ranked above another.</p>
     <div class="sysgrid">
@@ -391,11 +526,13 @@ footer .cols{display:grid;gap:10px 28px}
     </div>
   </section>
 
-  <section id="p-faq" role="tabpanel" aria-labelledby="t-faq" hidden>
+  <section id="p-faq" hidden>
     <h2 style="font-size:1.5rem;font-weight:900;margin-bottom:10px">Questions parents ask</h2>
     <div class="faq" id="faq"></div>
   </section>
 </main>
+
+<div class="cbar" id="cbar" role="region" aria-label="Compare list" hidden></div>
 
 <footer>
   <div class="wrap">
@@ -533,13 +670,13 @@ function loadData(){
       });
       DB.pc4=a[2];DB.status='ready';
     }else{DB.status='error'}
-  }).then(function(){renderStatus();renderFooter();render();loadFeatures()});
+  }).then(function(){if(DB.status==='ready')buildIndex();renderStatus();renderFooter();render();loadFeatures();refreshView()});
 }
 /* features.json (school concepts, open days) is optional: the page works without it */
 function loadFeatures(){
   if(DB.feat||DB.status!=='ready')return;
   fetch('data/features.json').then(function(r){if(!r.ok)throw new Error('features');return r.json()}).then(function(j){
-    if(j&&j.schools&&typeof j.schools==='object'){DB.feat=j;renderFooter();render()}
+    if(j&&j.schools&&typeof j.schools==='object'){DB.feat=j;renderFooter();render();refreshView()}
   }).catch(function(){});
 }
 
@@ -721,8 +858,9 @@ function pupilsText(s){
   return (s.pupils_lb?'at least ':'about ')+s.pupils+' pupils';
 }
 var SEG=[['pro','Practical',[0,1]],['vbk','vmbo basis/kader',[2,3,4]],['vgt','vmbo gl/tl',[5,6]],['havo','havo',[7,8]],['vwo','vwo',[9,10]]];
-function adviceBlock(s){
-  var a=s.adv,box=h('div',{class:'adv'});
+function adviceBlock(s){return adviceBar(s.adv)}
+function adviceBar(a){
+  var box=h('div',{class:'adv'});
   if(!a||!a[2]||a[0]<15||a[1]>6){
     box.appendChild(h('p',{class:'advn',text:a&&a[0]>0?'Advice figures hidden: too few pupils shown by DUO ('+a[0]+' visible, '+a[1]+' of 12 groups hidden).':'No advice figures available.'}));
     return box;
@@ -740,13 +878,14 @@ function adviceBlock(s){
 }
 function primaryRow(r){
   var s=r.s,main=h('div');
-  main.appendChild(h('div',{class:'nm',text:s.name}));
+  main.appendChild(h('a',{class:'nm',href:'#/school/'+s.id,text:s.name}));
   var mt=[s.city,s.denT,pupilsText(s)].filter(Boolean).join(' · ');
   main.appendChild(h('div',{class:'mt',text:mt}));
   var fc=featChips(s);if(fc)main.appendChild(fc);
   if(!s.sbo)main.appendChild(adviceBlock(s));
   var ol=openLine(s);if(ol)main.appendChild(ol);
   main.appendChild(links(s,'po'));
+  main.appendChild(h('div',{class:'rowact'},cmpBtn(s)));
   return h('li',{class:'sch',style:'list-style:none'},[distCell(r,s),main]);
 }
 function distCell(r,s){return h('div',{class:'km'},[fmtKm(r.d)+' km',h('small',{text:s.g>0?'about, location approximate':'about'})])}
@@ -774,13 +913,14 @@ function examLine(s){
 }
 function secondaryRow(r,noExam){
   var s=r.s,main=h('div');
-  main.appendChild(h('div',{class:'nm',text:s.name}));
+  main.appendChild(h('a',{class:'nm',href:'#/school/'+s.id,text:s.name}));
   main.appendChild(h('div',{class:'mt',text:[s.city,s.denT,pupilsText(s)].filter(Boolean).join(' · ')}));
   var tb=trackBadges(s);main.appendChild(h('div',{style:'margin-top:5px'},tb));
   var fc=featChips(s);if(fc)main.appendChild(fc);
   if(!noExam)main.appendChild(examLine(s));
   var ol=openLine(s);if(ol)main.appendChild(ol);
   main.appendChild(links(s,'vo'));
+  main.appendChild(h('div',{class:'rowact'},cmpBtn(s)));
   return h('li',{class:'sch',style:'list-style:none'},[distCell(r,s),main]);
 }
 
@@ -1137,7 +1277,8 @@ function previewBox(){
   return b;
 }
 
-function render(){
+function render(){if(VIEW==='route'||VIEW==='system'||VIEW==='faq')renderRoute()}
+function renderRoute(){
   var active=document.activeElement&&document.activeElement.id;
   var m=model();
   var stops=buildStops(m);
@@ -1163,7 +1304,7 @@ function render(){
   for(var i=0;i<stops.length;i++){if(stops[i].deadline){fd=stops[i].id;break}}
   var r=$('route');clear(r);
   stops.forEach(function(st,i){r.appendChild(renderStop(st,m,i,fd))});
-  $('exline').textContent=state.example?'Showing an example (age 11, postcode 3512, Utrecht). Fill in your own details and press the button.':'Nothing is sent anywhere. Your answers stay in this browser.';
+  $('exline').textContent=state.example?'Showing an example (age 11, postcode 3512, Utrecht). Fill in your own details and press the button.':'Your answers stay in this browser and are never sent to us. The map view loads map tiles from OpenStreetMap.';
   if(active){var el=$(active);if(el&&el.focus){try{el.focus({preventScroll:true})}catch(e){}}}
 }
 function renderStatus(){
@@ -1327,26 +1468,862 @@ function renderFaq(){
   });
 }
 
-/* ---------- tabs ---------- */
-var TABS=['route','system','faq'];
-function showTab(name,focus){
-  TABS.forEach(function(t){
-    var on=t===name;
-    $('t-'+t).setAttribute('aria-selected',on?'true':'false');
-    $('t-'+t).tabIndex=on?0:-1;
-    $('p-'+t).hidden=!on;
+/* ================= v3: routing, search, map, profiles, compare ================= */
+var VIEWS=['route','find','map','school','compare','system','faq'];
+var VIEW='route',CUR_ID='',FIRST=true;
+var SEC_SHORT={po:'Primary',sbo:'Special primary',vo:'Secondary'};
+var SEC_LONG={po:'Primary school',sbo:'Special primary school (sbo)',vo:'Secondary school'};
+var FT_ALL=[['tto','Bilingual (tto)'],['ib','IB'],['technasium','Technasium'],['international','International'],['montessori','Montessori'],['dalton','Dalton'],['jenaplan','Jenaplan'],['vrije_school','Steiner'],['newcomer','Newcomer class']];
+var SEC_OPTS=[['','All schools'],['po','Primary'],['sbo','Special primary (sbo)'],['vo','Secondary']];
+var R_OPTS=[[0,'Any distance'],[2,'2 km'],[5,'5 km'],[10,'10 km'],[20,'20 km'],[50,'50 km']];
+var PAGE=25;
+
+function numF(n){return typeof n==='number'?n.toLocaleString('en-GB'):String(n)}
+function grpOf(s){return s.sec==='vo'?'vo':'po'}
+function isId(x){return typeof x==='string'&&/^[0-9A-Za-z]{6}$/.test(x)}
+
+/* ---------- index ---------- */
+var ALL=[],BYID={},DENS=[];
+function norm(t){return String(t==null?'':t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
+function buildIndex(){
+  ALL=[];BYID={};var dens={};
+  DB.po.forEach(function(s){s.sec=s.sbo?'sbo':'po';ALL.push(s)});
+  DB.vo.forEach(function(s){s.sec='vo';ALL.push(s)});
+  ALL.forEach(function(s){
+    var pc=String(s.pc||'').toLowerCase();
+    s.nk=norm(s.name);
+    s.w=(s.nk+' '+norm(s.city)+' '+norm(s.mun)+' '+pc+' '+pc.slice(0,4)).split(/[^a-z0-9]+/).filter(Boolean);
+    BYID[s.id]=s;dens[s.denT]=1;
   });
-  if(focus)$('t-'+name).focus();
+  ALL.sort(function(a,b){return a.nk<b.nk?-1:a.nk>b.nk?1:(a.id<b.id?-1:1)});
+  DENS=Object.keys(dens).sort();
+  CMP=CMP.filter(function(id){return BYID[id]});
+  saveCmp();
 }
-TABS.forEach(function(t,i){
-  var b=$('t-'+t);
-  b.addEventListener('click',function(){showTab(t)});
-  b.addEventListener('keydown',function(e){
-    var n=null;
-    if(e.key==='ArrowRight')n=TABS[(i+1)%3];else if(e.key==='ArrowLeft')n=TABS[(i+2)%3];
-    if(n){e.preventDefault();showTab(n,true)}
+
+/* ---------- filter state shared by Find and Map ---------- */
+var F={q:'',sec:'',tr:[],ft:[],den:'',pc:'',r:0};
+function fReset(){F.q='';F.sec='';F.tr=[];F.ft=[];F.den='';F.pc='';F.r=0}
+function fQuery(withFocus){
+  var p=[];
+  if(F.q)p.push('q='+encodeURIComponent(F.q));
+  if(F.sec)p.push('sec='+F.sec);
+  if(F.tr.length)p.push('tr='+F.tr.join(','));
+  if(F.ft.length)p.push('ft='+F.ft.join(','));
+  if(F.den)p.push('den='+encodeURIComponent(F.den));
+  if(F.pc)p.push('pc='+F.pc);
+  if(F.r)p.push('r='+F.r);
+  if(withFocus&&MAPFOCUS)p.push('s='+MAPFOCUS);
+  return p.length?'?'+p.join('&'):'';
+}
+function parseQ(str){
+  var o={};if(!str)return o;
+  str.split('&').forEach(function(kv){
+    var i=kv.indexOf('='),k=i<0?kv:kv.slice(0,i),v=i<0?'':kv.slice(i+1);
+    try{v=decodeURIComponent(v.replace(/\+/g,' '))}catch(e){}
+    if(/^[a-z]{1,4}$/.test(k))o[k]=v;
   });
-});
+  return o;
+}
+function applyQuery(q){
+  fReset();
+  F.q=String(q.q||'').slice(0,80);
+  F.sec=(q.sec==='po'||q.sec==='sbo'||q.sec==='vo')?q.sec:'';
+  F.tr=String(q.tr||'').split(',').filter(function(x){return CHIP_DEF.some(function(c){return c[0]===x})});
+  F.ft=String(q.ft||'').split(',').filter(function(x){return FT_ALL.some(function(c){return c[0]===x})});
+  F.den=String(q.den||'').slice(0,80);
+  F.pc=/^[1-9]\d{3}$/.test(q.pc||'')?q.pc:'';
+  F.r=R_OPTS.some(function(o){return String(o[0])===String(q.r)})?+q.r:0;
+}
+function tokens(q){
+  q=norm(q).trim();
+  var m=/^([1-9]\d{3})\s*([a-z]{2})$/.exec(q);if(m)return [m[1]+m[2]];
+  return q.split(/[^a-z0-9]+/).filter(Boolean);
+}
+function matchTok(s,t){for(var i=0;i<s.w.length;i++){if(s.w[i].indexOf(t)===0)return true}return false}
+function trMask(){var m=0;CHIP_DEF.forEach(function(c){if(F.tr.indexOf(c[0])>-1)m|=c[2]});return m}
+function fPoint(){return F.pc&&DB.pc4&&DB.pc4[F.pc]?DB.pc4[F.pc]:null}
+function runFilter(){
+  var toks=tokens(F.q),mask=trMask(),pt=fPoint(),out=[],i,s,k,ok,d=null,lr=0,cl=0;
+  if(pt){lr=pt[0]*Math.PI/180;cl=Math.cos(lr)}
+  for(i=0;i<ALL.length;i++){
+    s=ALL[i];
+    if(F.sec&&s.sec!==F.sec)continue;
+    if(mask&&(s.sec!=='vo'||!(s.tracks&mask)))continue;
+    if(F.den&&s.denT!==F.den)continue;
+    if(F.ft.length&&!hasFeat(s.id,F.ft))continue;
+    ok=true;for(k=0;k<toks.length;k++){if(!matchTok(s,toks[k])){ok=false;break}}
+    if(!ok)continue;
+    if(pt){
+      if(s.g===3||s.lat==null)continue;
+      d=km(lr,cl,pt[1],s.latR,s.cosL,s.lon);
+      if(F.r&&d>F.r)continue;
+    }
+    out.push({s:s,d:pt?d:null});
+  }
+  if(pt)out.sort(function(a,b){return a.d-b.d});
+  return out;
+}
+
+/* ---------- shared filter form ---------- */
+var FORM=null,FP={},qTimer=0,pTimer=0;
+function chipBtn(label,pressed,fn,id){return h('button',{class:'chip',type:'button',id:id||null,'aria-pressed':pressed?'true':'false',text:label,onclick:fn})}
+function ensureForm(){
+  if(FORM)return FORM;
+  var f=h('div',{class:'fcard',role:'search','aria-label':'School filters'});
+  FP.q=h('input',{class:'fld',id:'f-q',type:'search',autocomplete:'off',spellcheck:'false',placeholder:'For example Montessori, Utrecht or 3512',
+    oninput:function(){clearTimeout(qTimer);qTimer=setTimeout(function(){F.q=FP.q.value.slice(0,80);filterChanged()},120)}});
+  f.appendChild(h('div',null,[h('label',{for:'f-q',text:'Name, town, municipality or postcode'}),FP.q]));
+  FP.sec=h('div',{class:'ctrl',role:'group','aria-label':'School type'});
+  SEC_OPTS.forEach(function(o){FP.sec.appendChild(chipBtn(o[1],false,function(){F.sec=o[0];if(o[0]&&o[0]!=='vo')F.tr=[];filterChanged();syncForm()},'f-sec-'+(o[0]||'all')))});
+  f.appendChild(h('div',{class:'fgrp'},[h('span',{class:'fl',text:'Type'}),FP.sec]));
+  FP.tr=h('div',{class:'ctrl',role:'group','aria-label':'Secondary levels'});
+  CHIP_DEF.forEach(function(c){FP.tr.appendChild(chipBtn(c[1],false,function(){
+    var i=F.tr.indexOf(c[0]);if(i>-1)F.tr.splice(i,1);else F.tr.push(c[0]);
+    if(F.tr.length&&F.sec&&F.sec!=='vo')F.sec='vo';
+    filterChanged();syncForm()},'f-tr-'+c[0]))});
+  f.appendChild(h('div',{class:'fgrp'},[h('span',{class:'fl',text:'Secondary levels (shows secondary schools that offer any selected level)'}),FP.tr]));
+  FP.ft=h('div',{class:'ctrl',role:'group','aria-label':'Concept and international'});
+  FT_ALL.forEach(function(c){FP.ft.appendChild(chipBtn(c[1],false,function(){
+    var i=F.ft.indexOf(c[0]);if(i>-1)F.ft.splice(i,1);else F.ft.push(c[0]);filterChanged();syncForm()},'f-ft-'+c[0]))});
+  FP.ftWrap=h('div',{class:'fgrp'},[h('span',{class:'fl',text:'Concept, bilingual and international (any selected)'}),FP.ft,
+    h('p',{class:'ffl',text:'Labels come from association lists and school websites, so they can be incomplete.'})]);
+  f.appendChild(FP.ftWrap);
+  var row=h('div',{class:'frow three'});
+  FP.den=h('select',{class:'fld',id:'f-den',onchange:function(e){F.den=e.target.value;filterChanged()}});
+  FP.den.appendChild(h('option',{value:'',text:'Any denomination'}));
+  DENS.forEach(function(d){FP.den.appendChild(h('option',{value:d,text:d}))});
+  row.appendChild(h('div',null,[h('label',{for:'f-den',text:'Denomination'}),FP.den]));
+  FP.pc=h('input',{class:'fld',id:'f-pc',type:'text',inputmode:'numeric',maxlength:'4',autocomplete:'off',placeholder:'3512',
+    oninput:function(){clearTimeout(pTimer);pTimer=setTimeout(function(){
+      var v=FP.pc.value.replace(/\D/g,'').slice(0,4);F.pc=/^[1-9]\d{3}$/.test(v)?v:'';filterChanged()},120)}});
+  row.appendChild(h('div',null,[h('label',{for:'f-pc',text:'Distance from postcode'}),FP.pc]));
+  FP.r=h('select',{class:'fld',id:'f-r',onchange:function(e){F.r=+e.target.value;filterChanged()}});
+  R_OPTS.forEach(function(o){FP.r.appendChild(h('option',{value:String(o[0]),text:o[1]}))});
+  row.appendChild(h('div',null,[h('label',{for:'f-r',text:'Within'}),FP.r]));
+  f.appendChild(row);
+  FP.pcmsg=h('p',{class:'ffl',id:'f-pcmsg',role:'status',style:'margin:0'});
+  f.appendChild(FP.pcmsg);
+  var acts=h('div',{class:'ctrl'});
+  FP.mine=h('button',{class:'btn sec',type:'button',text:'Use my route postcode',onclick:function(){F.pc=state.pc;filterChanged();syncForm()}});
+  acts.appendChild(FP.mine);
+  acts.appendChild(h('button',{class:'btn sec',type:'button',text:'Clear filters',onclick:function(){fReset();filterChanged();syncForm()}}));
+  f.appendChild(acts);
+  FORM=f;
+  return f;
+}
+function syncForm(){
+  if(!FORM)return;
+  if(FP.q.value!==F.q&&document.activeElement!==FP.q)FP.q.value=F.q;
+  SEC_OPTS.forEach(function(o){$('f-sec-'+(o[0]||'all')).setAttribute('aria-pressed',F.sec===o[0]?'true':'false')});
+  CHIP_DEF.forEach(function(c){$('f-tr-'+c[0]).setAttribute('aria-pressed',F.tr.indexOf(c[0])>-1?'true':'false')});
+  FT_ALL.forEach(function(c){$('f-ft-'+c[0]).setAttribute('aria-pressed',F.ft.indexOf(c[0])>-1?'true':'false')});
+  FP.ftWrap.hidden=!DB.feat;
+  FP.den.value=F.den;
+  if(FP.pc.value!==F.pc&&document.activeElement!==FP.pc)FP.pc.value=F.pc;
+  FP.r.value=String(F.r);
+  FP.mine.hidden=state.example||!/^[1-9]\d{3}$/.test(state.pc);
+  var msg='';
+  if(F.pc&&DB.pc4&&!DB.pc4[F.pc])msg='We do not know postcode area '+F.pc+'. Check the digits.';
+  else if(F.pc)msg='Sorted nearest first, straight-line distance from the middle of the postcode area ('+DB.pc4[F.pc][2]+').';
+  else msg='Sorted by name. Add a postcode to sort by distance.';
+  FP.pcmsg.textContent=msg;
+  var n=(F.q?1:0)+(F.sec?1:0)+F.tr.length+F.ft.length+(F.den?1:0)+(F.pc?1:0)+(F.r?1:0);
+  ['find','map'].forEach(function(k){var e=$(k+'-fsum');if(e)e.textContent='Filters and search'+(n?' ('+n+' active)':'')});
+}
+function mountForm(slot){
+  ensureForm();
+  if(FORM.parentNode!==slot){clear(slot);slot.appendChild(FORM)}
+  syncForm();
+}
+function filterChanged(){
+  syncNav();
+  try{history.replaceState(null,'','#/'+VIEW+fQuery(VIEW==='map'))}catch(e){}
+  syncForm();
+  if(VIEW==='find')updateFind();else if(VIEW==='map')updateMap();
+}
+function syncNav(){
+  var q=fQuery();
+  $('t-find').setAttribute('href','#/find'+q);
+  $('t-map').setAttribute('href','#/map'+q);
+  var ml=$('map-list-link');if(ml)ml.setAttribute('href','#/find'+q);
+}
+
+/* ---------- compare list ---------- */
+var CMP=loadCmp(),CMSG='';
+function loadCmp(){
+  try{var a=JSON.parse(localStorage.getItem('schoollijn.cmp')||'[]');
+    if(Array.isArray(a))return a.filter(isId).map(function(x){return x.toUpperCase()}).slice(0,4)}catch(e){}
+  return [];
+}
+function saveCmp(){try{localStorage.setItem('schoollijn.cmp',JSON.stringify(CMP))}catch(e){}}
+function say(t){var l=$('live');if(l){l.textContent='';setTimeout(function(){l.textContent=t},30)}}
+function cmpToggle(s){
+  var i=CMP.indexOf(s.id);CMSG='';
+  if(i>-1){CMP.splice(i,1);say('Removed '+s.name+' from the compare list.')}
+  else{
+    if(CMP.length>=4){CMSG='You can compare up to 4 schools. Remove one first.'}
+    else{
+      var g=CMP.length?BYID[CMP[0]]:null;
+      if(g&&grpOf(g)!==grpOf(s))CMSG='Compare works within one type. Your list has '+(grpOf(g)==='vo'?'secondary':'primary')+' schools. Clear it to start a new list.';
+      else{CMP.push(s.id);say('Added '+s.name+' to the compare list.')}
+    }
+    if(CMSG)say(CMSG);
+  }
+  saveCmp();syncCmp();
+}
+function cmpBtn(s){
+  var b=h('button',{class:'chip cmp',type:'button','data-cmp':s.id,onclick:function(){cmpToggle(s)}});
+  cmpLabel(b,s);return b;
+}
+function cmpLabel(b,s){
+  var on=CMP.indexOf(s.id)>-1;clear(b);
+  b.appendChild(document.createTextNode(on?'In compare list':'Add to compare'));
+  b.appendChild(h('span',{class:'sr',text:(on?' (press to remove) ':' ')+s.name}));
+  b.classList.toggle('on',on);
+}
+function syncCmp(){
+  var bs=document.querySelectorAll('button[data-cmp]'),i,s;
+  for(i=0;i<bs.length;i++){s=BYID[bs[i].getAttribute('data-cmp')];if(s)cmpLabel(bs[i],s)}
+  renderCbar();
+}
+function renderCbar(){
+  var bar=$('cbar');clear(bar);
+  if(!CMP.length||VIEW==='compare'){bar.hidden=true;document.body.classList.remove('has-cbar');return}
+  bar.hidden=false;document.body.classList.add('has-cbar');
+  var left=h('div',null,[h('b',{text:CMP.length+(CMP.length===1?' school':' schools')+' to compare'})]);
+  if(CMSG)left.appendChild(h('div',{style:'font-size:.88rem',text:CMSG}));
+  else if(CMP.length<2)left.appendChild(h('div',{style:'font-size:.88rem',text:'Add at least one more school.'}));
+  var acts=h('div',{class:'acts'});
+  if(CMP.length>=2)acts.appendChild(h('a',{class:'btn',href:'#/compare/'+CMP.join(','),text:'Compare'}));
+  acts.appendChild(h('button',{class:'btn sec',type:'button',text:'Clear',onclick:function(){CMP=[];CMSG='';saveCmp();say('Compare list cleared.');syncCmp()}}));
+  bar.appendChild(h('div',{class:'in'},[left,acts]));
+}
+
+/* ---------- lazy detail files ---------- */
+var DET={po:null,vo:null,insp:null,p:{}};
+function loadJson(key,url){
+  if(DET.p[key])return DET.p[key];
+  DET.p[key]=fetch(url).then(function(r){if(!r.ok)throw new Error(key);return r.json()}).then(function(j){
+    j=j&&j.schools&&typeof j.schools==='object'?j:null;DET[key]=j;return j;
+  }).catch(function(){DET[key]=null;return null});
+  return DET.p[key];
+}
+function loadDetail(grp){return Promise.all([loadJson(grp,'data/detail_'+grp+'.json'),loadJson('insp','data/inspection.json')])}
+function detOf(s){var d=DET[grp2(s)];return d&&d.schools&&Object.prototype.hasOwnProperty.call(d.schools,s.id)?d.schools[s.id]:null}
+function grp2(s){return grpOf(s)}
+function inspOf(s){var d=DET.insp;return d&&d.schools&&Object.prototype.hasOwnProperty.call(d.schools,s.id)?d.schools[s.id]:null}
+function detYear(grp,key){var d=DET[grp];return d&&d.years&&d.years[key]!=null?String(d.years[key]):''}
+
+/* ---------- Find view ---------- */
+var FOUND=[],shown=0;
+function findRow(r){
+  var s=r.s,main=h('div');
+  main.appendChild(h('a',{class:'nm',href:'#/school/'+s.id,text:s.name}));
+  main.appendChild(h('div',{class:'mt',text:[SEC_SHORT[s.sec],s.city,s.mun&&s.mun!==s.city?s.mun:null,s.denT,pupilsText(s)].filter(Boolean).join(' · ')}));
+  if(s.sec==='vo')main.appendChild(h('div',{style:'margin-top:5px'},trackBadges(s)));
+  var fc=featChips(s);if(fc)main.appendChild(fc);
+  main.appendChild(h('div',{class:'rowact'},cmpBtn(s)));
+  var left=r.d!=null?distCell(r,s):h('div',{class:'kt',text:SEC_SHORT[s.sec]});
+  return h('li',{class:'sch',style:'list-style:none'},[left,main]);
+}
+function viewGate(out){
+  if(DB.status==='loading'){clear(out);out.appendChild(loadingBox('Loading school data...'));return false}
+  if(DB.status==='error'){clear(out);out.appendChild(errorBox());return false}
+  return true;
+}
+function updateFind(){
+  var out=$('find-out');
+  if(!viewGate(out)){clear($('find-form'));return}
+  mountForm($('find-form'));
+  clear(out);
+  FOUND=runFilter();shown=0;
+  var hd=h('div',{class:'res-h'},[h('p',{role:'status','aria-live':'polite',style:'font-weight:700',text:FOUND.length===0?'No schools match.':numF(FOUND.length)+(FOUND.length===1?' school':' schools')})]);
+  hd.appendChild(h('a',{href:'#/map'+fQuery(),text:'Show these on the map'}));
+  out.appendChild(hd);
+  if(!FOUND.length){
+    out.appendChild(h('div',{class:'empty',text:'Try fewer filters, another spelling, or the first letters of a word. Search matches the start of words in the name, town, municipality and postcode.'}));
+    return;
+  }
+  var card=h('div',{class:'list-card'});
+  var ul=h('ul',{style:'padding:0;margin:0',id:'find-list'});card.appendChild(ul);
+  out.appendChild(card);
+  var more=h('button',{class:'btn sec more',type:'button',id:'find-more'});
+  out.appendChild(more);
+  function page(focusFirst){
+    var end=Math.min(FOUND.length,shown+PAGE),first=null,i,li;
+    for(i=shown;i<end;i++){li=findRow(FOUND[i]);if(!first)first=li;ul.appendChild(li)}
+    shown=end;
+    if(shown>=FOUND.length)more.hidden=true;
+    else{more.hidden=false;more.textContent='Show '+Math.min(PAGE,FOUND.length-shown)+' more ('+numF(FOUND.length-shown)+' left)'}
+    if(focusFirst&&first){var a=first.querySelector('a');if(a)a.focus()}
+  }
+  more.addEventListener('click',function(){page(true)});
+  page(false);
+  out.appendChild(h('p',{class:'note',text:'Pupil counts are from the DUO file of 1 October 2025. Numbers are context, not a ranking, and the list is never sorted by "best".'}));
+}
+
+/* ---------- Map view ---------- */
+var MAP={map:null,group:null,pcl:null,loading:null,pal:null,focus:null};
+var MAPFOCUS='';
+var LEAF_CSS='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
+var LEAF_JS='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+function loadLeaflet(){
+  if(window.L&&window.L.map)return Promise.resolve();
+  if(MAP.loading)return MAP.loading;
+  MAP.loading=new Promise(function(res,rej){
+    var l=document.createElement('link');l.rel='stylesheet';l.href=LEAF_CSS;l.integrity='sha256-tXCrvaljxgtN5LT/Syb5Mm9T+yzPFGH98JVcoJT7JTk=';l.crossOrigin='anonymous';
+    document.head.appendChild(l);
+    var sc=document.createElement('script');sc.src=LEAF_JS;sc.integrity='sha256-XJrs/DDkVkUZ29zdzFOkGCJ9zHVo5hnpdi3c7HYJ7Uc=';sc.crossOrigin='anonymous';
+    sc.onload=function(){res()};
+    sc.onerror=function(){MAP.loading=null;rej(new Error('leaflet'))};
+    document.head.appendChild(sc);
+  });
+  return MAP.loading;
+}
+function readPal(){
+  var cs=getComputedStyle(document.documentElement);
+  function v(n){return cs.getPropertyValue(n).trim()||'#888'}
+  return {po:v('--c-bo'),sbo:v('--c-wo'),pro:v('--c-pro'),vbk:v('--c-vbk'),vgt:v('--c-vgt'),havo:v('--c-havo'),vwo:v('--c-vwo'),unk:v('--c-mbo'),pc:v('--ink')};
+}
+var MAP_LEG=[['po','Primary'],['sbo','Special primary (sbo)'],['pro','Secondary, practical'],['vbk','Secondary, vmbo basis/kader'],['vgt','Secondary, vmbo gl/tl'],['havo','Secondary, havo'],['vwo','Secondary, vwo'],['unk','Secondary, levels not in data']];
+function mapGroup(s){
+  if(s.sec==='po'||s.sec==='sbo')return s.sec;
+  var t=s.tracks||0;
+  if(t&64)return 'vwo';if(t&32)return 'havo';if(t&24)return 'vgt';if(t&6)return 'vbk';if(t&1)return 'pro';
+  return 'unk';
+}
+function mkMarker(s){
+  if(s.mk)return s.mk;
+  var g=mapGroup(s);
+  var m=L.circleMarker([s.lat,s.lon],{radius:s.sec==='vo'?6:5,color:'#ffffff',weight:1,opacity:.9,fillColor:MAP.pal[g],fillOpacity:.88});
+  m._g=g;
+  m.on('click',function(){openPop(s)});
+  s.mk=m;return m;
+}
+function openPop(s){
+  var n=h('div',{class:'pop'});
+  n.appendChild(h('b',{text:s.name}));
+  n.appendChild(h('span',{text:SEC_LONG[s.sec]+(s.city?', '+s.city:'')}));
+  var pu=pupilsText(s);if(pu)n.appendChild(h('span',{text:pu}));
+  n.appendChild(h('div',{class:'rowact'},[h('a',{href:'#/school/'+s.id,text:'Open profile'}),cmpBtn(s)]));
+  L.popup({maxWidth:260,autoPanPadding:[20,20]}).setLatLng([s.lat,s.lon]).setContent(n).openOn(MAP.map);
+}
+function restyleMap(){
+  if(!MAP.map)return;
+  MAP.pal=readPal();
+  for(var i=0;i<ALL.length;i++){var m=ALL[i].mk;if(m)m.setStyle({fillColor:MAP.pal[m._g]})}
+  if(MAP.pcl)MAP.pcl.setStyle({color:MAP.pal.pc,fillColor:MAP.pal.pc});
+  var lg=document.querySelectorAll('#map-legend i');
+  for(var j=0;j<lg.length&&j<MAP_LEG.length;j++)lg[j].style.background=MAP.pal[MAP_LEG[j][0]];
+}
+if(window.matchMedia){
+  try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){setTimeout(restyleMap,50)})}catch(e){}
+}
+function mapSkeleton(out){
+  if($('mapel'))return;
+  clear(out);
+  out.appendChild(h('p',{class:'mapnote',id:'map-status',role:'status','aria-live':'polite'}));
+  var lg=h('ul',{class:'legend',id:'map-legend','aria-label':'Colour key'});
+  MAP_LEG.forEach(function(x){lg.appendChild(h('li',null,[h('i',{'aria-hidden':'true'}),x[1]]))});
+  out.appendChild(lg);
+  out.appendChild(h('div',{class:'mapwrap'},h('div',{id:'mapel',role:'application','aria-label':'Map of schools. Use the list view for a keyboard friendly version.'})));
+  out.appendChild(h('p',{class:'mapnote',text:'Colour shows which levels a school offers, not its quality. Secondary schools take the colour of the highest level they offer. Tap a dot for the name, type and pupils.'}));
+  out.appendChild(h('p',{class:'src',text:'Map: OpenStreetMap contributors, via Leaflet. School locations: DUO addresses matched with the Kadaster BAG through PDOK. Some locations are approximate.'}));
+}
+function updateMap(){
+  var out=$('map-out');
+  if(!viewGate(out)){clear($('map-form'));return}
+  mountForm($('map-form'));
+  mapSkeleton(out);
+  var st=$('map-status');
+  if(!MAP.map)st.textContent='Loading the map...';
+  loadLeaflet().then(function(){
+    if(VIEW!=='map')return;
+    if(!MAP.map){
+      MAP.pal=readPal();
+      MAP.map=L.map('mapel',{preferCanvas:true,zoomSnap:0.5,minZoom:6,maxBounds:[[50.4,2.4],[54.0,8.2]],maxBoundsViscosity:.8}).setView([52.15,5.3],7);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}).addTo(MAP.map);
+      restyleMap();
+    }
+    MAP.map.invalidateSize();
+    drawMap();
+  }).catch(function(){st.textContent='The map could not load. The list view works without it.'});
+}
+function drawMap(){
+  var res=runFilter(),pts=[],ms=[],noloc=0,i,s,st=$('map-status');
+  for(i=0;i<res.length;i++){
+    s=res[i].s;
+    if(s.g===3||s.lat==null){noloc++;continue}
+    ms.push(mkMarker(s));pts.push([s.lat,s.lon]);
+  }
+  var focus=MAPFOCUS&&BYID[MAPFOCUS]&&BYID[MAPFOCUS].lat!=null?BYID[MAPFOCUS]:null;
+  if(focus&&ms.indexOf(mkMarker(focus))<0){ms.push(mkMarker(focus));pts.push([focus.lat,focus.lon])}
+  if(MAP.group)MAP.map.removeLayer(MAP.group);
+  MAP.group=L.layerGroup(ms).addTo(MAP.map);
+  if(MAP.pcl){MAP.map.removeLayer(MAP.pcl);MAP.pcl=null}
+  var pt=fPoint(),bounds=null;
+  if(pt){
+    MAP.pcl=(F.r?L.circle([pt[0],pt[1]],{radius:F.r*1000,color:MAP.pal.pc,fillColor:MAP.pal.pc,fillOpacity:.04,weight:2,dashArray:'6 6',interactive:false}):L.circleMarker([pt[0],pt[1]],{radius:7,color:MAP.pal.pc,fillColor:MAP.pal.pc,fillOpacity:.9,weight:2,interactive:false})).addTo(MAP.map);
+    bounds=F.r?MAP.pcl.getBounds():L.latLng(pt[0],pt[1]).toBounds(8000);
+  }else if(pts.length&&pts.length<ALL.length)bounds=L.latLngBounds(pts);
+  st.textContent=numF(ms.length)+(ms.length===1?' school':' schools')+' shown'+(noloc?'. '+noloc+' without a known location are not shown':'')+'.';
+  if(focus){MAP.map.setView([focus.lat,focus.lon],15);openPop(focus);MAPFOCUS='';syncNav()}
+  else if(bounds&&bounds.isValid())MAP.map.fitBounds(bounds,{padding:[24,24],maxZoom:14});
+  else if(!pts.length&&!pt)MAP.map.setView([52.15,5.3],7);
+}
+
+/* ---------- profile helpers ---------- */
+function svgEl(tag,attrs,text){
+  var e=document.createElementNS('http://www.w3.org/2000/svg',tag),k;
+  if(attrs)for(k in attrs)e.setAttribute(k,attrs[k]);
+  if(text!=null)e.textContent=text;
+  return e;
+}
+function sortYear(a,b){var x=String(a[0]),y=String(b[0]);return x<y?-1:x>y?1:0}
+function psec(title,expl,kids,src){
+  var sec=h('section',{class:'psec'},[h('h3',{text:title})]);
+  if(expl)sec.appendChild(h('p',{class:'expl'},[h('b',{text:'What this means'}),expl]));
+  kids.forEach(function(k){if(k)sec.appendChild(k)});
+  if(src)sec.appendChild(h('p',{class:'dsrc',text:src}));
+  return sec;
+}
+function duoSrc(what,key){
+  var y=dataYear(key);
+  return 'Source: DUO Open Onderwijsdata. '+what+(y&&(y.range||y.date)?': '+(y.range||'')+(y.date?' (counted '+y.date+')':''):'')+'.';
+}
+function kvRow(a,b){return h('div',{class:'r'},[h('span',{text:a}),h('span',{text:b})])}
+function kmText(m){
+  if(typeof m!=='number')return '';
+  if(m<1000)return 'under 1 km';
+  return (m/1000).toFixed(1)+' km';
+}
+function trendChart(pt){
+  var rows=pt.filter(function(e){return Array.isArray(e)}).slice().sort(sortYear);
+  if(rows.length<2)return null;
+  var W=520,H=210,L0=52,R0=16,T0=16,B0=34,vals=[],i;
+  rows.forEach(function(e){if(typeof e[1]==='number')vals.push(e[1])});
+  if(vals.length<2)return null;
+  var max=Math.max.apply(null,vals);if(max<=0)return null;
+  var top=Math.ceil(max/10)*10||max;
+  function X(i){return L0+(rows.length===1?0:i*(W-L0-R0)/(rows.length-1))}
+  function Y(v){return T0+(H-T0-B0)*(1-v/top)}
+  var svg=svgEl('svg',{class:'trend',viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Pupil numbers by year: '+rows.map(function(e){return e[0]+' '+(e[1]==null?'hidden':(e[2]?'at least ':'')+e[1])}).join(', ')});
+  [0,top/2,top].forEach(function(v){
+    svg.appendChild(svgEl('line',{class:'gr',x1:L0,x2:W-R0,y1:Y(v),y2:Y(v)}));
+    svg.appendChild(svgEl('text',{x:L0-6,y:Y(v)+4,'text-anchor':'end'},String(Math.round(v))));
+  });
+  var d='',gap=true;
+  rows.forEach(function(e,i){
+    if(typeof e[1]!=='number'){gap=true;return}
+    d+=(gap?'M':'L')+X(i).toFixed(1)+' '+Y(e[1]).toFixed(1)+' ';gap=false;
+  });
+  svg.appendChild(svgEl('path',{class:'ln',d:d}));
+  rows.forEach(function(e,i){
+    if(typeof e[1]!=='number')return;
+    var c=svgEl('circle',{class:'pt',cx:X(i),cy:Y(e[1]),r:5});
+    c.appendChild(svgEl('title',null,e[0]+': '+(e[2]?'at least ':'')+e[1]+' pupils'));
+    svg.appendChild(c);
+  });
+  var step=Math.ceil(rows.length/6);
+  rows.forEach(function(e,i){
+    if(i%step!==0&&i!==rows.length-1)return;
+    svg.appendChild(svgEl('text',{x:X(i),y:H-8,'text-anchor':i===0?'start':i===rows.length-1?'end':'middle'},String(e[0])));
+  });
+  return svg;
+}
+function pupilsSection(s,d){
+  var kids=[];
+  var big=s.pupils==null?'Not shown':(s.pupils_lb?'At least ':'')+numF(s.pupils);
+  kids.push(h('div',{class:'big',text:big}));
+  kids.push(h('p',{class:'note',style:'margin-top:4px',text:s.pupils==null?'DUO did not publish a pupil count for this location.':'pupils in total'+(s.pupils_lb?'. DUO hides groups of fewer than 5 pupils, so the real number is a little higher.':'.')}));
+  var pt=d&&Array.isArray(d.pt)?d.pt:null;
+  if(pt){
+    var ch=trendChart(pt);
+    if(ch){
+      kids.push(ch);
+      var det=h('details',{style:'margin-top:6px'},[h('summary',{style:'cursor:pointer;font-weight:700',text:'Numbers by year'})]);
+      var t=h('div',{class:'kv'});
+      pt.slice().sort(sortYear).forEach(function(e){t.appendChild(kvRow(String(e[0]),e[1]==null?'fewer than 5':(e[2]?'at least ':'')+numF(e[1])))});
+      det.appendChild(t);kids.push(det);
+    }
+  }
+  return psec('Pupils','This is the number of children enrolled on the count date, 1 October. A bigger school is not better or worse than a smaller one. It does tell you how large the building and the year groups are likely to feel.',kids,duoSrc('Pupil counts',s.sec==='vo'?'vo_pupils':'po_pupils'));
+}
+function adviceSection(s,d){
+  var kids=[adviceBar(s.adv)];
+  var at=d&&Array.isArray(d.at)?d.at.slice().sort(sortYear):null;
+  if(at)at=at.filter(function(e){return Array.isArray(e)&&e[3]});
+  if(at&&at.length>1){
+    var det=h('details',{style:'margin-top:10px'},[h('summary',{style:'cursor:pointer;font-weight:700',text:'Earlier years'})]);
+    at.forEach(function(e){
+      if(!Array.isArray(e))return;
+      det.appendChild(h('div',{style:'margin-top:8px'},[h('b',{text:'Leavers '+(typeof e[0]==='number'?e[0]+'-'+(e[0]+1):e[0])}),adviceBar([e[1],e[2],e[3]])]));
+    });
+    kids.push(det);
+  }
+  return psec('Where pupils go next: school advice',
+    'At the end of group 8, the school gives each child a school advice (schooladvies), the secondary level it recommends. The bar shows the advice given to the school\'s leavers. It describes the pupils the school has, not how good the school is. Schools with a different intake will show a different mix.',
+    kids,duoSrc('School advice of leavers','po_advice'));
+}
+function testSection(s,d){
+  if(!d||!Array.isArray(d.es)||!d.es.length)return null;
+  var t=h('table',{class:'prtab'},[h('tbody')]),b=t.firstChild;
+  d.es.forEach(function(e){
+    if(!Array.isArray(e))return;
+    b.appendChild(h('tr',null,[h('th',{scope:'row',text:String(e[0])}),h('td',{text:e[1]==null?'average not shown':'average score '+e[1]}),h('td',{text:e[2]==null?'fewer than 5 pupils':numF(e[2])+' pupils'})]));
+  });
+  return psec('End-of-primary test (doorstroomtoets)',
+    'In group 8 every child takes an end-of-primary test. Schools choose from several approved tests, and each test has its own scale. Never compare the score of one test with another. The average is context for the school advice, not a grade for the school.',
+    [t,h('p',{class:'note',text:'Only compare schools that used the same test.'})],
+    'Source: DUO Open Onderwijsdata, test results'+(detYear('po','eindscore')?' '+detYear('po','eindscore'):'')+'.');
+}
+function distSection(s,d){
+  if(!d||!Array.isArray(d.dm)||(d.dm[1]==null&&d.dm[0]==null))return null;
+  var kids=[];
+  if(d.dm[1]!=null)kids.push(kvRow('Median distance from home to school',kmText(d.dm[1])));
+  if(d.dm[0]!=null)kids.push(kvRow('Average distance',kmText(d.dm[0])));
+  if(d.dm[2]!=null)kids.push(kvRow('Pupils counted',numF(d.dm[2])));
+  return psec('How far pupils live',
+    'This is the straight-line distance between pupils\' homes and the school. A small number means the school is mostly a neighbourhood school. A large number means pupils travel in from further away, which can matter for cycling and for friendships after school.',
+    [h('div',{class:'kv'},kids)],
+    'Source: DUO Open Onderwijsdata, home-to-school distance'+(detYear('po','dist')?', '+detYear('po','dist'):'')+'.');
+}
+var TK_MAP={'PRO':['Practical','pro'],'VMBO-B':['vmbo basis','bb'],'VMBO-K':['vmbo kader','kb'],'VMBO-GL/TL':['vmbo gl/tl','tl'],'HAVO':['havo','havo'],'VWO':['vwo','vwo'],'BRUGJAAR':['Bridge year','ib']};
+var TK_ORDER=['PRO','VMBO-B','VMBO-K','VMBO-GL/TL','HAVO','VWO','BRUGJAAR'];
+function tkKeys(o){
+  var keys=TK_ORDER.filter(function(k){return Object.prototype.hasOwnProperty.call(o,k)});
+  Object.keys(o).forEach(function(k){if(keys.indexOf(k)<0)keys.push(k)});
+  return keys;
+}
+function tkInfo(k){return Object.prototype.hasOwnProperty.call(TK_MAP,k)?TK_MAP[k]:[k,'ib']}
+function levelsSection(s,d){
+  var kids=[];
+  var tb=trackBadges(s);
+  kids.push(h('div',null,tb.childNodes.length?tb:h('span',{class:'note',text:'The data does not list the levels of this location.'})));
+  if(s.st)kids.push(h('p',{class:'note',text:'DUO structure label: '+s.st+'.'}));
+  var tp=d&&d.tp&&typeof d.tp==='object'?d.tp:null;
+  if(tp){
+    var keys=tkKeys(tp),mx=1,lbk=Array.isArray(d.tpl)?d.tpl:[];
+    keys.forEach(function(k){if(typeof tp[k]==='number'&&tp[k]>mx)mx=tp[k]});
+    var box=h('div',{style:'margin-top:10px'},[h('b',{text:'Pupils per level'})]);
+    keys.forEach(function(k){
+      var inf=tkInfo(k),v=tp[k];
+      box.appendChild(h('div',{class:'hbar'},[h('span',{class:'tr t-'+inf[1],text:inf[0]}),
+        h('span',{class:'tk'},typeof v==='number'?h('i',{class:'a-'+(inf[1]==='pro'?'pro':inf[1]==='bb'||inf[1]==='kb'?'vbk':inf[1]==='tl'?'vgt':inf[1]==='havo'?'havo':inf[1]==='vwo'?'vwo':'x'),style:'width:'+Math.max(2,Math.round(v/mx*100))+'%'}):null),
+        h('span',{class:'nn',text:v==null?'fewer than 5':(lbk.indexOf(k)>-1?'at least ':'')+numF(v)})]));
+    });
+    kids.push(box);
+  }
+  return psec('Levels offered',
+    'Dutch secondary school has several levels. In vmbo there are four variants: basis and kader (more practical), and gl and tl (more theoretical). Then come havo (5 years) and vwo (6 years). A school can offer one level or several. A school with several levels under one roof makes it easier to move up or down later. The school decides on moving.',
+    kids.concat(tp&&Array.isArray(d.tpl)&&d.tpl.length?[h('p',{class:'note',text:'"At least" means DUO hides some small groups, so the real number is a little higher.'})]:[]),duoSrc('Levels and pupils per level','vo_pupils')+(tp?'':' Levels are taken from the pupil file.'));
+}
+function passSection(s,d){
+  var pr=d&&d.pr&&typeof d.pr==='object'?d.pr:null,kids=[];
+  if(pr){
+    tkKeys(pr).forEach(function(k){
+      var arr=pr[k];if(!Array.isArray(arr)||!arr.length)return;
+      var inf=tkInfo(k),t=h('table',{class:'prtab'},[h('caption',{class:'sr',text:'Exam results '+inf[0]}),h('tbody')]),b=t.lastChild;
+      arr.slice().sort(sortYear).forEach(function(e){
+        if(!Array.isArray(e))return;
+        var txt=e[2]==null?'fewer than 5 candidates':Math.round(e[2])+'% passed, '+numF(e[1])+' candidates'+(e[3]?' (partial: some small groups hidden)':'')+(e[1]!=null&&e[1]<30?' (small group, the rate can swing a lot)':'');
+        b.appendChild(h('tr',null,[h('th',{scope:'row',text:'Exam year '+e[0]}),h('td',{text:txt})]));
+      });
+      kids.push(h('div',null,[h('span',{class:'tr t-'+inf[1],text:inf[0]}),t]));
+    });
+  }
+  if(!kids.length){
+    if(!s.exam||!s.exam.length)return psec('Exam results','The national exam happens in the last year of each level. Pass rates depend on who the school admits and on how many candidates there are.',[h('p',{class:'note',text:'No exam results in the data for this location.'})],duoSrc('Exam results','vo_exams'));
+    kids.push(examLine(s));
+  }
+  return psec('Exam results',
+    'In the final year of each level, pupils sit the national exam. The pass rate is the share of candidates who passed. It also depends on which pupils the school admits and, for small groups, on chance. It is not a ranking, and a high rate is not the same as a good fit for your child.',
+    kids,duoSrc('Exam results','vo_exams'));
+}
+function catchSection(s,d){
+  if(!d||!Array.isArray(d.cm)||!d.cm.length)return null;
+  var ul=h('ul',{class:'pcl'});
+  d.cm.slice(0,12).forEach(function(e){
+    if(!Array.isArray(e)||!/^[1-9]\d{3}$/.test(String(e[0])))return;
+    var pc=String(e[0]),nm=DB.pc4&&DB.pc4[pc]?DB.pc4[pc][2]:'';
+    ul.appendChild(h('li',null,h('a',{href:'#/?pc='+pc},[pc+(nm?' '+nm:''),' ',h('small',{text:e[1]==null?'fewer than 5':(e[2]?'at least ':'')+numF(e[1])+' pupils'})])));
+  });
+  var kids=[ul];
+  if(typeof d.cmo==='number')kids.push(h('p',{class:'note',text:'Pupils living in other postcodes: '+Math.round(d.cmo)+'% of pupils with a known postcode.'}));
+  return psec('Where pupils live',
+    'These are the postcode areas (the first four digits) most of the school\'s pupils come from. It shows how far the school draws. Open a postcode to see the route and the schools around it.',
+    kids,'Source: DUO Open Onderwijsdata, pupils by home postcode'+(detYear('vo','catchment')?', '+detYear('vo','catchment'):'')+'.');
+}
+function inspSection(s){
+  var r=inspOf(s),I=DET.insp,kids=[];
+  var link=h('a',{href:'https://www.onderwijsinspectie.nl/',target:'_blank',rel:'noopener',text:'Inspectie van het Onderwijs'});
+  if(r&&typeof r.o==='string'){
+    var box=h('div',{class:'insp'},[h('b',{text:r.o})]);
+    if(r.d)box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:'Judgement dated '+r.d}));
+    if(r.x&&typeof r.x==='object'){
+      Object.keys(r.x).forEach(function(k){if(typeof r.x[k]==='string')box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:k+': '+r.x[k]}))});
+      box.appendChild(h('div',{class:'note',style:'margin:2px 0 0',text:'The main judgement is the lowest of the programme judgements.'}));
+    }
+    kids.push(box);
+    var srcA=I&&safeUrl(I.source_url)?h('a',{href:I.source_url,target:'_blank',rel:'noopener',text:I.source||'source'}):(I&&I.source?I.source:'');
+    kids.push(h('p',{class:'dsrc'},['Source: ',srcA,I&&I.as_of?'. Data as of '+I.as_of:'',I&&I.licence?'. Licence: '+I.licence:'','.']));
+  }else{
+    kids.push(h('p',null,['No current published judgement is listed for this school. That is not a rating. You can search for the school on the website of the ',link,'.']));
+  }
+  return psec('Inspection',
+    'The Dutch Inspectorate of Education visits schools and judges their quality. It mostly publishes a judgement after a visit, and visits are often triggered by concerns. So having a judgement, or not having one, says little by itself. We do not sort, colour or average schools by it.',
+    kids,null);
+}
+function openDaysSection(s){
+  var f=DB.feat&&DB.feat.schools&&DB.feat.schools[s.id],t=todayStart(),list=[];
+  if(f&&Array.isArray(f.open_days))f.open_days.forEach(function(o){var d=odDate(o.date);if(d&&d>=t)list.push({o:o,d:d})});
+  list.sort(function(a,b){return a.d-b.d});
+  var kids=[];
+  if(list.length){
+    var ul=h('ul',{class:'ods',style:'padding:0'});
+    list.forEach(function(x){
+      var url=safeUrl(x.o.url),notes=odNote(x.o);
+      var li=h('li',null,[h('b',{text:fmtOd(x.d)+': '}),(OD_LBL[x.o.label]||'Open day')]);
+      if(url){li.appendChild(document.createTextNode(' · '));li.appendChild(h('a',{href:url,target:'_blank',rel:'noopener',text:'source'}))}
+      if(notes.length)li.appendChild(h('small',{text:notes.join(' · ').replace(/^./,function(c){return c.toUpperCase()})}));
+      ul.appendChild(li);
+    });
+    kids.push(ul);
+  }else{
+    kids.push(h('p',{text:'No upcoming open day found in our data.'}));
+  }
+  var w=safeWeb(s.web);
+  if(w)kids.push(h('p',null,['Check the school\'s own site for current dates: ',h('a',{href:w,target:'_blank',rel:'noopener',text:'school website'}),'.']));
+  return psec('Open days',
+    'An open day lets you see the building, meet teachers and ask questions. Dates were collected from school websites and change every year, so treat them as a pointer and confirm with the school.',
+    kids,'Source: school websites and school group sites'+(DB.feat&&DB.feat.generated?', collected '+String(DB.feat.generated).slice(0,10):'')+'.');
+}
+function nearbySection(s){
+  if(s.g===3||s.lat==null)return null;
+  var found=nearest(ALL,[s.lat,s.lon],function(x){return x.sec===s.sec&&x.id!==s.id}).slice(0,5);
+  if(!found.length)return null;
+  var ul=h('ul',{class:'nb-list'});
+  found.forEach(function(r){
+    ul.appendChild(h('li',null,[h('span',null,[h('a',{href:'#/school/'+r.s.id,text:r.s.name}),h('div',{class:'note',style:'margin:0',text:[r.s.city,r.s.denT].filter(Boolean).join(' · ')})]),h('span',{class:'d',text:fmtKm(r.d)+' km'})]));
+  });
+  return psec('Nearest other '+(s.sec==='vo'?'secondary':s.sec==='sbo'?'special primary':'primary')+' schools',
+    'Schools of the same type close by, nearest first. They are not suggestions or rankings: the order is only distance.',
+    [ul],'Distances are straight lines between school addresses. Source: DUO addresses and Kadaster BAG via PDOK.');
+}
+
+/* ---------- School view ---------- */
+function renderSchool(id){
+  var out=$('school-out');
+  if(!viewGate(out))return;
+  var s=BYID[id];
+  clear(out);
+  if(!s){
+    out.appendChild(h('h2',{class:'vh',id:'h-school',tabindex:'-1',text:'School not found'}));
+    out.appendChild(h('p',null,['We have no school with the code ',h('b',{text:id}),'. ',h('a',{href:'#/find',text:'Search for a school'}),'.']));
+    document.title='School not found | Schoollijn';
+    return;
+  }
+  document.title=s.name+' | Schoollijn';
+  var grp=grpOf(s);
+  build();
+  loadDetail(grp).then(function(r){
+    if(VIEW==='school'&&CUR_ID===id&&(r[0]||r[1]))build();
+  });
+  function build(){
+    var d=detOf(s),sc=window.pageYOffset;
+    clear(out);
+    var ph=h('div',{class:'phead'});
+    ph.appendChild(h('a',{class:'back',href:'#/find'+fQuery(),text:'← Back to search'}));
+    ph.appendChild(h('div',{class:'when',text:SEC_LONG[s.sec]}));
+    ph.appendChild(h('h2',{id:'h-school',tabindex:'-1',text:s.name}));
+    ph.appendChild(h('p',{class:'addr',text:[s.addr,[s.pc&&s.pc.length===6?s.pc.slice(0,4)+' '+s.pc.slice(4):s.pc,s.city].filter(Boolean).join(' '),s.mun&&s.mun!==s.city?'municipality of '+s.mun:null].filter(Boolean).join(', ')}));
+    ph.appendChild(h('p',{style:'margin:0 0 6px',text:'Denomination: '+s.denT+(s.sec==='vo'&&s.isk?'. Includes newcomer provision.':'')}));
+    var fc=featChips(s);if(fc)ph.appendChild(fc);
+    var lk=links(s,grp);
+    var mapA=s.g===3||s.lat==null?null:h('a',{href:'#/map?s='+s.id,text:'Show on map'});
+    if(mapA)lk.appendChild(mapA);
+    ph.appendChild(lk);
+    ph.appendChild(h('div',{class:'rowact'},cmpBtn(s)));
+    if(s.g>0&&s.g<3)ph.appendChild(h('p',{class:'note',text:'The location of this school is approximate (postcode level).'}));
+    out.appendChild(ph);
+    var secs=[pupilsSection(s,d)];
+    if(s.sec==='vo'){secs.push(levelsSection(s,d));secs.push(passSection(s,d));secs.push(catchSection(s,d))}
+    else if(s.sec==='po'){secs.push(adviceSection(s,d));secs.push(testSection(s,d));secs.push(distSection(s,d))}
+    else{secs.push(testSection(s,d));secs.push(distSection(s,d));secs.push(psec('About special primary schools','A special primary school (sbo) is for children who need more support than a regular school can give. Admission needs a formal decision first. Ask your child\'s current school or your municipality.',[],null))}
+    secs.push(inspSection(s));secs.push(openDaysSection(s));secs.push(nearbySection(s));
+    var grid=h('div',{class:'pgrid'});
+    secs.forEach(function(x){if(x)grid.appendChild(x)});
+    out.appendChild(grid);
+    out.appendChild(h('p',{class:'note',text:'Numbers are context for a conversation with the school, not a ranking. Check everything with the school.'}));
+    syncCmp();
+    window.scrollTo(0,sc);
+  }
+}
+
+/* ---------- Compare view ---------- */
+function latestPass(d){
+  var pr=d&&d.pr&&typeof d.pr==='object'?d.pr:null,box=h('div');
+  if(!pr)return null;
+  tkKeys(pr).forEach(function(k){
+    var a=Array.isArray(pr[k])?pr[k].slice().sort(sortYear):[];if(!a.length)return;
+    var e=a[a.length-1],inf=tkInfo(k);
+    box.appendChild(h('div',null,[h('span',{class:'tr t-'+inf[1],text:inf[0]}),' ',e[2]==null?'fewer than 5 candidates':(e[3]?'about ':'')+Math.round(e[2])+'% passed (n = '+numF(e[1])+(e[3]?', partial':'')+') '+e[0]]));
+  });
+  return box.childNodes.length?box:null;
+}
+function compareRows(grp){
+  var rows=[];
+  function R(l,sm,fn){rows.push([l,sm,fn])}
+  R('Type','',function(s){return SEC_LONG[s.sec]});
+  R('Place','',function(s){return [s.city,s.mun&&s.mun!==s.city?'('+s.mun+')':''].filter(Boolean).join(' ')});
+  R('Denomination','',function(s){return s.denT});
+  R('Pupils','Count date 1 Oct',function(s){return s.pupils==null?'not shown':(s.pupils_lb?'at least ':'')+numF(s.pupils)});
+  R('Concept and features','Lists and websites',function(s){return featChips(s)||'none listed'});
+  if(grp==='po'){
+    R('School advice of leavers','Last full year',function(s){return s.sec==='sbo'?'not applicable':adviceBar(s.adv)});
+    R('End-of-primary test','Do not compare different tests',function(s,d){
+      if(!d||!Array.isArray(d.es)||!d.es.length)return 'no data';
+      var b=h('div');d.es.forEach(function(e){if(Array.isArray(e))b.appendChild(h('div',{text:e[0]+': '+(e[1]==null?'not shown':e[1])+(e[2]==null?'':' (n = '+e[2]+')')}))});return b;
+    });
+    R('Home to school','Median, or average if no median',function(s,d){if(!d||!Array.isArray(d.dm))return 'no data';return d.dm[1]!=null?kmText(d.dm[1]):d.dm[0]!=null?kmText(d.dm[0])+' (average)':'no data'});
+  }else{
+    R('Levels','',function(s){var t=trackBadges(s);return t.childNodes.length?t:'not in data'});
+    R('Pupils per level','',function(s,d){
+      if(!d||!d.tp)return 'no data';
+      var b=h('div');tkKeys(d.tp).forEach(function(k){var v=d.tp[k];b.appendChild(h('div',{text:tkInfo(k)[0]+': '+(v==null?'fewer than 5':(Array.isArray(d.tpl)&&d.tpl.indexOf(k)>-1?'at least ':'')+numF(v))}))});return b;
+    });
+    R('Exam pass rate','Latest year, with candidates',function(s,d){return latestPass(d)||(s.exam&&s.exam.length?examLine(s):'no data')});
+  }
+  R('Inspection','',function(s){var r=inspOf(s);return r&&r.o?r.o+(r.d?' ('+r.d+')':''):'no current published judgement listed (not a rating)'});
+  R('Next open day','Check with the school',function(s){return openLine(s)||'none found in our data'});
+  return rows;
+}
+function renderCompare(ids){
+  var out=$('compare-out');
+  if(!viewGate(out))return;
+  /* take the ids from the link, keep one type, at most 4 */
+  var list=[];
+  ids.forEach(function(x){
+    x=String(x).toUpperCase();
+    if(!isId(x)||!BYID[x]||list.indexOf(x)>-1)return;
+    if(list.length&&grpOf(BYID[list[0]])!==grpOf(BYID[x]))return;
+    if(list.length<4)list.push(x);
+  });
+  if(ids.length&&(list.join()!==CMP.join())){CMP=list;saveCmp()}
+  if(!ids.length)list=CMP.slice();
+  clear(out);
+  if(list.length<1){
+    out.appendChild(h('p',null,['Nothing to compare yet. ',h('a',{href:'#/find',text:'Find schools'}),' and choose "Add to compare" on up to 4 of the same type.']));
+    renderCbar();return;
+  }
+  var grp=grpOf(BYID[list[0]]);
+  var schools=list.map(function(id){return BYID[id]});
+  build();
+  loadDetail(grp).then(function(r){if(VIEW==='compare'&&(r[0]||r[1]))build()});
+  function build(){
+    var sc=window.pageYOffset;
+    clear(out);
+    out.appendChild(h('p',{class:'resmeta',text:'Same-type comparison of up to 4 '+(grp==='vo'?'secondary':'primary')+' schools. Numbers are context, not a ranking.'}));
+    var table=h('table',{class:'cmp'});
+    var hr=h('tr',null,[h('th',{scope:'col'},h('span',{class:'sr',text:'Measure'}))]);
+    schools.forEach(function(s){
+      hr.appendChild(h('th',{scope:'col'},[h('a',{href:'#/school/'+s.id,text:s.name}),h('div',{class:'rowact'},h('button',{class:'chip cmp',type:'button',text:'Remove',onclick:function(){
+        CMP=CMP.filter(function(x){return x!==s.id});saveCmp();say('Removed '+s.name+' from the compare list.');
+        location.hash=CMP.length?'#/compare/'+CMP.join(','):'#/find';
+      }},h('span',{class:'sr',text:' '+s.name})))]));
+    });
+    table.appendChild(h('thead',null,hr));
+    var tb=h('tbody');
+    compareRows(grp).forEach(function(row){
+      var tr=h('tr');
+      tr.appendChild(h('th',{scope:'row'},[row[0],row[1]?h('small',{text:row[1]}):null]));
+      schools.forEach(function(s){
+        var v=row[2](s,detOf(s)),td=h('td');
+        if(v==null)v='';
+        td.appendChild(typeof v==='string'?document.createTextNode(v):v);
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+    table.appendChild(tb);
+    out.appendChild(h('div',{class:'cmpscroll',id:'compare-table-wrap',tabindex:'0',role:'region','aria-label':'Comparison table, scrolls sideways on small screens'},table));
+    var nt=[];
+    nt.push('Pupil counts and '+(grp==='vo'?'exam results':'school advice')+' come from DUO Open Onderwijsdata'+(detYear(grp,'pupils')?' (pupils '+detYear(grp,'pupils')+')':'')+'. A blank or "fewer than 5" means DUO hides small groups.');
+    if(grp==='po')nt.push('End-of-primary test averages from different tests (IEP, Centrale Eindtoets, Route 8 and others) are on different scales and must not be compared.');
+    out.appendChild(h('p',{class:'note',text:nt.join(' ')}));
+    var acts=h('div',{class:'ctrl'});
+    if(schools.length<4)acts.appendChild(h('a',{class:'btn sec',style:'display:inline-flex;align-items:center;text-decoration:none',href:'#/find',text:'Add another school'}));
+    acts.appendChild(h('button',{class:'btn sec',type:'button',text:'Clear compare list',onclick:function(){CMP=[];saveCmp();say('Compare list cleared.');location.hash='#/find'}}));
+    out.appendChild(acts);
+    renderCbar();
+    window.scrollTo(0,sc);
+  }
+}
+
+/* ---------- router ---------- */
+function parseHash(){
+  var raw=location.hash.replace(/^#/,''),q='',i=raw.indexOf('?');
+  if(i>-1){q=raw.slice(i+1);raw=raw.slice(0,i)}
+  var parts=raw.split('/').filter(Boolean);
+  var arg=parts[1]||'';try{arg=decodeURIComponent(arg)}catch(e){}
+  return {view:parts[0]||'route',arg:arg,q:parseQ(q)};
+}
+function refreshView(){
+  if(VIEW==='find')updateFind();
+  else if(VIEW==='map')updateMap();
+  else if(VIEW==='school')renderSchool(CUR_ID);
+  else if(VIEW==='compare')renderCompare(CUR_IDS);
+  syncCmp();
+}
+var CUR_IDS=[];
+var TITLES={route:'Schoollijn',find:'Find a school | Schoollijn',map:'Map of schools | Schoollijn',compare:'Compare schools | Schoollijn',system:'The whole Dutch school system | Schoollijn',faq:'Questions parents ask | Schoollijn'};
+function router(){
+  var r=parseHash(),v=r.view;
+  if(VIEWS.indexOf(v)<0){v='route';try{history.replaceState(null,'','#/')}catch(e){}}
+  VIEW=v;
+  document.body.setAttribute('data-view',v);
+  VIEWS.forEach(function(x){$('p-'+x).hidden=(x!==v)});
+  var tabOf={school:'find'}[v]||v;
+  ['route','find','map','system','faq'].forEach(function(t){
+    var a=$('t-'+t);if(t===tabOf)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+  });
+  document.title=TITLES[v]||'Schoollijn';
+  CMSG='';
+  if(v==='route'){
+    if(/^[1-9]\d{3}$/.test(r.q.pc||'')){
+      state.pc=r.q.pc;state.example=false;state.grp='';state.level='';state.chips=null;nPo=15;nVo=15;nIsk=10;save();
+      $('pc').value=state.pc;$('ferr').textContent='';
+      try{history.replaceState(null,'','#/')}catch(e){}
+    }
+    render();
+  }else if(v==='system'||v==='faq'){render()}
+  else if(v==='find'||v==='map'){
+    if(Object.keys(r.q).length)applyQuery(r.q);
+    MAPFOCUS=(v==='map'&&isId(r.q.s||''))?String(r.q.s).toUpperCase():'';
+    syncNav();
+    if(v==='find')updateFind();else updateMap();
+  }else if(v==='school'){
+    CUR_ID=isId(r.arg)?r.arg.toUpperCase():'';
+    renderSchool(CUR_ID);
+  }else if(v==='compare'){
+    CUR_IDS=String(r.arg||'').split(',').filter(Boolean);
+    renderCompare(CUR_IDS);
+  }
+  syncNav();
+  renderCbar();
+  if(!FIRST){
+    window.scrollTo(0,0);
+    var hd={find:'h-find',map:'h-map',school:'h-school',compare:'h-compare'}[v];
+    var el=hd&&$(hd);if(!el)el=$('main');
+    try{el.focus({preventScroll:true})}catch(e){}
+  }
+  FIRST=false;
+}
+window.addEventListener('hashchange',router);
+$('skip').addEventListener('click',function(e){e.preventDefault();$('main').focus()});
+(function(){var l=document.createElement('div');l.id='live';l.className='sr';l.setAttribute('role','status');l.setAttribute('aria-live','polite');document.body.appendChild(l)})();
+
 
 /* ---------- form ---------- */
 (function initForm(){
@@ -1368,13 +2345,14 @@ TABS.forEach(function(t,i){
     state.age=sel.value;state.pc=pc[1];state.example=false;
     if(changed){state.grp='';state.level='';state.chips=null}
     nPo=15;nVo=15;nIsk=10;preview=false;
-    save();render();
+    save();
+    if(VIEW!=='route')location.hash='#/';else render();
     var rb=$('resbar');if(rb&&rb.scrollIntoView)rb.scrollIntoView({block:'start'});
   });
 })();
 
 /* ---------- start ---------- */
-renderSystem();renderFaq();renderFooter();render();loadData();
+renderSystem();renderFaq();renderFooter();loadData();router();
 })();
 </script>
 

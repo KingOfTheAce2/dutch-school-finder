@@ -2,3 +2,4 @@ pipeline/raw/
 pipeline/review/
 __pycache__/
 _site/
+site/data/
